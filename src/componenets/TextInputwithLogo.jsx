@@ -17,13 +17,17 @@ const TextInputwithLogo = ({
   return (
     <View style={[styles.inputContainer, customStyle]}>
       <Image style={styles.usernamelogo} source={icon} resizeMode="contain" />
+      <View className="bg-white" style={styles.label}>
+        <Text style={styles.labeltext}>MPin</Text>
+      </View>
       <TextInput
         {...props}
         style={styles.input}
         placeholder={placeholder}
-        placeholderTextColor="gray"
+        placeholderTextColor="#5C658C"
         textAlign="start"
         onChangeText={onChangeText}
+        cursorColor="#5C658C"
         value={value}
       />
     </View>
@@ -41,21 +45,29 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     color: "#004787",
   },
-  subTitle: {
-    fontSize: 15,
-    fontWeight: "400",
-    color: "gray",
+  label: {
+    position: "absolute",
+    width: wp("12%"),
+    top: hp(-1.4),
+    left: wp(6),
+    backgroundColor: "white",
+  },
+  labeltext: {
+    fontSize: hp("1.8%"),
+    color: "#5C658C",
+    textAlign: "center",
   },
   input: {
     flex: 1,
     padding: 4,
     paddingLeft: 13,
     fontFamily: "Gilroy-Medium",
-    marginLeft: 7,
+    marginLeft: wp(4),
     color: "#5C658C",
     fontSize: hp("2%"),
     alignSelf: "center",
     borderLeftWidth: 0.5,
+    borderColor: "#555555",
     height: hp(4),
   },
   inputContainer: {
@@ -73,9 +85,9 @@ const styles = StyleSheet.create({
     height: hp(8.5),
   },
   usernamelogo: {
-    width: 25,
-    height: 25,
-    marginLeft: 5,
+    width: wp("7%"),
+    height: hp("5%"),
+    marginLeft: hp("2.5%"),
     alignSelf: "center",
   },
 });
