@@ -6,7 +6,7 @@ import {
   moderateVerticalScale,
 } from "react-native-size-matters";
 
-const commonStyle = StyleSheet.create({
+export const commonStyle = StyleSheet.create({
   headingTxt: {
     marginVertical: moderateVerticalScale(10),
     fontSize: scale(18),
@@ -32,5 +32,3 @@ const commonStyle = StyleSheet.create({
     fontFamily: "Gilroy-Bold",
   },
 });
-
-export default commonStyle;

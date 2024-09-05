@@ -1,16 +1,21 @@
+import React, { useState } from "react";
+import { scale, verticalScale, moderateScale } from "react-native-size-matters";
 import {
   View,
   Text,
   StyleSheet,
   Image,
   TextInput,
-  KeyboardAvoidingView,
   Alert,
   StatusBar,
+  ScrollView,
+  Platform,
 } from "react-native";
-import React, { useState } from "react";
 import { images } from "../../constants/images";
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -21,6 +26,8 @@ import { notifyMessage } from "../../functions/toastMessage";
 import { ScreenName } from "../../constants/screenName";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TextInputwithLogo from "../../componenets/TextInputwithLogo";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { commonStyle } from "../../constants/commonStyle";
 
 const MpinAuth = ({ navigation }) => {
   const [mPin, setMPin] = useState("");
@@ -28,7 +35,7 @@ const MpinAuth = ({ navigation }) => {
 
   const dispatch = useDispatch();
   const handleMpinChange = (e) => {
-    setMPin(e);
+    setMPin(e.trim().toUpperCase());
   };
 
   const handleMpinAuth = async () => {
@@ -64,41 +71,119 @@ const MpinAuth = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView className="bg-primary h-full">
-      <StatusBar
-        barStyle={"light-content"}
-        backgroundColor={themePrimaryColor}
-      />
-      <View className="flex-1 align-top h-[30%] gap-[7px] mt-8">
-        <Text className="text-white text-center font-gsemibold text-5xl">
-          Let’s connect
-        </Text>
-        <Text className="text-white text-center font-light text-base mt-3">
-          Please enter info to connect
-        </Text>
-        <Text className="text-white  text-center font-light text-[16px]">
-          your business
-        </Text>
-      </View>
-      <View className="h-[70%] w-[100%] bg-white absolute bottom-0 rounded-t-[26px]">
-        <View className="flex-1 p-10">
-          <Text className="font-gsemibold text-2xl">MPin</Text>
-          <TextInputwithLogo
-            placeholder="Enter your mpin "
-            icon={images.mpinIcon}
-            customStyle={{ alignSelf: "center" }}
-          />
+    <SafeAreaView
+      style={[commonStyle.container, { backgroundColor: "#1254a5" }]}
+    >
+      <ScrollView keyboardShouldPersistTaps="handled">
+        {/* top container */}
+        <View style={{ height: hp(27) }}>
+          <View className="mt-8">
+            <Text
+              className="text-white text-center font-gsemibold"
+              style={{ fontSize: hp(6) }}
+            >
+              Let’s connect
+            </Text>
+            <Text className="text-white text-center font-glight text-base mt-3">
+              Please enter info to connect
+            </Text>
+            <Text className="text-white  text-center font-glight text-[16px]">
+              your business
+            </Text>
+          </View>
         </View>
-        <View className="mb-6">
+        {/* bottom container */}
+        <View
+          style={[
+            commonStyle.innerContainer,
+            {
+              height: hp(73),
+              backgroundColor: "white",
+              justifyContent: "space-between",
+            },
+          ]}
+          className="w-[100%] mt-14 bg-white rounded-t-[26px]"
+        >
+          <View className="flex-1 p-8">
+            <Text className="font-gsemibold text-2xl ml-[-10]">MPin</Text>
+            <View className="mt-4">
+              <TextInputwithLogo
+                placeholder="Enter your mpin "
+                icon={images.mpinIcon}
+                label="Mpin"
+                value={mPin}
+                onChangeText={handleMpinChange}
+                customStyle={{ alignSelf: "center" }}
+              />
+            </View>
+          </View>
           <CustomBtn
-            Customstyle={{ alignSelf: "center" }}
+            isLoading={isLoading}
+            Customstyle={{ marginBottom: hp(4) }}
             titleStyle={{ fontWeight: 600 }}
             title="Continue"
+            onPressHandler={handleMpinAuth}
           />
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 export default MpinAuth;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
+  loginView: {
+    flex: 1,
+    paddingHorizontal: moderateScale(20),
+    paddingVertical: moderateScale(10),
+  },
+  txt: {
+    fontSize: scale(16),
+  },
+  btn: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: moderateScale(10),
+    marginVertical: moderateScale(15),
+    backgroundColor: "#7c549b",
+  },
+  bottomLineView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: moderateScale(25),
+  },
+  loginIconBtnView: {
+    // flex: 1,
+    width: "32%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: moderateScale(6),
+    borderRadius: 3,
+  },
+  loginBtnIcon: {
+    width: scale(20),
+    height: scale(20),
+    marginRight: moderateScale(5),
+  },
+  lineStyle: {
+    borderWidth: 0.2,
+    width: scale(110),
+    backgroundColor: "#cacaca",
+    borderColor: "#cacaca",
+  },
+  commonTxt: {
+    // color: "#cacaca",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+});

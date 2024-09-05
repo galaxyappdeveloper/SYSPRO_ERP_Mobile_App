@@ -10,6 +10,7 @@ const TextInputwithLogo = ({
   placeholder,
   onChangeText,
   value,
+  label,
   customStyle,
   textInputwrapperStyle,
   ...props
@@ -18,7 +19,7 @@ const TextInputwithLogo = ({
     <View style={[styles.inputContainer, customStyle]}>
       <Image style={styles.usernamelogo} source={icon} resizeMode="contain" />
       <View className="bg-white" style={styles.label}>
-        <Text style={styles.labeltext}>MPin</Text>
+        <Text style={styles.labeltext}>{label}</Text>
       </View>
       <TextInput
         {...props}
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
   },
   label: {
     position: "absolute",
-    width: wp("12%"),
+    paddingHorizontal: wp(1.9),
     top: hp(-1.4),
     left: wp(6),
     backgroundColor: "white",

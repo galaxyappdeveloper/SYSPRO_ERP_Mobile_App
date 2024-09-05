@@ -19,34 +19,32 @@ const CustomBtn = ({
   titleStyle,
 }) => {
   return (
-    <View>
-      <TouchableOpacity
-        className="bg-secondary"
-        activeOpacity={0.7}
-        onPress={onPressHandler}
-        disabled={isLoading}
-        style={[styles.main, Customstyle]}
-      >
-        {isLoading ? (
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <ActivityIndicator size="small" color="white" />
-            <Text style={{ color: "white", marginLeft: 6, fontSize: 16 }}>
-              Loading..
-            </Text>
-          </View>
-        ) : (
-          <Text className="font-gregular" style={[styles.BtnTitle, titleStyle]}>
-            {title}
+    <TouchableOpacity
+      className="bg-secondary"
+      activeOpacity={0.7}
+      onPress={onPressHandler}
+      disabled={isLoading}
+      style={[styles.main, Customstyle]}
+    >
+      {isLoading ? (
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <ActivityIndicator size="small" color="white" />
+          <Text style={{ color: "white", marginLeft: 6, fontSize: 16 }}>
+            Loading..
           </Text>
-        )}
-      </TouchableOpacity>
-    </View>
+        </View>
+      ) : (
+        <Text className="font-gregular" style={[styles.BtnTitle, titleStyle]}>
+          {title}
+        </Text>
+      )}
+    </TouchableOpacity>
   );
 };
 
