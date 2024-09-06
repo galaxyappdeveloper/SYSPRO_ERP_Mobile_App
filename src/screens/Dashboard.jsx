@@ -1,3 +1,5 @@
+//dashboard
+
 import {
   FlatList,
   Image,
@@ -8,7 +10,7 @@ import {
 } from "react-native";
 import React from "react";
 
-const Dashboard = () => {
+export default function ElevatedCards() {
   const screenWidth = Dimensions.get("window").width;
   return (
     <View className="top-[7%]">
@@ -19,7 +21,7 @@ const Dashboard = () => {
         data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
         renderItem={() => {
           return (
-            <View className="m-2">
+            <View className="m-2 p-4">
               <View>
                 <Image
                   source={{
@@ -39,7 +41,7 @@ const Dashboard = () => {
           data={[1, 2]}
           renderItem={() => {
             return (
-              <View className="w-40 h-48 rounded-xl border-2 m-2">
+              <View className="w-40 h-48 rounded-xl  m-2">
                 <Image
                   source={{
                     uri: "https://d2cbe6qj96hbor.cloudfront.net/puzzles/KK5QO0HGDYBTIHNP.jpg",
@@ -57,7 +59,7 @@ const Dashboard = () => {
           data={[1, 2]}
           renderItem={() => {
             return (
-              <View className="w-40 h-48 rounded-xl border-2 m-2">
+              <View className="w-40 h-48 rounded-xl border-2 m-2 shadow-2xl">
                 <Image
                   source={{
                     uri: "https://d2cbe6qj96hbor.cloudfront.net/puzzles/KK5QO0HGDYBTIHNP.jpg",
@@ -71,6 +73,4 @@ const Dashboard = () => {
       </View>
     </View>
   );
-};
-
-export default Dashboard;
+}
