@@ -1,7 +1,7 @@
 export const ScreenName = {
   mpin: "Mpin",
   login: "Login",
-  dashboard: "Dashbaord",
+  dashboard: "Dashboard",
 };
 
 export const NavigationNames = {

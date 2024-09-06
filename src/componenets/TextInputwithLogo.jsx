@@ -1,9 +1,17 @@
-import { View, Text, StyleSheet, Image, TextInput } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import React, { useState } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { images } from "../constants/images";
 
 const TextInputwithLogo = ({
   icon,
@@ -12,7 +20,10 @@ const TextInputwithLogo = ({
   value,
   label,
   customStyle,
+  rightIcon,
   textInputwrapperStyle,
+  onPress,
+  showPassword,
   ...props
 }) => {
   return (
@@ -30,7 +41,16 @@ const TextInputwithLogo = ({
         onChangeText={onChangeText}
         cursorColor="#5C658C"
         value={value}
+        secureTextEntry={showPassword}
       />
+      {rightIcon && (
+        <TouchableOpacity style={styles.eyelogo} onPress={onPress}>
+          <Image
+            source={!showPassword ? images.eyeOpen : images.eyeClose}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -89,6 +109,9 @@ const styles = StyleSheet.create({
     width: wp("7%"),
     height: hp("5%"),
     marginLeft: hp("2.5%"),
+    alignSelf: "center",
+  },
+  eyelogo: {
     alignSelf: "center",
   },
 });

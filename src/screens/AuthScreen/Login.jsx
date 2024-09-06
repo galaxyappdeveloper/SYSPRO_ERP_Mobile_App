@@ -1,23 +1,24 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-} from "react-native";
 import React, { useState } from "react";
-import { CommonActions } from "@react-navigation/native";
-import { useDispatch, useSelector } from "react-redux";
+import { scale, moderateScale } from "react-native-size-matters";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { images } from "../../constants/images";
-import TextInputwithLogo from "../../componenets/TextInputwithLogo";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { useDispatch, useSelector } from "react-redux";
 import CustomBtn from "../../componenets/CustomBtn";
 import { login, setUserData } from "../../redux/authSlices/AuthSlice";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { commonStyle } from "../../constants/commonStyle";
+import TextInputwithLogo from "../../componenets/TextInputwithLogo";
+import { CommonActions } from "@react-navigation/native";
 
 const Login = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
   const dispatch = useDispatch();
   const userMpinData = useSelector((state) => state.auth.mpinData);
   const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
@@ -56,118 +57,130 @@ const Login = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.main} keyboardVerticalOffset={60}>
-      <View>
-        <Image
-          style={styles.logo}
-          source={images.companyLogo}
-          resizeMethod="contain"
-        />
-      </View>
-      <TextInputwithLogo
-        placeholder="Enter username"
-        icon={images.userIcon}
-        onChangeText={(e) => setUsername(e)}
-        value={username}
-      />
-      <TextInputwithLogo
-        placeholder="Enter Password"
-        icon={images.passwordIcon}
-        secureTextEntry
-        onChangeText={(e) => setPassword(e)}
-        value={password}
-      />
-      <CustomBtn
-        onPressHandler={handleLogin}
-        title="Login"
-        isLoading={isLoading}
-      />
-      <View style={styles.footer}>
-        <Text style={styles.footer1}>Powered By</Text>
-        <Text style={styles.footer2}>SYSPRO ERP</Text>
-      </View>
-    </KeyboardAvoidingView>
+    <SafeAreaView
+      style={[commonStyle.container, { backgroundColor: "#1254a5" }]}
+    >
+      <ScrollView keyboardShouldPersistTaps="handled">
+        {/* top container */}
+        <View style={{ height: hp(27) }}>
+          <View className="mt-8">
+            <Text
+              className="text-white text-center font-gsemibold"
+              style={{ fontSize: hp(6) }}
+            >
+              Login to your account
+            </Text>
+            <Text className="text-white text-center font-glight text-base mt-3">
+              Please enter your details
+            </Text>
+          </View>
+        </View>
+        {/* bottom container */}
+        <View
+          style={[
+            commonStyle.innerContainer,
+            {
+              height: hp(73),
+              backgroundColor: "white",
+              justifyContent: "space-between",
+            },
+          ]}
+          className="w-[100%] mt-14 bg-white rounded-t-[26px]"
+        >
+          <View className="flex-1 p-8">
+            <Text className="font-gsemibold text-2xl ml-[-10]">Login</Text>
+            <View className="mt-4">
+              <TextInputwithLogo
+                placeholder="Enter your Username "
+                icon={images.userIcon}
+                label="Username"
+                value={username}
+                onChangeText={(e) => setUsername(e)}
+                customStyle={{ alignSelf: "center" }}
+              />
+            </View>
+            <View className="mt-3">
+              <TextInputwithLogo
+                placeholder="Enter your Password"
+                icon={images.passwordIcon}
+                label="Password"
+                value={password}
+                onChangeText={(e) => setPassword(e)}
+                customStyle={{ alignSelf: "center" }}
+                secureTextEntry
+                rightIcon={true}
+                onPress={() => setShowPassword(!showPassword)}
+                showPassword={showPassword}
+              />
+            </View>
+          </View>
+          <CustomBtn
+            isLoading={isLoading}
+            Customstyle={{ marginBottom: hp(4) }}
+            titleStyle={{ fontWeight: 600 }}
+            title="Log In"
+            onPressHandler={handleLogin}
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
+export default Login;
+
 const styles = StyleSheet.create({
-  main: {
+  container: {
     flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
+  loginView: {
+    flex: 1,
+    paddingHorizontal: moderateScale(20),
+    paddingVertical: moderateScale(10),
+  },
+  txt: {
+    fontSize: scale(16),
+  },
+  btn: {
     justifyContent: "center",
     alignItems: "center",
+    paddingVertical: moderateScale(10),
+    marginVertical: moderateScale(15),
+    backgroundColor: "#7c549b",
   },
-  logo: {
-    width: 220,
-    height: 220,
+  bottomLineView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: moderateScale(25),
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "900",
-    color: "#004787",
-  },
-  subTitle: {
-    fontSize: 15,
-    fontWeight: "400",
-    color: "gray",
-  },
-  input: {
-    flex: 1,
-    marginLeft: 7,
-  },
-  inputContainer: {
-    backgroundColor: "#E6F1F9",
-    marginTop: 15,
-    borderRadius: 15,
-    padding: 5,
-    paddingLeft: 10,
-    textAlign: "center",
-    paddingRight: 10,
-    width: 350,
-    marginLeft: 10,
-    marginRight: 10,
+  loginIconBtnView: {
+    // flex: 1,
+    width: "32%",
     flexDirection: "row",
     alignItems: "center",
-  },
-  submitBtn: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "500",
-    textAlign: "center",
-    backgroundColor: "#004787",
-    marginTop: 20,
-    borderRadius: 15,
-    padding: 15,
-    paddingLeft: 10,
-    paddingRight: 10,
-    width: 350,
-    marginLeft: 10,
-    marginRight: 10,
-  },
-  footer: {
-    position: "absolute",
-    bottom: 10,
-    flexDirection: "col",
     justifyContent: "center",
+    paddingVertical: moderateScale(6),
+    borderRadius: 3,
+  },
+  loginBtnIcon: {
+    width: scale(20),
+    height: scale(20),
+    marginRight: moderateScale(5),
+  },
+  lineStyle: {
+    borderWidth: 0.2,
+    width: scale(110),
+    backgroundColor: "#cacaca",
+    borderColor: "#cacaca",
+  },
+  commonTxt: {
+    // color: "#cacaca",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
   },
-  footer1: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: "gray",
-  },
-  footer2: {
-    fontSize: 15,
-    fontWeight: "900",
-    color: "#004787",
-  },
-  usernamelogo: {
-    width: 25,
-    tintColor: "#004787",
-    height: 25,
-    marginLeft: 5,
-    marginBottom: 5,
-    // tintColor: 'gray',
-  },
 });
-
-export default Login;
