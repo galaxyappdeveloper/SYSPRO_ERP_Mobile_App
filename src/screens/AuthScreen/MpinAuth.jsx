@@ -96,7 +96,6 @@ const MpinAuth = ({ navigation }) => {
             </Text>
           </View>
         </View>
-        {/* <View className="bg-[#1F65AF] rounded-t-[26px] absolute top-44  ml-4 mr-4 w-[90%]"></View> */}
         <View
           style={[
             commonStyle.innerContainer,

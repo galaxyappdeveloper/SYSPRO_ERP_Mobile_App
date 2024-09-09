@@ -3,8 +3,8 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "../screens/AuthScreen/Login";
 import MpinAuth from "../screens/AuthScreen/MpinAuth";
-import { ScreenName } from "../constants/screenName";
-import Dashboard from "../screens/Dashboard";
+import { NavigationNames, ScreenName } from "../constants/screenName";
+import HomeRoutes from "./HomeRoutes";
 
 const Auth = createNativeStackNavigator();
 const AuthRoutes = () => {
@@ -15,7 +15,7 @@ const AuthRoutes = () => {
     >
       <Auth.Screen name={ScreenName.mpin} component={MpinAuth} />
       <Auth.Screen name={ScreenName.login} component={Login} />
-      <Auth.Screen name={ScreenName.dashboard} component={Dashboard} />
+      <Auth.Screen name={NavigationNames.homeRoutes} component={HomeRoutes} />
     </Auth.Navigator>
   );
 };

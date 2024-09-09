@@ -2,6 +2,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { notifyMessage } from "./src/functions/toastMessage";
 import store from "./src/redux/store/store";
+import { token } from "./src/constants/constant";
 
 export const http = axios.create();
 
@@ -11,12 +12,12 @@ http.interceptors.request.use(
     const state = store.getState(); // Access Redux state
     const { userData, mpinData } = state.auth;
     const mPin = mpinData?.Data?.mPin;
-    const token = AsyncStorage.getItem("access_token");
+    const Token = AsyncStorage.getItem(token);
     const ServerBaseUrl = mpinData?.Data?.ServerBaseUrl;
     if (ServerBaseUrl) {
       config.baseURL = ServerBaseUrl;
     }
-    if (token) {
+    if (Token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 

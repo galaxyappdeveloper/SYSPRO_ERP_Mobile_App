@@ -3,7 +3,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { notifyMessage } from "../../functions/toastMessage";
 import { token, userData } from "../../constants/constant";
-import { ScreenName } from "../../constants/screenName";
+import { NavigationNames, ScreenName } from "../../constants/screenName";
+import * as Device from "expo-device";
 
 export const login = createAsyncThunk(
   "auth/login",
@@ -22,7 +23,7 @@ export const login = createAsyncThunk(
       UserName: username,
       Password: password,
       IsRemeber: true,
-      DeviceId: "SYSPROERPAPP",
+      DeviceId: Device.osBuildId,
     };
 
     const headers = {
@@ -32,12 +33,13 @@ export const login = createAsyncThunk(
 
     try {
       const response = await axios.post(loginUrl, body, { headers });
-      const userResponse = response.data;
+      const userResponse = response?.data;
       const Token = userResponse?.Data?.Token;
+      const storeuserdata = JSON.stringify(userResponse?.Data);
       await AsyncStorage.setItem(token, Token);
-      await AsyncStorage.setItem(userData, JSON.stringify(userResponse?.Data));
+      await AsyncStorage.setItem(userData, storeuserdata);
       dispatch(setUserData(userResponse));
-      navigate(ScreenName.dashboard);
+      navigate(NavigationNames.homeRoutes);
       notifyMessage(userResponse?.Message);
       return true;
     } catch (error) {
@@ -53,8 +55,9 @@ export const login = createAsyncThunk(
 // Thunk for logout action
 export const logOut = createAsyncThunk("auth/logout", async () => {
   try {
-    await AsyncStorage.removeItem("access_token");
-    // await AsyncStorage.removeItem('loggedIn');
+    await AsyncStorage.removeItem(token);
+    await AsyncStorage.removeItem(userData);
+    notifyMessage("Logout Successfully !");
     return true;
   } catch (err) {
     return err.message;
@@ -67,7 +70,7 @@ const authSlice = createSlice({
     isAuthenticated: false,
     token: "",
     mpinData: [],
-    userData: [],
+    userData: [] || AsyncStorage.getItem(userData),
     AuthLoading: false,
   },
   reducers: {
