@@ -5,4 +5,5 @@ export const images = {
   userIcon: require("../../assets/images/profile.png"),
   eyeOpen: require("../../assets/images/eyeopen.png"),
   eyeClose: require("../../assets/images/eyeclose.png"),
+  creditCard: require("../../assets/images/creditCard.png"),
 };
