@@ -1,13 +1,4 @@
-//dashboard
-
-import {
-  FlatList,
-  Image,
-  ScrollView,
-  Text,
-  View,
-  Dimensions,
-} from "react-native";
+import { FlatList, Image, Text, View, Dimensions } from "react-native";
 import React from "react";
 import { StyleSheet } from "react-native";
 import {
@@ -21,7 +12,7 @@ const Dashboard = () => {
   const screenWidth = Dimensions.get("window").width;
 
   return (
-    <View className="top-[10%]">
+    <View style={{ top: hp(1) }}>
       <FlatList
         horizontal={true}
         pagingEnabled={true}
@@ -43,7 +34,7 @@ const Dashboard = () => {
                     style={{
                       position: "absolute",
                       color: "white",
-                      fontSize: 20,
+                      fontSize: hp(2),
                       top: 15,
                       zIndex: 1,
                       paddingLeft: 12,
@@ -57,7 +48,7 @@ const Dashboard = () => {
                       position: "absolute",
                       alignItems: "center",
                       color: "white",
-                      fontSize: 20,
+                      fontSize: hp(2),
                       width: wp(90),
                       textAlign: "right",
                       top: 15,
@@ -73,7 +64,7 @@ const Dashboard = () => {
                       position: "absolute",
                       color: "white",
                       width: wp(90),
-                      fontSize: 40,
+                      fontSize: hp(4),
                       fontWeight: "bold",
                       textAlign: "center",
                       top: 60,
@@ -169,7 +160,7 @@ const styles = StyleSheet.create({
     marginLeft: wp(-45),
     width: wp(40),
     height: hp(25),
-    backgroundColor: "red",
+    backgroundColor: "gray",
     elevation: 15,
   },
   Box2: {
@@ -178,7 +169,7 @@ const styles = StyleSheet.create({
     marginTop: hp(0),
     width: wp(40),
     height: hp(25),
-    backgroundColor: "red",
+    backgroundColor: "gray",
     elevation: 15,
   },
   Box3: {
