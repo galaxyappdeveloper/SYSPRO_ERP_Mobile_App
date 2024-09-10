@@ -16,8 +16,44 @@ import {
 import { TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Icons } from "../../constants/Icons";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getCompany,
+  getLocation,
+  getPremise,
+  getYearDuration,
+  saveCompanyConfig,
+} from "../../Actions/configuration/configAction";
 
 const CompanyConfig = () => {
+  const [company, setCompany] = useState("");
+  const [duration, setDuration] = useState("");
+  const [premise, setPremise] = useState("");
+  const [location, setLocation] = useState("");
+
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.config.loading);
+  const companyList = useSelector((state) => state.config.company);
+  const yearDurationList = useSelector((state) => state.config.yearDuration);
+  const premiseList = useSelector((state) => state.config.premise);
+  const locationList = useSelector((state) => state.config.location);
+  const userData = useSelector((state) => state.auth.userData);
+
+  useEffect(() => {
+    dispatch(getCompany());
+    dispatch(getYearDuration());
+    dispatch(getPremise());
+    dispatch(getLocation());
+  }, []);
+
+  // const handleConfigSubmit = () => {
+  //   dispatch(saveCompanyConfig(userData, company, duration, premise, location));
+  //   setCompany("");
+  //   setPremise("");
+  //   setDuration("");
+  //   setLocation("");
+  // };
+
   const [selectedCompany, setSelectedCompany] = useState("Select");
   const [isClicked, setIsClicked] = useState(false);
   const [data, SetData] = useState("Company Name");
