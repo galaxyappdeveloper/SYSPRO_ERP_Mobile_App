@@ -15,6 +15,7 @@ import {
 } from "react-native-responsive-screen";
 import { TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Icons } from "../../constants/Icons";
 
 const CompanyConfig = () => {
   const [selectedCompany, setSelectedCompany] = useState("Select");
@@ -28,15 +29,8 @@ const CompanyConfig = () => {
           <View>
             <Image
               resizeMode="contain"
-              style={styles.circleImage}
-              source={require("../../../assets/images/circle.png")}
-            />
-          </View>
-          <View>
-            <Image
-              resizeMode="contain"
               style={styles.leftArrow}
-              source={require("../../../assets/images/left_arrow.png")}
+              source={Icons.backIcon}
             />
           </View>
           <Text style={styles.headerConfigruation}>Configuration</Text>
@@ -185,7 +179,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     color: "#021121",
   },
-  companyContainer:{
+  companyContainer: {
     bottom: hp(11),
   },
   buliding: {
@@ -248,7 +242,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
   },
-  companySecondContainer:{
+  companySecondContainer: {
     bottom: hp(14),
   },
 });
