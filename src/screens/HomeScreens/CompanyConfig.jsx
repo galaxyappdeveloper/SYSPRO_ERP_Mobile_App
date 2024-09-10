@@ -7,7 +7,7 @@ const CompanyConfig = () => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View>
-          <Text>Company Configuration by vivek </Text>
+          <Text>Company Configuration by vivek and changes added by Dipak</Text>
         </View>
       </ScrollView>
     </SafeAreaView>
