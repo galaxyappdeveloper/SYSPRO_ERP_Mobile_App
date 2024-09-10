@@ -3,6 +3,7 @@ export const ScreenName = {
   login: "Login",
   dashboard: "Dashboard",
   profile: "Profile",
+  companyConfig: "CompanyConfig",
 };
 
 export const NavigationNames = {

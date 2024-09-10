@@ -12,6 +12,7 @@ export const handleLogout = (userId) => async (dispatch) => {
 
   try {
     const response = await authService.handleLogout(body);
+    notifyMessage("Logout Successfully !");
   } catch (error) {
     if (
       error.response &&

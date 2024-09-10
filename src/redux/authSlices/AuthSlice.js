@@ -57,7 +57,6 @@ export const logOut = createAsyncThunk("auth/logout", async () => {
   try {
     await AsyncStorage.removeItem(token);
     await AsyncStorage.removeItem(userData);
-    notifyMessage("Logout Successfully !");
     return true;
   } catch (err) {
     return err.message;

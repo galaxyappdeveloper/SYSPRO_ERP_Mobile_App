@@ -8,6 +8,7 @@ import { ScreenName } from "../constants/screenName";
 import Dashboard from "../screens/HomeScreens/Dashboard";
 import Profile, { DrawerProfile } from "../screens/HomeScreens/Profile";
 import { Image, StyleSheet, Text, View } from "react-native";
+import CompanyConfig from "../screens/HomeScreens/CompanyConfig";
 
 const Drawer = createDrawerNavigator();
 
@@ -30,6 +31,11 @@ const HomeRoutes = () => {
         options={{ headerShown: false }}
         name={ScreenName.profile}
         component={Profile}
+      />
+      <Drawer.Screen
+        options={{ headerShown: false }}
+        name={ScreenName.companyConfig}
+        component={CompanyConfig}
       />
     </Drawer.Navigator>
   );
