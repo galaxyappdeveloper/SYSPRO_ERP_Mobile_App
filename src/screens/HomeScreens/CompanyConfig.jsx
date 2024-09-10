@@ -7,7 +7,7 @@ const CompanyConfig = () => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View>
-          <Text>Company Config</Text>
+          <Text>Company Configuration by vivek </Text>
         </View>
       </ScrollView>
     </SafeAreaView>
