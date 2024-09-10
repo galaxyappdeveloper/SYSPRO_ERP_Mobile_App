@@ -27,11 +27,13 @@ const CompanyConfig = () => {
       <SafeAreaView style={styles.container}>
         <ScrollView>
           <View>
-            <Image
-              resizeMode="contain"
-              style={styles.leftArrow}
-              source={Icons.backIcon}
-            />
+            <View style={styles.circle}>
+              <Image
+                resizeMode="contain"
+                style={styles.backIcon}
+                source={Icons.backIcon}
+              />
+            </View>
           </View>
           <Text style={styles.headerConfigruation}>Configuration</Text>
           <Text style={styles.CompanyConfigHeader}>
@@ -42,7 +44,7 @@ const CompanyConfig = () => {
               <Image
                 resizeMode="contain"
                 style={styles.buliding}
-                source={require("../../../assets/images/building.png")}
+                source={Icons.companyIcon}
               />
             </View>
             <View style={styles.lableContainer}>
@@ -54,15 +56,9 @@ const CompanyConfig = () => {
             >
               <Text>{selectedCompany}</Text>
               {isClicked ? (
-                <Image
-                  source={require("../../../assets/images/drop-down-arrow.png")}
-                  style={styles.icon}
-                />
+                <Image source={Icons.dropDownIcon} style={styles.icon} />
               ) : (
-                <Image
-                  source={require("../../../assets/images/drop-down-arrow.png")}
-                  style={styles.icon}
-                />
+                <Image source={Icons.dropDownIcon} style={styles.icon} />
               )}
             </TouchableOpacity>
 
@@ -93,7 +89,7 @@ const CompanyConfig = () => {
               <Image
                 resizeMode="contain"
                 style={styles.buliding}
-                source={require("../../../assets/images/building.png")}
+                source={Icons.companyIcon}
               />
             </View>
             <View style={styles.lableContainer}>
@@ -105,15 +101,9 @@ const CompanyConfig = () => {
             >
               <Text>{selectedCompany}</Text>
               {isClicked ? (
-                <Image
-                  source={require("../../../assets/images/drop-down-arrow.png")}
-                  style={styles.icon}
-                />
+                <Image source={Icons.dropDownIcon} style={styles.icon} />
               ) : (
-                <Image
-                  source={require("../../../assets/images/drop-down-arrow.png")}
-                  style={styles.icon}
-                />
+                <Image source={Icons.dropDownIcon} style={styles.icon} />
               )}
             </TouchableOpacity>
 
@@ -151,19 +141,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF",
   },
-  circleImage: {
-    width: wp(20),
+  circle: {
+    width: wp(15),
     height: hp(7),
     top: hp(5),
     position: "absolute",
-    left: wp(2),
+    borderWidth: 1,
+    borderRadius: 50,
+    left: wp(4),
   },
-  leftArrow: {
+  backIcon: {
     width: wp(15),
-    height: hp(2),
-    top: hp(7.5),
+    height: hp(6),
+    // top: hp(7),
     position: "absolute",
-    left: wp(4.5),
+
+    // left: wp(4),
     borderWidth: 5,
   },
   headerConfigruation: {
