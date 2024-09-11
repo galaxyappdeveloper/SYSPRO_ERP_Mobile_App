@@ -3,7 +3,8 @@ import DeparmentIcon from "../../assets/Icons/departmentIcon.png";
 import DropDownIcon from "../../assets/Icons/dropDownIcon.png";
 import PremiseIcom from "../../assets/Icons/premiseIcon.png";
 import YearIcon from "../../assets/Icons/yearIcon.png";
-import CompanyIcon from "../../assets/Icons/companyIcon.png"; 
+import CompanyIcon from "../../assets/Icons/companyIcon.png";
+import ArrowRound from "../../assets/Icons/ArrowRound.svg";
 
 export const Icons = {
   backIcon: BackIcon,
@@ -11,5 +12,6 @@ export const Icons = {
   dropDownIcon: DropDownIcon,
   premiseIcon: PremiseIcom,
   yearIcon: YearIcon,
-  companyIcon: CompanyIcon
+  companyIcon: CompanyIcon,
+  arrowRound: ArrowRound,
 };

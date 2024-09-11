@@ -1,6 +1,5 @@
 import {
   FlatList,
-  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -8,7 +7,7 @@ import {
   View,
 } from "react-native";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -24,8 +23,10 @@ import {
   getYearDuration,
   saveCompanyConfig,
 } from "../../Actions/configuration/configAction";
+import DropdownwithIcon from "../../componenets/DropdownwithIcon";
+import { Image } from "expo-image";
 
-const CompanyConfig = () => {
+const CompanyConfig = ({ navigation }) => {
   const [company, setCompany] = useState("");
   const [duration, setDuration] = useState("");
   const [premise, setPremise] = useState("");
@@ -39,12 +40,18 @@ const CompanyConfig = () => {
   const locationList = useSelector((state) => state.config.location);
   const userData = useSelector((state) => state.auth.userData);
 
-  useEffect(() => {
-    dispatch(getCompany());
-    dispatch(getYearDuration());
-    dispatch(getPremise());
-    dispatch(getLocation());
-  }, []);
+  // console.log("Company Data : ", companyList);
+  // console.log("year Data : ", yearDurationList);
+  // console.log("premise Data : ", premiseList);
+  // console.log("location Data : ", locationList);
+  // console.log("user Data : ", userData);
+
+  // useEffect(() => {
+  //   dispatch(getCompany());
+  //   dispatch(getYearDuration());
+  //   dispatch(getPremise());
+  //   dispatch(getLocation());
+  // }, []);
 
   // const handleConfigSubmit = () => {
   //   dispatch(saveCompanyConfig(userData, company, duration, premise, location));
@@ -58,111 +65,90 @@ const CompanyConfig = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [data, SetData] = useState("Company Name");
 
+  const companyData = [
+    {
+      Company_ID: 1,
+      Company_name: "JANANI DESIGNER",
+    },
+    {
+      Company_ID: 3,
+      Company_name: "JANANI DREAMS TEXFAB PVT LTD",
+    },
+    {
+      Company_ID: 2,
+      Company_name: "NATION TRENDZ",
+    },
+    {
+      Company_ID: 3,
+      Company_name: "JANANI DREAMS TEXFAB PVT LTD",
+    },
+    {
+      Company_ID: 2,
+      Company_name: "NATION TRENDZ",
+    },
+    {
+      Company_ID: 3,
+      Company_name: "JANANI DREAMS TEXFAB PVT LTD",
+    },
+    {
+      Company_ID: 2,
+      Company_name: "NATION TRENDZ",
+    },
+    {
+      Company_ID: 3,
+      Company_name: "JANANI DREAMS TEXFAB PVT LTD",
+    },
+    {
+      Company_ID: 2,
+      Company_name: "NATION TRENDZ",
+    },
+  ];
+
   return (
     <>
       <SafeAreaView style={styles.container}>
-        <ScrollView>
-          <View>
-            <View style={styles.circle}>
-              <Image
-                resizeMode="contain"
-                style={styles.backIcon}
-                source={Icons.backIcon}
-              />
-            </View>
+        <ScrollView nestedScrollEnabled>
+          <View style={styles.header}>
+            <TouchableOpacity
+              style={styles.IconContainer}
+              onPress={() => navigation.goBack()}
+            >
+              <Image source={Icons.arrowRound} style={styles.backIcon} />
+            </TouchableOpacity>
+
+            <Text className="font-gregular" style={styles.headerConfigruation}>
+              Configuration
+            </Text>
           </View>
-          <Text style={styles.headerConfigruation}>Configuration</Text>
-          <Text style={styles.CompanyConfigHeader}>
+
+          <Text className="font-gsemibold" style={styles.CompanyConfigHeader}>
             Company Configuration Setting
           </Text>
-          <View style={styles.companyContainer}>
-            <View>
-              <Image
-                resizeMode="contain"
-                style={styles.buliding}
-                source={Icons.companyIcon}
-              />
-            </View>
-            <View style={styles.lableContainer}>
-              <Text style={styles.labelText}>Company</Text>
-            </View>
-            <TouchableOpacity
-              style={styles.dropDownSelector}
-              onPress={() => setIsClicked(!isClicked)}
-            >
-              <Text>{selectedCompany}</Text>
-              {isClicked ? (
-                <Image source={Icons.dropDownIcon} style={styles.icon} />
-              ) : (
-                <Image source={Icons.dropDownIcon} style={styles.icon} />
-              )}
-            </TouchableOpacity>
-
-            {isClicked ? (
-              <View style={styles.dropDownArea}>
-                <FlatList
-                  data={data}
-                  renderItem={({ item, index }) => {
-                    return (
-                      <TouchableOpacity
-                        style={styles.companyItem}
-                        onPress={() => {
-                          setSelectedCompany(item);
-                          setIsClicked(!isClicked);
-                        }}
-                      >
-                        <Text>{item}</Text>
-                      </TouchableOpacity>
-                    );
-                  }}
-                />
-              </View>
-            ) : null}
-          </View>
-
-          <View style={styles.companySecondContainer}>
-            <View>
-              <Image
-                resizeMode="contain"
-                style={styles.buliding}
-                source={Icons.companyIcon}
-              />
-            </View>
-            <View style={styles.lableContainer}>
-              <Text style={styles.labelText}>Company</Text>
-            </View>
-            <TouchableOpacity
-              style={styles.dropDownSelector}
-              onPress={() => setIsClicked(!isClicked)}
-            >
-              <Text>{selectedCompany}</Text>
-              {isClicked ? (
-                <Image source={Icons.dropDownIcon} style={styles.icon} />
-              ) : (
-                <Image source={Icons.dropDownIcon} style={styles.icon} />
-              )}
-            </TouchableOpacity>
-
-            {isClicked ? (
-              <View style={styles.dropDownArea}>
-                <FlatList
-                  data={data}
-                  renderItem={({ item, index }) => {
-                    return (
-                      <TouchableOpacity
-                        style={styles.companyItem}
-                        onPress={() => {
-                          setSelectedCompany(item);
-                          setIsClicked(!isClicked);
-                        }}
-                      >
-                        <Text>{item}</Text>
-                      </TouchableOpacity>
-                    );
-                  }}
-                />
-              </View>
-            ) : null}
+          <View style={styles.dropDownSelectors}>
+            <DropdownwithIcon
+              renderData={companyData}
+              LeftIcon={Icons.companyIcon}
+              rightIcon={Icons.dropDownIcon}
+              label="Company"
+            />
+            <DropdownwithIcon
+              renderData={companyData}
+              LeftIcon={Icons.companyIcon}
+              rightIcon={Icons.dropDownIcon}
+              label="Premise"
+            />
+            <DropdownwithIcon
+              renderData={companyData}
+              LeftIcon={Icons.companyIcon}
+              rightIcon={Icons.dropDownIcon}
+              label="Year"
+            />
+            <DropdownwithIcon
+              renderData={companyData}
+              LeftIcon={Icons.companyIcon}
+              rightIcon={Icons.dropDownIcon}
+              label="Department"
+            />
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -175,103 +161,45 @@ export default CompanyConfig;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#ffff",
+  },
+  header: {
+    flexDirection: "row",
+    margin: 18,
+    height: hp(7),
+    alignItems: "center",
+    justifyContent: "center",
   },
   circle: {
-    width: wp(15),
+    width: hp(7),
     height: hp(7),
-    top: hp(5),
-    position: "absolute",
     borderWidth: 1,
     borderRadius: 50,
-    left: wp(4),
+    position: "absolute",
+    left: 0,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  IconContainer: {
+    position: "absolute",
+    left: 0,
   },
   backIcon: {
-    width: wp(15),
-    height: hp(6),
-    // top: hp(7),
-    position: "absolute",
-
-    // left: wp(4),
-    borderWidth: 5,
+    width: hp(7),
+    height: hp(7),
   },
   headerConfigruation: {
-    alignSelf: "center",
-    top: hp(6),
     fontSize: hp(3),
     fontWeight: "400",
   },
   CompanyConfigHeader: {
-    fontSize: hp(2),
-    fontWeight: "500",
-    top: hp(17),
+    fontSize: hp(2.5),
     alignSelf: "center",
     color: "#021121",
+    marginTop: hp(6),
   },
-  companyContainer: {
-    bottom: hp(11),
-  },
-  buliding: {
-    width: wp(7),
-    height: hp(5),
-    top: hp(34),
-    left: wp(10),
-    position: "absolute",
-    borderRightWidth: 5,
-  },
-
-  dropDownSelector: {
-    borderWidth: 1,
-    width: wp(90),
-    height: hp(8),
-    borderRadius: 16,
-    alignSelf: "center",
-    marginTop: hp(30),
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingLeft: wp(17),
-    paddingRight: wp(3),
-    borderColor: "#E7EAF3",
-  },
-  lableContainer: {
-    zIndex: 1,
-    width: wp(18),
-    top: hp(31.2),
-    left: wp(12),
-    backgroundColor: "white",
-  },
-  labelText: {
-    fontSize: hp(1.8),
-    fontWeight: "100",
-    color: "5C658C",
-    backgroundColor: "white",
-    alignSelf: "center",
-  },
-  icon: {
-    width: wp(5),
-    height: hp(3),
-  },
-  dropDownArea: {
-    height: hp(40),
-    width: wp(90),
-    borderRadius: 20,
-    borderColor: "#E7EAF3",
-    marginTop: hp(2),
-    alignSelf: "center",
-    backgroundColor: "#fff",
-    elevation: 5,
-  },
-
-  companyItem: {
-    width: wp(80),
-    height: hp(7),
-    borderBottomWidth: 0.2,
-    borderBottomColor: "#8e8e8e",
-    alignSelf: "center",
-    justifyContent: "center",
-  },
-  companySecondContainer: {
-    bottom: hp(14),
+  dropDownSelectors: {
+    marginTop: hp(4),
+    gap: hp(2),
   },
 });
