@@ -1,0 +1,32 @@
+import Splash from "../../assets/Icons/splash.svg";
+import ArrowRound from "../../assets/Icons/ArrowRound.svg";
+import CompanyIcon from "../../assets/Icons/companyIcon.svg";
+import DepartmentIcon from "../../assets/Icons/departmentIcon.svg";
+import DropDownIcon from "../../assets/Icons/dropDownIcon.svg";
+import HidePassword from "../../assets/Icons/hidePassword.svg";
+import LogoIcon from "../../assets/Icons/logoIcon.svg";
+import PasswordCheckIcon from "../../assets/Icons/passwordCheckIcon.svg";
+import PrimiseIcon from "../../assets/Icons/premiseIcon.svg";
+import ProfileIcon from "../../assets/Icons/profileIcon.svg";
+import showPasswordIcon from "../../assets/Icons/showPasswordIcon.svg";
+import SYSPROIcon from "../../assets/Icons/sysproIcon.svg"
+import YearIcon from "../../assets/Icons/yearIcon.svg"
+
+
+export const Icons = {
+    Splash,
+    ArrowRound,
+    CompanyIcon,
+    DepartmentIcon,
+    DropDownIcon,
+    HidePassword,
+    LogoIcon,
+    PasswordCheckIcon,
+    PrimiseIcon,
+    ProfileIcon,
+    showPasswordIcon,
+    SYSPROIcon,
+    YearIcon
+};
+
+
