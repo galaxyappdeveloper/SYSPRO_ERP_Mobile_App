@@ -93,7 +93,7 @@ const Login = ({ navigation }) => {
             <View className="mt-4">
               <TextInputwithLogo
                 placeholder="Enter your Username "
-                icon={Icon.UserNameIcon}
+                icon={Icon.userNameIcon}
                 label="Username"
                 value={username}
                 onChangeText={(e) => setUsername(e)}
@@ -103,7 +103,7 @@ const Login = ({ navigation }) => {
             <View className="mt-3">
               <TextInputwithLogo
                 placeholder="Enter your Password"
-                icon={Icon.PasswordIcon}
+                icon={Icon.passwordIcon}
                 label="Password"
                 value={password}
                 onChangeText={(e) => setPassword(e)}

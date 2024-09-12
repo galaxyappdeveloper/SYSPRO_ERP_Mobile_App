@@ -14,7 +14,7 @@ import {
 } from "react-native-responsive-screen";
 import { TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Icons } from "../../constants/Icons";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   getCompany,
@@ -28,6 +28,7 @@ import { Image } from "expo-image";
 import { Loader } from "../../componenets/Loading";
 import CustomBtn from "../../componenets/CustomBtn";
 import { ScreenName } from "../../constants/screenName";
+import { Icon } from "../../constants/Icon";
 
 const CompanyConfig = ({ navigation }) => {
   const [company, setCompany] = useState("");
@@ -127,7 +128,7 @@ const CompanyConfig = ({ navigation }) => {
               style={styles.IconContainer}
               onPress={() => navigation.goBack()}
             >
-              <Image source={Icons.arrowRound} style={styles.backIcon} />
+              <Image source={Icon.arrowRound} style={styles.backIcon} />
             </TouchableOpacity>
 
             <Text className="font-gregular" style={styles.headerConfigruation}>
@@ -143,7 +144,7 @@ const CompanyConfig = ({ navigation }) => {
               DisplayField="Company_name"
               valueField="Company_ID"
               renderData={companyList}
-              LeftIcon={Icons.companyIcon}
+              LeftIcon={Icon.companyIcon}
               label="Company"
               onchangeValue={(value) => {
                 setCompany(value);
@@ -154,7 +155,7 @@ const CompanyConfig = ({ navigation }) => {
               DisplayField="Premise_Name"
               valueField="Premise_Id"
               renderData={premiseList}
-              LeftIcon={Icons.companyIcon}
+              LeftIcon={Icon.primiseIcon}
               label="Premise"
               onchangeValue={(value) => {
                 setPremise(value);
@@ -165,7 +166,7 @@ const CompanyConfig = ({ navigation }) => {
               DisplayField="Year"
               valueField="Year_ID"
               renderData={yearDurationList}
-              LeftIcon={Icons.companyIcon}
+              LeftIcon={Icon.yearIcon}
               label="Year"
               onchangeValue={(value) => {
                 setDuration(value);
@@ -176,7 +177,7 @@ const CompanyConfig = ({ navigation }) => {
               DisplayField="dept_name"
               valueField="dept_id"
               renderData={locationList}
-              LeftIcon={Icons.companyIcon}
+              LeftIcon={Icon.departmentIcon}
               label="Department"
               onchangeValue={(value) => {
                 setLocation(value);

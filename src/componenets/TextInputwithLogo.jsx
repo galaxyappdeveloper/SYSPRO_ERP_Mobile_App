@@ -2,8 +2,8 @@ import {
   View,
   Text,
   StyleSheet,
-
   TextInput,
+  Image as ReactImage,
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
@@ -13,6 +13,7 @@ import {
 } from "react-native-responsive-screen";
 import { images } from "../constants/images";
 import { Image } from "expo-image";
+import { Icon } from "../constants/Icon";
 
 const TextInputwithLogo = ({
   icon,
@@ -29,7 +30,7 @@ const TextInputwithLogo = ({
 }) => {
   return (
     <View style={[styles.inputContainer, customStyle]}>
-      <Image style={styles.usernamelogo} source={icon} resizeMode="contain" />
+      <Image style={styles.usernamelogo} source={icon} contentFit="contain" />
       <View className="bg-white" style={styles.label}>
         <Text style={styles.labeltext}>{label}</Text>
       </View>
@@ -46,7 +47,7 @@ const TextInputwithLogo = ({
       />
       {rightIcon && (
         <TouchableOpacity style={styles.eyelogo} onPress={onPress}>
-          <Image
+          <ReactImage
             source={!showPassword ? images.eyeOpen : images.eyeClose}
             resizeMode="contain"
           />

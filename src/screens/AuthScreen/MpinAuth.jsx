@@ -29,6 +29,7 @@ import TextInputwithLogo from "../../componenets/TextInputwithLogo";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { commonStyle } from "../../constants/commonStyle";
 import { Icon } from "../../constants/Icon";
+import { Icons } from "../../constants/Icons";
 
 const MpinAuth = ({ navigation }) => {
   const [mPin, setMPin] = useState("");
@@ -113,7 +114,7 @@ const MpinAuth = ({ navigation }) => {
             <View className="mt-4">
               <TextInputwithLogo
                 placeholder="Enter your mpin "
-                icon={Icon.MpinIcon}
+                icon={Icon.mpinIcon}
                 label="Mpin"
                 value={mPin}
                 onChangeText={handleMpinChange}
