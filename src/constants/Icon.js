@@ -5,15 +5,16 @@ import DepartmentIcon from "../../assets/Icons/departmentIcon.svg";
 import DropDownIcon from "../../assets/Icons/dropDownIcon.svg";
 import HidePassword from "../../assets/Icons/hidePassword.svg";
 import LogoIcon from "../../assets/Icons/logoIcon.svg";
-import PasswordCheckIcon from "../../assets/Icons/passwordCheckIcon.svg";
+import MpinIcon from "../../assets/Icons/mpinIcon.svg";
 import PrimiseIcon from "../../assets/Icons/premiseIcon.svg";
-import ProfileIcon from "../../assets/Icons/profileIcon.svg";
+import UserNameIcon from "../../assets/Icons/userNameIcon.svg";
 import showPasswordIcon from "../../assets/Icons/showPasswordIcon.svg";
 import SYSPROIcon from "../../assets/Icons/sysproIcon.svg"
 import YearIcon from "../../assets/Icons/yearIcon.svg"
+import PasswordIcon from"../../assets/Icons/passwordIcon.svg"
 
 
-export const Icons = {
+export const Icon = {
     Splash,
     ArrowRound,
     CompanyIcon,
@@ -21,12 +22,13 @@ export const Icons = {
     DropDownIcon,
     HidePassword,
     LogoIcon,
-    PasswordCheckIcon,
+    MpinIcon,
     PrimiseIcon,
-    ProfileIcon,
+    UserNameIcon,
     showPasswordIcon,
     SYSPROIcon,
-    YearIcon
+    YearIcon,
+    PasswordIcon
 };
 
 

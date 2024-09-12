@@ -2,7 +2,7 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
+
   TextInput,
   TouchableOpacity,
 } from "react-native";
@@ -12,6 +12,7 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { images } from "../constants/images";
+import { Image } from "expo-image";
 
 const TextInputwithLogo = ({
   icon,

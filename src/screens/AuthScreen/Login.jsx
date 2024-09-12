@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { commonStyle } from "../../constants/commonStyle";
 import TextInputwithLogo from "../../componenets/TextInputwithLogo";
 import { CommonActions } from "@react-navigation/native";
+import { Icon } from "../../constants/Icon";
 
 const Login = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -92,7 +93,7 @@ const Login = ({ navigation }) => {
             <View className="mt-4">
               <TextInputwithLogo
                 placeholder="Enter your Username "
-                icon={images.userIcon}
+                icon={Icon.UserNameIcon}
                 label="Username"
                 value={username}
                 onChangeText={(e) => setUsername(e)}
@@ -102,7 +103,7 @@ const Login = ({ navigation }) => {
             <View className="mt-3">
               <TextInputwithLogo
                 placeholder="Enter your Password"
-                icon={images.passwordIcon}
+                icon={Icon.PasswordIcon}
                 label="Password"
                 value={password}
                 onChangeText={(e) => setPassword(e)}

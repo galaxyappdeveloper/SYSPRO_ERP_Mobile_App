@@ -28,6 +28,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import TextInputwithLogo from "../../componenets/TextInputwithLogo";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { commonStyle } from "../../constants/commonStyle";
+import { Icon } from "../../constants/Icon";
 
 const MpinAuth = ({ navigation }) => {
   const [mPin, setMPin] = useState("");
@@ -112,7 +113,7 @@ const MpinAuth = ({ navigation }) => {
             <View className="mt-4">
               <TextInputwithLogo
                 placeholder="Enter your mpin "
-                icon={images.mpinIcon}
+                icon={Icon.MpinIcon}
                 label="Mpin"
                 value={mPin}
                 onChangeText={handleMpinChange}
