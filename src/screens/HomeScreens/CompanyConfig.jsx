@@ -25,6 +25,9 @@ import {
 } from "../../Actions/configuration/configAction";
 import DropdownwithIcon from "../../componenets/DropdownwithIcon";
 import { Image } from "expo-image";
+import { Loader } from "../../componenets/Loading";
+import CustomBtn from "../../componenets/CustomBtn";
+import { ScreenName } from "../../constants/screenName";
 
 const CompanyConfig = ({ navigation }) => {
   const [company, setCompany] = useState("");
@@ -40,72 +43,83 @@ const CompanyConfig = ({ navigation }) => {
   const locationList = useSelector((state) => state.config.location);
   const userData = useSelector((state) => state.auth.userData);
 
-  // console.log("Company Data : ", companyList);
-  // console.log("year Data : ", yearDurationList);
-  // console.log("premise Data : ", premiseList);
-  // console.log("location Data : ", locationList);
-  // console.log("user Data : ", userData);
+  useEffect(() => {
+    dispatch(getCompany());
+    dispatch(getYearDuration());
+    dispatch(getPremise());
+    dispatch(getLocation());
+  }, []);
 
-  // useEffect(() => {
-  //   dispatch(getCompany());
-  //   dispatch(getYearDuration());
-  //   dispatch(getPremise());
-  //   dispatch(getLocation());
-  // }, []);
+  const handleConfigSubmit = async () => {
+    await dispatch(
+      saveCompanyConfig(userData, company, duration, premise, location)
+    );
+    await navigation.navigate(ScreenName.dashboard);
+    setCompany("");
+    setPremise("");
+    setDuration("");
+    setLocation("");
+  };
 
-  // const handleConfigSubmit = () => {
-  //   dispatch(saveCompanyConfig(userData, company, duration, premise, location));
-  //   setCompany("");
-  //   setPremise("");
-  //   setDuration("");
-  //   setLocation("");
-  // };
+  // const companyList = [
+  //   {
+  //     Company_ID: 1,
+  //     Company_name: "JANANI DESIGNER",
+  //   },
+  //   {
+  //     Company_ID: 3,
+  //     Company_name: "JANANI DREAMS TEXFAB PVT LTD",
+  //   },
+  //   {
+  //     Company_ID: 2,
+  //     Company_name: "NATION TRENDZ",
+  //   },
+  // ];
 
-  const [selectedCompany, setSelectedCompany] = useState("Select");
-  const [isClicked, setIsClicked] = useState(false);
-  const [data, SetData] = useState("Company Name");
+  // const yearDurationList = [
+  //   {
+  //     Year_ID: 6,
+  //     Year: "01-04-2024 - 31-03-2025",
+  //   },
+  //   {
+  //     Year_ID: 5,
+  //     Year: "01-04-2023 - 31-03-2024",
+  //   },
+  //   {
+  //     Year_ID: 4,
+  //     Year: "01-04-2022 - 31-03-2023",
+  //   },
+  //   {
+  //     Year_ID: 3,
+  //     Year: "01-04-2021 - 31-03-2022",
+  //   },
+  //   {
+  //     Year_ID: 2,
+  //     Year: "01-04-2020 - 31-03-2021",
+  //   },
+  // ];
 
-  const companyData = [
-    {
-      Company_ID: 1,
-      Company_name: "JANANI DESIGNER",
-    },
-    {
-      Company_ID: 3,
-      Company_name: "JANANI DREAMS TEXFAB PVT LTD",
-    },
-    {
-      Company_ID: 2,
-      Company_name: "NATION TRENDZ",
-    },
-    {
-      Company_ID: 3,
-      Company_name: "JANANI DREAMS TEXFAB PVT LTD",
-    },
-    {
-      Company_ID: 2,
-      Company_name: "NATION TRENDZ",
-    },
-    {
-      Company_ID: 3,
-      Company_name: "JANANI DREAMS TEXFAB PVT LTD",
-    },
-    {
-      Company_ID: 2,
-      Company_name: "NATION TRENDZ",
-    },
-    {
-      Company_ID: 3,
-      Company_name: "JANANI DREAMS TEXFAB PVT LTD",
-    },
-    {
-      Company_ID: 2,
-      Company_name: "NATION TRENDZ",
-    },
-  ];
+  // const premiseList = [
+  //   {
+  //     Premise_Id: 1,
+  //     Premise_Name: "SURAT",
+  //   },
+  // ];
+
+  // const locationList = [
+  //   {
+  //     dept_id: 1,
+  //     dept_name: "M4",
+  //   },
+  //   {
+  //     dept_id: 2,
+  //     dept_name: "SALES OFFICE",
+  //   },
+  // ];
 
   return (
     <>
+      {loading && <Loader />}
       <SafeAreaView style={styles.container}>
         <ScrollView nestedScrollEnabled>
           <View style={styles.header}>
@@ -126,31 +140,60 @@ const CompanyConfig = ({ navigation }) => {
           </Text>
           <View style={styles.dropDownSelectors}>
             <DropdownwithIcon
-              renderData={companyData}
+              DisplayField="Company_name"
+              valueField="Company_ID"
+              renderData={companyList}
               LeftIcon={Icons.companyIcon}
-              rightIcon={Icons.dropDownIcon}
               label="Company"
+              onchangeValue={(value) => {
+                setCompany(value);
+                console.log("Company value :", value);
+              }}
             />
             <DropdownwithIcon
-              renderData={companyData}
+              DisplayField="Premise_Name"
+              valueField="Premise_Id"
+              renderData={premiseList}
               LeftIcon={Icons.companyIcon}
-              rightIcon={Icons.dropDownIcon}
               label="Premise"
+              onchangeValue={(value) => {
+                setPremise(value);
+                console.log("Premise value :", value);
+              }}
             />
             <DropdownwithIcon
-              renderData={companyData}
+              DisplayField="Year"
+              valueField="Year_ID"
+              renderData={yearDurationList}
               LeftIcon={Icons.companyIcon}
-              rightIcon={Icons.dropDownIcon}
               label="Year"
+              onchangeValue={(value) => {
+                setDuration(value);
+                console.log("year value :", value);
+              }}
             />
             <DropdownwithIcon
-              renderData={companyData}
+              DisplayField="dept_name"
+              valueField="dept_id"
+              renderData={locationList}
               LeftIcon={Icons.companyIcon}
-              rightIcon={Icons.dropDownIcon}
               label="Department"
+              onchangeValue={(value) => {
+                setLocation(value);
+                console.log("Department value :", value);
+              }}
             />
           </View>
         </ScrollView>
+        <CustomBtn
+          Customstyle={{
+            position: "absolute",
+            alignSelf: "center",
+            bottom: hp(3),
+          }}
+          title="Save Configuration"
+          onPressHandler={handleConfigSubmit}
+        />
       </SafeAreaView>
     </>
   );
@@ -169,16 +212,6 @@ const styles = StyleSheet.create({
     height: hp(7),
     alignItems: "center",
     justifyContent: "center",
-  },
-  circle: {
-    width: hp(7),
-    height: hp(7),
-    borderWidth: 1,
-    borderRadius: 50,
-    position: "absolute",
-    left: 0,
-    justifyContent: "center",
-    alignItems: "center",
   },
   IconContainer: {
     position: "absolute",
@@ -200,6 +233,6 @@ const styles = StyleSheet.create({
   },
   dropDownSelectors: {
     marginTop: hp(4),
-    gap: hp(2),
+    gap: hp(4),
   },
 });

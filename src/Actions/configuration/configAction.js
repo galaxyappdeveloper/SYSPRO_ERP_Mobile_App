@@ -23,11 +23,10 @@ export const getCompany = () => async (dispatch) => {
       error.response.data &&
       error.response.data.ErrorMessage
     ) {
-      notifyMessage(error.response.data.ErrorMessage);
+      // notifyMessage(error.response.data.ErrorMessage);
     } else {
-      notifyMessage("Unexpected Error while fetching Company Data from API.");
+      // notifyMessage("Unexpected Error while fetching Company Data from API.");
     }
-    console.error(":", error);
     dispatch(setLoading(false));
   }
 };
@@ -48,9 +47,8 @@ export const getYearDuration = () => async (dispatch) => {
     ) {
       notifyMessage(error.response.data.ErrorMessage);
     } else {
-      notifyMessage("Unexpected Error in get year duration API.");
+      // notifyMessage("Unexpected Error in get year duration API.");
     }
-    console.error("Error while fetching year duration API:", error);
     dispatch(setLoading(false));
   }
 };
@@ -71,7 +69,7 @@ export const getPremise = () => async (dispatch) => {
     ) {
       notifyMessage(error.response.data.ErrorMessage);
     } else {
-      notifyMessage("Unexpected Error while fetching premise Data from API.");
+      // notifyMessage("Unexpected Error while fetching premise Data from API.");
     }
     console.error("Error while fetching premise Data from API:", error);
     dispatch(setLoading(false));
@@ -94,11 +92,10 @@ export const getLocation = () => async (dispatch) => {
     ) {
       notifyMessage(error.response.data.ErrorMessage);
     } else {
-      notifyMessage(
-        "Unexpected Error while fetching Department Data from API."
-      );
+      // notifyMessage(
+      //   "Unexpected Error while fetching Department Data from API."
+      // );
     }
-    console.error("Error while fetching department Data from API:", error);
     dispatch(setLoading(false));
   }
 };
@@ -160,12 +157,9 @@ export const saveCompanyConfig =
       ) {
         notifyMessage(error.response.data.ErrorMessage);
       } else {
-        notifyMessage(
-          "Unexpected Error while fetching save company config Data from API."
-        );
+        // notifyMessage(
+        //   "Unexpected Error while fetching save company config Data from API."
+        // );
       }
-      console.error(
-        "Unexpected Error while fetching save company config Data from API"
-      );
     }
   };

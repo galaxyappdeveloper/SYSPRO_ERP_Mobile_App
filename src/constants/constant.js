@@ -1,5 +1,5 @@
 export const token = "access_token";
-export const userData = "userdata";
+export const userData = "userData";
 export const mPinData = "mpinData";
 
 export const themePrimaryColor = "#1254a5";

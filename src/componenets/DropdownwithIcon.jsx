@@ -1,6 +1,5 @@
 import {
   FlatList,
-  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -13,13 +12,17 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { Icons } from "../constants/Icons";
+import { Image } from "expo-image";
+import { themePrimaryColor } from "../constants/constant";
 
 const DropdownwithIcon = ({
   LeftIcon,
-  rightIcon,
   label,
   renderData,
   customStyle,
+  onchangeValue,
+  valueField,
+  DisplayField,
 }) => {
   const [selectedItem, setSelectedItem] = useState("Select");
   const [isClicked, setIsClicked] = useState(false);
@@ -27,7 +30,7 @@ const DropdownwithIcon = ({
   return (
     <>
       <View style={[styles.inputContainer, customStyle]}>
-        <Image style={styles.leftIcon} source={LeftIcon} resizeMode="contain" />
+        <Image style={styles.leftIcon} source={LeftIcon} contentFit="contain" />
 
         <View className="bg-white" style={styles.label}>
           <Text style={styles.labeltext}>{label}</Text>
@@ -52,8 +55,11 @@ const DropdownwithIcon = ({
         >
           <Image
             source={Icons.dropDownIcon}
-            style={styles.Righticon}
-            resizeMode="contain"
+            style={[
+              styles.Righticon,
+              { transform: [{ rotate: isClicked ? "180deg" : "0deg" }] },
+            ]}
+            contentFit="contain"
           />
         </TouchableOpacity>
       </View>
@@ -61,18 +67,36 @@ const DropdownwithIcon = ({
       {isClicked ? (
         <View style={styles.dropDownArea}>
           <FlatList
+            scrollEnabled={false}
             data={renderData}
+            keyExtractor={(item, index) => index.toString()}
             renderItem={({ item, index }) => {
               return (
                 <TouchableOpacity
-                  style={styles.companyItem}
+                  style={[
+                    styles.companyItem,
+                    {
+                      backgroundColor:
+                        item[DisplayField] == selectedItem
+                          ? themePrimaryColor
+                          : null,
+                    },
+                  ]}
                   onPress={() => {
-                    setSelectedItem(item.Company_name);
+                    onchangeValue(item[valueField]);
+                    setSelectedItem(item[DisplayField]);
                     setIsClicked(!isClicked);
                   }}
                 >
-                  <Text className="font-gmedium text-[#5C658C]">
-                    {item.Company_name}
+                  <Text
+                    style={{
+                      color:
+                        item[DisplayField] == selectedItem
+                          ? "white"
+                          : "#5C658C",
+                    }}
+                  >
+                    {item[DisplayField]}
                   </Text>
                 </TouchableOpacity>
               );
@@ -89,13 +113,11 @@ export default DropdownwithIcon;
 const styles = StyleSheet.create({
   inputContainer: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
-    marginTop: 15,
+    backgroundColor: "#ffffff",
     borderColor: "#555555",
     borderRadius: 15,
     padding: 5,
     borderWidth: 0.5,
-    textAlign: "center",
     paddingRight: 10,
     flexDirection: "row",
     alignSelf: "center",
@@ -169,6 +191,8 @@ const styles = StyleSheet.create({
     height: hp(3),
   },
   dropDownArea: {
+    position: "absolute",
+    zIndex: 1000,
     maxHeight: hp(40),
     width: wp(90),
     borderRadius: 20,
@@ -177,16 +201,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "#fff",
     borderWidth: 2,
-    position: "absolute",
-    zIndex: 6,
-    top: hp(9),
   },
   companyItem: {
-    width: wp(80),
+    flex: 1,
     height: hp(7),
     borderBottomWidth: 0.5,
     borderBottomColor: "#78819D",
-    alignSelf: "center",
+    alignItems: "center",
     justifyContent: "center",
   },
   companySecondContainer: {

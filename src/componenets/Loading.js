@@ -3,7 +3,7 @@ import React from "react";
 import { ActivityIndicator } from "react-native";
 import { themePrimaryColor } from "../constants/constant";
 
-const Loader = () => {
+export const Loader = () => {
   return (
     <View
       style={{
@@ -17,5 +17,3 @@ const Loader = () => {
     </View>
   );
 };
-
-export default Loader;

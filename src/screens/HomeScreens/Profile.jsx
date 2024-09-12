@@ -32,12 +32,12 @@ const Profile = ({ navigation }) => {
   const [companyDetails, setCompanyDetails] = useState(null);
   const userdata = useSelector((state) => state.auth.userData);
 
-  const userId = userdata?.Data?.UserID;
+  const userId = userdata?.UserID;
   useEffect(() => {
     const getUserDataFromStorage = async () => {
       try {
         if (userdata) {
-          setCompanyDetails(userdata?.Data);
+          setCompanyDetails(userdata);
         } else {
           const jsonValue = await AsyncStorage.getItem(userData);
           const parsedData = jsonValue != null ? JSON.parse(jsonValue) : null;
@@ -122,12 +122,12 @@ const Profile = ({ navigation }) => {
           <Text style={styles.logoutButtonText}>Logout</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={handleAllDeviceSignOut}
           style={styles.logoutAllButton}
         >
           <Text style={styles.logoutAllButtonText}>Logout All Devices</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </ScrollView>
     </SafeAreaView>
   );
@@ -135,8 +135,8 @@ const Profile = ({ navigation }) => {
 
 export const DrawerProfile = (props) => {
   const user = {
-    name: "Janani Designer",
-    email: "M4",
+    name: "username",
+    email: "department",
     avatar: "https://randomuser.me/api/portraits/men/41.jpg",
   };
 

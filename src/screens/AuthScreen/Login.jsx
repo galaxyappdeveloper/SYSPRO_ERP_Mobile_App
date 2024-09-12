@@ -22,8 +22,8 @@ const Login = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(true);
   const dispatch = useDispatch();
   const userMpinData = useSelector((state) => state.auth.mpinData);
-  const ServerBaseUrl = userMpinData?.Data?.ServerBaseUrl;
-  const mPin = userMpinData?.Data?.mPin;
+  const ServerBaseUrl = userMpinData?.ServerBaseUrl;
+  const mPin = userMpinData?.mPin;
 
   const navigate = (tab) => {
     return navigation.dispatch(

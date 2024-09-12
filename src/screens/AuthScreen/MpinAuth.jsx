@@ -52,8 +52,8 @@ const MpinAuth = ({ navigation }) => {
       const response = await axios.post(mpinapi, { mPin }, { headers });
       const apidata = response.data?.Data;
       const apiMpin = apidata?.mPin;
-      dispatch(setMpinData(response?.data));
-      const mpinData = JSON.stringify(response.data);
+      dispatch(setMpinData(response?.data?.Data));
+      const mpinData = JSON.stringify(response?.data?.Data);
       await AsyncStorage.setItem(mPinData, mpinData);
       setIsLoading(false);
       if (apiMpin === mPin) {

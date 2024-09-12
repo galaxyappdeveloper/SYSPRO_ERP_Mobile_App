@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { notifyMessage } from "../../functions/toastMessage";
-import { token, userData } from "../../constants/constant";
+import { mPinData, token, userData } from "../../constants/constant";
 import { NavigationNames, ScreenName } from "../../constants/screenName";
 import * as Device from "expo-device";
 
@@ -33,14 +33,13 @@ export const login = createAsyncThunk(
 
     try {
       const response = await axios.post(loginUrl, body, { headers });
-      const userResponse = response?.data;
-      const Token = userResponse?.Data?.Token;
-      const storeuserdata = JSON.stringify(userResponse?.Data);
+      const userResponse = response?.data?.Data;
+      const Token = userResponse?.Token;
       await AsyncStorage.setItem(token, Token);
-      await AsyncStorage.setItem(userData, storeuserdata);
+      await AsyncStorage.setItem(userData, JSON.stringify(userResponse));
       dispatch(setUserData(userResponse));
       navigate(NavigationNames.homeRoutes);
-      notifyMessage(userResponse?.Message);
+      notifyMessage(response?.data?.Message);
       return true;
     } catch (error) {
       const errorMessage =
@@ -68,8 +67,8 @@ const authSlice = createSlice({
   initialState: {
     isAuthenticated: false,
     token: "",
-    mpinData: [],
-    userData: [] || AsyncStorage.getItem(userData),
+    mpinData: null,
+    userData: null,
     AuthLoading: false,
   },
   reducers: {
@@ -84,6 +83,20 @@ const authSlice = createSlice({
     },
   },
 });
+
+export const loadMpinData = () => async (dispatch) => {
+  const mpinData = await AsyncStorage.getItem(mPinData);
+  if (mpinData) {
+    dispatch(authSlice.actions.setMpinData(mpinData));
+  }
+};
+
+export const loadUserData = () => async (dispatch) => {
+  const userdata = await AsyncStorage.getItem(userData);
+  if (userdata) {
+    dispatch(authSlice.actions.setUserData(userdata));
+  }
+};
 
 export default authSlice.reducer;
 export const { setMpinData, setUserData, setAuthLoading } = authSlice.actions;

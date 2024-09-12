@@ -11,9 +11,9 @@ http.interceptors.request.use(
   async (config) => {
     const state = store.getState(); // Access Redux state
     const { userData, mpinData } = state.auth;
-    const mPin = mpinData?.Data?.mPin;
+    const mPin = mpinData?.mPin;
     const Token = AsyncStorage.getItem(token);
-    const ServerBaseUrl = mpinData?.Data?.ServerBaseUrl;
+    const ServerBaseUrl = mpinData?.ServerBaseUrl;
     if (ServerBaseUrl) {
       config.baseURL = ServerBaseUrl;
     }
@@ -25,12 +25,12 @@ http.interceptors.request.use(
     config.headers["x-api-key"] = mPin;
 
     if (userData && mpinData) {
-      config.headers.CompanyID = userData.Data.CompanyID;
-      config.headers.YearMasterID = userData.Data.YearMasterID;
-      config.headers.PremiseID = userData.Data.PremiseID;
-      config.headers.DepartmentID = userData.Data.DepartmentID;
-      config.headers.UserID = userData.Data.UserID;
-      config.headers.client = mpinData.Data.SlugUrl;
+      config.headers.CompanyID = userData.CompanyID;
+      config.headers.YearMasterID = userData.YearMasterID;
+      config.headers.PremiseID = userData.PremiseID;
+      config.headers.DepartmentID = userData.DepartmentID;
+      config.headers.UserID = userData.UserID;
+      config.headers.client = mpinData.SlugUrl;
     }
     return config;
   },

@@ -9,26 +9,21 @@ import MpinIcon from "../../assets/Icons/mpinIcon.svg";
 import PrimiseIcon from "../../assets/Icons/premiseIcon.svg";
 import UserNameIcon from "../../assets/Icons/userNameIcon.svg";
 import showPasswordIcon from "../../assets/Icons/showPasswordIcon.svg";
-import SYSPROIcon from "../../assets/Icons/sysproIcon.svg"
-import YearIcon from "../../assets/Icons/yearIcon.svg"
-import PasswordIcon from"../../assets/Icons/passwordIcon.svg"
-
+import SYSPROIcon from "../../assets/Icons/sysproIcon.svg";
+import YearIcon from "../../assets/Icons/yearIcon.svg";
 
 export const Icon = {
-    Splash,
-    ArrowRound,
-    CompanyIcon,
-    DepartmentIcon,
-    DropDownIcon,
-    HidePassword,
-    LogoIcon,
-    MpinIcon,
-    PrimiseIcon,
-    UserNameIcon,
-    showPasswordIcon,
-    SYSPROIcon,
-    YearIcon,
-    PasswordIcon
+  Splash,
+  ArrowRound,
+  CompanyIcon,
+  DepartmentIcon,
+  DropDownIcon,
+  HidePassword,
+  LogoIcon,
+  PasswordCheckIcon,
+  PrimiseIcon,
+  ProfileIcon,
+  showPasswordIcon,
+  SYSPROIcon,
+  YearIcon,
 };
-
-

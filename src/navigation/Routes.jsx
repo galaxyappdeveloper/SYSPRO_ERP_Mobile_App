@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import HomeRoutes from "./HomeRoutes";
 import * as SplashScreen from "expo-splash-screen";
 import { token } from "../constants/constant";
-import Loader from "../componenets/Loading";
+import { Loader } from "../componenets/Loading";
 
 SplashScreen.preventAutoHideAsync();
 const Routes = () => {
