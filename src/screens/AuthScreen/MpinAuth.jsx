@@ -11,7 +11,6 @@ import {
   ScrollView,
   Platform,
 } from "react-native";
-import { images } from "../../constants/images";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -29,7 +28,6 @@ import TextInputwithLogo from "../../componenets/TextInputwithLogo";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { commonStyle } from "../../constants/commonStyle";
 import { Icon } from "../../constants/Icon";
-import { Icons } from "../../constants/Icons";
 
 const MpinAuth = ({ navigation }) => {
   const [mPin, setMPin] = useState("");

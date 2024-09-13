@@ -11,9 +11,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { Icons } from "../constants/Icons";
 import { Image } from "expo-image";
 import { themePrimaryColor } from "../constants/constant";
+import { Icon } from "../constants/Icon";
 
 const DropdownwithIcon = ({
   LeftIcon,
@@ -54,7 +54,7 @@ const DropdownwithIcon = ({
           onPress={() => setIsClicked(!isClicked)}
         >
           <Image
-            source={Icons.dropDownIcon}
+            source={Icon.dropDownIcon}
             style={[
               styles.Righticon,
               { transform: [{ rotate: isClicked ? "180deg" : "0deg" }] },
