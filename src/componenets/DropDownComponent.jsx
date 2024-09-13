@@ -40,7 +40,11 @@ const DropdownComponent = ({
     <View style={styles.container}>
       {renderLabel()}
       <Dropdown
-        style={[styles.dropdown,customStyle, isFocus && { borderColor: "blue" }]}
+        style={[
+          styles.dropdown,
+          customStyle,
+          isFocus && { borderColor: "blue" },
+        ]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         data={renderData}
