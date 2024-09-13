@@ -29,6 +29,7 @@ import { Loader } from "../../componenets/Loading";
 import CustomBtn from "../../componenets/CustomBtn";
 import { ScreenName } from "../../constants/screenName";
 import { Icon } from "../../constants/Icon";
+import DropdownComponent from "../../componenets/DropDownComponent";
 
 const CompanyConfig = ({ navigation }) => {
   const [company, setCompany] = useState("");
@@ -140,44 +141,49 @@ const CompanyConfig = ({ navigation }) => {
             Company Configuration Setting
           </Text>
           <View style={styles.dropDownSelectors}>
-            <DropdownwithIcon
+            <DropdownComponent
               DisplayField="Company_name"
               valueField="Company_ID"
+
               renderData={companyList}
               LeftIcon={Icon.companyIcon}
+              rightIcon={Icon.dropDownIcon}
               label="Company"
               onchangeValue={(value) => {
                 setCompany(value);
                 console.log("Company value :", value);
               }}
             />
-            <DropdownwithIcon
+            <DropdownComponent
               DisplayField="Premise_Name"
               valueField="Premise_Id"
               renderData={premiseList}
               LeftIcon={Icon.primiseIcon}
+              rightIcon={Icon.dropDownIcon}
               label="Premise"
               onchangeValue={(value) => {
                 setPremise(value);
                 console.log("Premise value :", value);
               }}
             />
-            <DropdownwithIcon
+            <DropdownComponent
               DisplayField="Year"
               valueField="Year_ID"
               renderData={yearDurationList}
               LeftIcon={Icon.yearIcon}
+              rightIcon={Icon.dropDownIcon}
               label="Year"
               onchangeValue={(value) => {
                 setDuration(value);
                 console.log("year value :", value);
               }}
             />
-            <DropdownwithIcon
+            <DropdownComponent
               DisplayField="dept_name"
               valueField="dept_id"
               renderData={locationList}
               LeftIcon={Icon.departmentIcon}
+              rightIcon={Icon.dropDownIcon}
               label="Department"
               onchangeValue={(value) => {
                 setLocation(value);
@@ -234,6 +240,5 @@ const styles = StyleSheet.create({
   },
   dropDownSelectors: {
     marginTop: hp(4),
-    gap: hp(4),
   },
 });

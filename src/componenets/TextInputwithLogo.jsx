@@ -3,7 +3,6 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  Image as ReactImage,
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
@@ -11,9 +10,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { images } from "../constants/images";
 import { Image } from "expo-image";
-import { Icon } from "../constants/Icon";
+import { Icon } from "./../constants/Icon";
 
 const TextInputwithLogo = ({
   icon,
@@ -46,10 +44,13 @@ const TextInputwithLogo = ({
         secureTextEntry={showPassword}
       />
       {rightIcon && (
-        <TouchableOpacity style={styles.eyelogo} onPress={onPress}>
-          <ReactImage
-            source={!showPassword ? images.eyeOpen : images.eyeClose}
-            resizeMode="contain"
+        <TouchableOpacity style={styles.eyeContainer} onPress={onPress}>
+          <Image
+            style={styles.eyelogo}
+            source={
+              !showPassword ? Icon.showPasswordIcon : Icon.hidePasswordIcon
+            }
+            contentFit="contain"
           />
         </TouchableOpacity>
       )}
@@ -108,8 +109,12 @@ const styles = StyleSheet.create({
     marginLeft: hp("2.5%"),
     alignSelf: "center",
   },
-  eyelogo: {
+  eyeContainer: {
     alignSelf: "center",
+  },
+  eyelogo: {
+    width: hp("3%"),
+    height: hp("3%"),
   },
 });
 export default TextInputwithLogo;
