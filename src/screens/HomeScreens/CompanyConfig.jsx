@@ -53,71 +53,13 @@ const CompanyConfig = ({ navigation }) => {
   }, []);
 
   const handleConfigSubmit = async () => {
-    await dispatch(
-      saveCompanyConfig(userData, company, duration, premise, location)
-    );
+    dispatch(saveCompanyConfig(userData, company, duration, premise, location));
     await navigation.navigate(ScreenName.dashboard);
     setCompany("");
     setPremise("");
     setDuration("");
     setLocation("");
   };
-
-  // const companyList = [
-  //   {
-  //     Company_ID: 1,
-  //     Company_name: "JANANI DESIGNER",
-  //   },
-  //   {
-  //     Company_ID: 3,
-  //     Company_name: "JANANI DREAMS TEXFAB PVT LTD",
-  //   },
-  //   {
-  //     Company_ID: 2,
-  //     Company_name: "NATION TRENDZ",
-  //   },
-  // ];
-
-  // const yearDurationList = [
-  //   {
-  //     Year_ID: 6,
-  //     Year: "01-04-2024 - 31-03-2025",
-  //   },
-  //   {
-  //     Year_ID: 5,
-  //     Year: "01-04-2023 - 31-03-2024",
-  //   },
-  //   {
-  //     Year_ID: 4,
-  //     Year: "01-04-2022 - 31-03-2023",
-  //   },
-  //   {
-  //     Year_ID: 3,
-  //     Year: "01-04-2021 - 31-03-2022",
-  //   },
-  //   {
-  //     Year_ID: 2,
-  //     Year: "01-04-2020 - 31-03-2021",
-  //   },
-  // ];
-
-  // const premiseList = [
-  //   {
-  //     Premise_Id: 1,
-  //     Premise_Name: "SURAT",
-  //   },
-  // ];
-
-  // const locationList = [
-  //   {
-  //     dept_id: 1,
-  //     dept_name: "M4",
-  //   },
-  //   {
-  //     dept_id: 2,
-  //     dept_name: "SALES OFFICE",
-  //   },
-  // ];
 
   return (
     <>
@@ -144,12 +86,11 @@ const CompanyConfig = ({ navigation }) => {
             <DropdownComponent
               DisplayField="Company_name"
               valueField="Company_ID"
-
               renderData={companyList}
               LeftIcon={Icon.companyIcon}
               rightIcon={Icon.dropDownIcon}
               label="Company"
-              onchangeValue={(value) => {
+              onChangeValue={(value) => {
                 setCompany(value);
                 console.log("Company value :", value);
               }}
@@ -161,7 +102,7 @@ const CompanyConfig = ({ navigation }) => {
               LeftIcon={Icon.primiseIcon}
               rightIcon={Icon.dropDownIcon}
               label="Premise"
-              onchangeValue={(value) => {
+              onChangeValue={(value) => {
                 setPremise(value);
                 console.log("Premise value :", value);
               }}
@@ -173,7 +114,7 @@ const CompanyConfig = ({ navigation }) => {
               LeftIcon={Icon.yearIcon}
               rightIcon={Icon.dropDownIcon}
               label="Year"
-              onchangeValue={(value) => {
+              onChangeValue={(value) => {
                 setDuration(value);
                 console.log("year value :", value);
               }}
@@ -185,7 +126,7 @@ const CompanyConfig = ({ navigation }) => {
               LeftIcon={Icon.departmentIcon}
               rightIcon={Icon.dropDownIcon}
               label="Department"
-              onchangeValue={(value) => {
+              onChangeValue={(value) => {
                 setLocation(value);
                 console.log("Department value :", value);
               }}

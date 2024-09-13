@@ -7,17 +7,6 @@ import {
 } from "react-native-responsive-screen";
 import { Image } from "expo-image";
 
-const data = [
-  { label: "Item 1", value: "1" },
-  { label: "Item 2", value: "2" },
-  { label: "Item 3", value: "3" },
-  { label: "Item 4", value: "4" },
-  { label: "Item 5", value: "5" },
-  { label: "Item 6", value: "6" },
-  { label: "Item 7", value: "7" },
-  { label: "Item 8", value: "8" },
-];
-
 const DropdownComponent = ({
   LeftIcon,
   rightIcon,
@@ -25,9 +14,10 @@ const DropdownComponent = ({
   renderData,
   DisplayField,
   valueField,
+  onChangeValue,
   customStyle,
 }) => {
-  const [value, setValue] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
   const renderLabel = () => {
@@ -51,12 +41,26 @@ const DropdownComponent = ({
         labelField={DisplayField}
         valueField={valueField}
         placeholder={!isFocus ? "Select" : "..."}
-        value={value}
+        value={selectedItem}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
+        // onChange={(item) => {
+        //   setSelectedItem(item.value);
+        //   setIsFocus(false);
+        // }}
+        // onChange={(item) => {
+        //   setSelectedItem(item.value);
+        //   console.log("Item value from onchange method in component", item);
+        //   setIsFocus(false);
+        //   onChangeValue(item.value);
+        // }}
         onChange={(item) => {
-          setValue(item.value);
+          const selectedValue = item?.[valueField];
+          setSelectedItem(selectedValue);
           setIsFocus(false);
+          if (onChangeValue) {
+            onChangeValue(selectedValue);
+          }
         }}
         renderLeftIcon={() => (
           <Image

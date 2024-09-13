@@ -64,7 +64,7 @@ const Profile = ({ navigation }) => {
     await dispatch(handleLogout(userId));
     await dispatch(logOut());
     navigate(ScreenName.mpin);
-    AsyncStorage.clear();
+    await AsyncStorage.clear();
   };
 
   const handleAllDeviceSignOut = async () => {
@@ -92,7 +92,9 @@ const Profile = ({ navigation }) => {
               color={themePrimaryColor}
             />
             <Text style={styles.infoText}>Company Name : </Text>
-            <Text style={styles.detailText}>{companyDetails?.CompanyName}</Text>
+            <Text numberOfLines={1} style={styles.detailText}>
+              {companyDetails?.CompanyName}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.infoBox}>
@@ -134,11 +136,7 @@ const Profile = ({ navigation }) => {
 };
 
 export const DrawerProfile = (props) => {
-  const user = {
-    name: "username",
-    email: "department",
-    avatar: "https://randomuser.me/api/portraits/men/41.jpg",
-  };
+  const userdata = useSelector((state) => state.auth.userData);
 
   const handleViewProfile = () => {
     props.navigation.navigate(ScreenName.profile);
@@ -148,8 +146,12 @@ export const DrawerProfile = (props) => {
     <DrawerContentScrollView {...props}>
       <View style={styles.profileSection}>
         <Image source={images.companyLogo} style={styles.avatar} />
-        <Text style={styles.name}>{user.name}</Text>
-        <Text style={styles.email}>{user.email}</Text>
+        <Text numberOfLines={1} style={styles.name}>
+          {userdata?.CompanyName}
+        </Text>
+        <Text numberOfLines={1} style={styles.email}>
+          {userdata?.DepartmentName}
+        </Text>
         <TouchableOpacity onPress={handleViewProfile}>
           <Text className="p-2 rounded-lg" style={styles.viewProfile}>
             View Profile
