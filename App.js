@@ -13,11 +13,11 @@ import * as SplashScreen from "expo-splash-screen";
 import { font } from "./src/constants/fonts";
 import Routes from "./src/navigation/Routes";
 import { themePrimaryColor } from "./src/constants/constant";
+import DataInitializer from "./src/functions/DataInitializer";
 
 // SplashScreen.preventAutoHideAsync();
 export default function App() {
   const [fontsLoaded, error] = useFonts(font);
-
   useEffect(() => {
     if (error) throw error;
 
@@ -46,6 +46,7 @@ export default function App() {
         <PaperProvider theme={theme}>
           <NavigationContainer>
             <Routes />
+            <DataInitializer />
           </NavigationContainer>
         </PaperProvider>
       </StoreProvider>

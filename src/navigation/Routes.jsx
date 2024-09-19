@@ -5,19 +5,11 @@ import HomeRoutes from "./HomeRoutes";
 import * as SplashScreen from "expo-splash-screen";
 import { token } from "../constants/constant";
 import { Loader } from "../componenets/Loading";
-import { loadMpinData, loadUserData } from "../redux/authSlices/AuthSlice";
-import { useDispatch } from "react-redux";
 
 SplashScreen.preventAutoHideAsync();
 const Routes = () => {
-  const dispatch = useDispatch();
   const [isToken, setIsToken] = useState(false);
   const [isAppReady, setIsAppReady] = useState(false);
-
-  useEffect(() => {
-    dispatch(loadMpinData());
-    dispatch(loadUserData());
-  }, [dispatch]);
 
   useEffect(() => {
     const asyncAuth = async () => {

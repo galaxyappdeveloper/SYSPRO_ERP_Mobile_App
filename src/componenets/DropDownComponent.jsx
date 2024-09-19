@@ -16,6 +16,7 @@ const DropdownComponent = ({
   valueField,
   onChangeValue,
   customStyle,
+  requiredLabel,
 }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
@@ -29,11 +30,15 @@ const DropdownComponent = ({
   return (
     <View style={styles.container}>
       {renderLabel()}
+      {requiredLabel ? (
+        <Text style={styles.requiredLabelText}>{requiredLabel}</Text>
+      ) : null}
       <Dropdown
         style={[
           styles.dropdown,
           customStyle,
           isFocus && { borderColor: "blue" },
+          requiredLabel && { borderColor: "red" },
         ]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
@@ -44,16 +49,6 @@ const DropdownComponent = ({
         value={selectedItem}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
-        // onChange={(item) => {
-        //   setSelectedItem(item.value);
-        //   setIsFocus(false);
-        // }}
-        // onChange={(item) => {
-        //   setSelectedItem(item.value);
-        //   console.log("Item value from onchange method in component", item);
-        //   setIsFocus(false);
-        //   onChangeValue(item.value);
-        // }}
         onChange={(item) => {
           const selectedValue = item?.[valueField];
           setSelectedItem(selectedValue);
@@ -73,7 +68,10 @@ const DropdownComponent = ({
         )}
         renderRightIcon={() => (
           <Image
-            style={styles.icon}
+            style={[
+              styles.icon,
+              { transform: [{ rotate: isFocus ? "180deg" : "0deg" }] },
+            ]}
             source={rightIcon}
             color={isFocus ? "blue" : "black"}
             name="Safety"
@@ -93,7 +91,15 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 16,
   },
-
+  requiredLabelText: {
+    color: "red",
+    fontSize: hp(1.5),
+    position: "absolute",
+    paddingHorizontal: wp(1.9),
+    top: hp(10),
+    zIndex: 999,
+    left: wp(4),
+  },
   dropdown: {
     width: wp(90),
     height: hp(8.5),

@@ -61,15 +61,15 @@ const Profile = ({ navigation }) => {
   };
 
   const handleSignOut = async () => {
-    await dispatch(handleLogout(userId));
-    await dispatch(logOut());
+    dispatch(handleLogout(userId));
+    dispatch(logOut());
     navigate(ScreenName.mpin);
     await AsyncStorage.clear();
   };
 
   const handleAllDeviceSignOut = async () => {
-    await dispatch(handleLogout(userId));
-    await dispatch(logOut());
+    dispatch(handleLogout(userId));
+    dispatch(logOut());
     navigate(ScreenName.mpin);
     AsyncStorage.clear();
   };

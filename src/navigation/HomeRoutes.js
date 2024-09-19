@@ -7,8 +7,17 @@ import React from "react";
 import { ScreenName } from "../constants/screenName";
 import Dashboard from "../screens/HomeScreens/Dashboard";
 import Profile, { DrawerProfile } from "../screens/HomeScreens/Profile";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import CompanyConfig from "../screens/HomeScreens/CompanyConfig";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { Image } from "expo-image";
+import { Icon } from "../constants/Icon";
+import { View } from "react-native";
+import { TouchableOpacity } from "react-native";
+import { Greeting } from "../componenets/Greeting";
 
 const Drawer = createDrawerNavigator();
 
@@ -17,13 +26,33 @@ const HomeRoutes = () => {
     <Drawer.Navigator
       screenOptions={{
         headerShown: true,
-        headerStyle: {},
-        statusBarColor: "red",
+        headerStyle: {
+          backgroundColor: "white",
+        },
       }}
       drawerContent={(props) => <DrawerProfile {...props} />}
     >
       <Drawer.Screen
-        options={{ headerShown: true }}
+        options={({ navigation, route }) => ({
+          headerShown: true,
+          headerTitle: () => (
+            <View>
+              <Greeting customtextStyle={{ fontSize: hp(2) }} />
+            </View>
+          ),
+          headerRight: () => (
+            <TouchableOpacity
+              style={styles.settingContainer}
+              onPress={() => navigation.navigate(ScreenName.companyConfig)}
+            >
+              <Image
+                style={styles.settingIcon}
+                source={Icon.settingIcon}
+                contentFit="contain"
+              />
+            </TouchableOpacity>
+          ),
+        })}
         name={ScreenName.dashboard}
         component={Dashboard}
       />
@@ -56,6 +85,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
+  },
+  settingContainer: {
+    marginRight: wp(3.5),
+  },
+  settingIcon: {
+    alignSelf: "center",
+    width: hp(3),
+    height: hp(3),
   },
   avatar: {
     width: 80,

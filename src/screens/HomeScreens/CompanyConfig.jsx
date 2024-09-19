@@ -23,7 +23,6 @@ import {
   getYearDuration,
   saveCompanyConfig,
 } from "../../Actions/configuration/configAction";
-import DropdownwithIcon from "../../componenets/DropdownwithIcon";
 import { Image } from "expo-image";
 import { Loader } from "../../componenets/Loading";
 import CustomBtn from "../../componenets/CustomBtn";
@@ -36,6 +35,13 @@ const CompanyConfig = ({ navigation }) => {
   const [duration, setDuration] = useState("");
   const [premise, setPremise] = useState("");
   const [location, setLocation] = useState("");
+
+  const [errors, setErrors] = useState({
+    company: null,
+    duration: null,
+    premise: null,
+    location: null,
+  });
 
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.config.loading);
@@ -53,12 +59,27 @@ const CompanyConfig = ({ navigation }) => {
   }, []);
 
   const handleConfigSubmit = async () => {
-    dispatch(saveCompanyConfig(userData, company, duration, premise, location));
-    await navigation.navigate(ScreenName.dashboard);
-    setCompany("");
-    setPremise("");
-    setDuration("");
-    setLocation("");
+    const newErrors = {
+      company: company ? null : "Company is required",
+      duration: duration ? null : "Duration is required",
+      premise: premise ? null : "Premise is required",
+      location: location ? null : "Location is required",
+    };
+
+    setErrors(newErrors);
+
+    const hasErrors = Object.values(newErrors).some((error) => error !== null);
+
+    if (!hasErrors) {
+      dispatch(
+        saveCompanyConfig(userData, company, duration, premise, location)
+      );
+      setCompany("");
+      setDuration("");
+      setPremise("");
+      setLocation("");
+      await navigation.navigate(ScreenName.dashboard);
+    }
   };
 
   return (
@@ -71,7 +92,11 @@ const CompanyConfig = ({ navigation }) => {
               style={styles.IconContainer}
               onPress={() => navigation.goBack()}
             >
-              <Image source={Icon.arrowRound} style={styles.backIcon} />
+              <Image
+                source={Icon.arrowRound}
+                style={styles.backIcon}
+                contentFit="contain"
+              />
             </TouchableOpacity>
 
             <Text className="font-gregular" style={styles.headerConfigruation}>
@@ -90,23 +115,18 @@ const CompanyConfig = ({ navigation }) => {
               LeftIcon={Icon.companyIcon}
               rightIcon={Icon.dropDownIcon}
               label="Company"
+              requiredLabel={errors.company}
               onChangeValue={(value) => {
                 setCompany(value);
                 console.log("Company value :", value);
+                setErrors((prevErrors) => ({
+                  ...prevErrors,
+                  company: null,
+                }));
               }}
             />
-            <DropdownComponent
-              DisplayField="Premise_Name"
-              valueField="Premise_Id"
-              renderData={premiseList}
-              LeftIcon={Icon.primiseIcon}
-              rightIcon={Icon.dropDownIcon}
-              label="Premise"
-              onChangeValue={(value) => {
-                setPremise(value);
-                console.log("Premise value :", value);
-              }}
-            />
+            {/* 7864 */}
+
             <DropdownComponent
               DisplayField="Year"
               valueField="Year_ID"
@@ -114,11 +134,35 @@ const CompanyConfig = ({ navigation }) => {
               LeftIcon={Icon.yearIcon}
               rightIcon={Icon.dropDownIcon}
               label="Year"
+              requiredLabel={errors.duration}
               onChangeValue={(value) => {
                 setDuration(value);
                 console.log("year value :", value);
+                setErrors((prevErrors) => ({
+                  ...prevErrors,
+                  duration: null,
+                }));
               }}
             />
+
+            <DropdownComponent
+              DisplayField="Premise_Name"
+              valueField="Premise_Id"
+              renderData={premiseList}
+              LeftIcon={Icon.primiseIcon}
+              rightIcon={Icon.dropDownIcon}
+              label="Premise"
+              requiredLabel={errors.premise}
+              onChangeValue={(value) => {
+                setPremise(value);
+                console.log("Premise value :", value);
+                setErrors((prevErrors) => ({
+                  ...prevErrors,
+                  premise: null,
+                }));
+              }}
+            />
+
             <DropdownComponent
               DisplayField="dept_name"
               valueField="dept_id"
@@ -126,8 +170,13 @@ const CompanyConfig = ({ navigation }) => {
               LeftIcon={Icon.departmentIcon}
               rightIcon={Icon.dropDownIcon}
               label="Department"
+              requiredLabel={errors.location}
               onChangeValue={(value) => {
                 setLocation(value);
+                setErrors((prevErrors) => ({
+                  ...prevErrors,
+                  location: null,
+                }));
                 console.log("Department value :", value);
               }}
             />
@@ -141,6 +190,7 @@ const CompanyConfig = ({ navigation }) => {
           }}
           title="Save Configuration"
           onPressHandler={handleConfigSubmit}
+          // disabled={!company || !duration || !premise || !location}
         />
       </SafeAreaView>
     </>
@@ -181,5 +231,7 @@ const styles = StyleSheet.create({
   },
   dropDownSelectors: {
     marginTop: hp(4),
+    alignSelf: "center",
+    gap: hp(1),
   },
 });
