@@ -20,12 +20,16 @@ import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomBtn from "../../componenets/CustomBtn";
 import { setMpinData } from "../../redux/authSlices/AuthSlice";
-import { mPinData, themePrimaryColor, urls } from "../../constants/constant";
+import {
+  constant,
+  mPinData,
+  themePrimaryColor,
+  urls,
+} from "../../constants/constant";
 import { notifyMessage } from "../../functions/toastMessage";
 import { ScreenName } from "../../constants/screenName";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TextInputwithLogo from "../../componenets/TextInputwithLogo";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { commonStyle } from "../../constants/commonStyle";
 import { Icon } from "../../constants/Icon";
 
@@ -33,40 +37,58 @@ const MpinAuth = ({ navigation }) => {
   const [mPin, setMPin] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const [errors, setErrors] = useState({
+    mpin: null,
+  });
   const dispatch = useDispatch();
   const handleMpinChange = (e) => {
     setMPin(e.trim().toUpperCase());
   };
 
+  const checkTextInputValidation = () => {
+    if (!mPin.trim()) {
+      alert("Please Enter Mpin");
+      return;
+    }
+  };
+
   const handleMpinAuth = async () => {
+    const newErrors = {
+      mpin: mPin ? null : "Mpin is required",
+    };
+    setErrors(newErrors);
+    const hasErrors = Object.values(newErrors).some((error) => error !== null);
+
     const mpinapi = `${urls.mPin}${mPin}`;
     const headers = {
       "Content-Type": "application/json",
       Authorization: "Bearer your_token_here",
-      "x-api-key": "SYSPROERP",
+      "x-api-key": mPin,
     };
 
-    try {
-      setIsLoading(true);
-      const response = await axios.post(mpinapi, { mPin }, { headers });
-      const apidata = response.data?.Data;
-      const apiMpin = apidata?.mPin;
-      dispatch(setMpinData(response?.data?.Data));
-      const mpinData = JSON.stringify(response?.data?.Data);
-      await AsyncStorage.setItem(mPinData, mpinData);
-      setIsLoading(false);
-      if (apiMpin === mPin) {
-        notifyMessage("MPin Verified!");
-        navigation.navigate(ScreenName.login);
-      } else {
-        notifyMessage("Invalid MPin!");
+    if (!hasErrors) {
+      try {
+        setIsLoading(true);
+        const response = await axios.post(mpinapi, { mPin }, { headers });
+        const apidata = response.data?.Data;
+        const apiMpin = apidata?.mPin;
+        dispatch(setMpinData(response?.data?.Data));
+        const mpinData = JSON.stringify(response?.data?.Data);
+        await AsyncStorage.setItem(mPinData, mpinData);
+        setIsLoading(false);
+        if (apiMpin === mPin) {
+          notifyMessage("MPin Verified!");
+          navigation.navigate(ScreenName.login);
+        } else {
+          notifyMessage("Invalid MPin!");
+        }
+        setMPin("");
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        console.log("API error message", error?.response?.data);
+        notifyMessage(error.response?.data?.Message);
       }
-      setMPin("");
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-      console.log("API error message", error?.response?.data);
-      notifyMessage(error.response?.data?.Message);
     }
   };
 
@@ -86,13 +108,19 @@ const MpinAuth = ({ navigation }) => {
               className="text-white text-center font-gsemibold"
               style={{ fontSize: hp(6) }}
             >
-              Let’s connect
+              {constant.mpinScreenTitle1}
             </Text>
-            <Text className="text-white text-center font-glight text-base mt-3">
-              Please enter info to connect
+            <Text
+              style={{ fontSize: hp(2) }}
+              className="text-white text-center font-glight  mt-3"
+            >
+              {constant.mpinScreenTitle2}
             </Text>
-            <Text className="text-white  text-center font-glight text-[16px]">
-              your business
+            <Text
+              style={{ fontSize: hp(2) }}
+              className="text-white  text-center font-glight"
+            >
+              {constant.mpinScreenTitle3}
             </Text>
           </View>
         </View>
@@ -115,14 +143,20 @@ const MpinAuth = ({ navigation }) => {
                 icon={Icon.mpinIcon}
                 label="Mpin"
                 value={mPin}
+                errorMessage={errors.mpin}
                 onChangeText={handleMpinChange}
                 customStyle={{ alignSelf: "center" }}
               />
             </View>
           </View>
           <CustomBtn
+            disabled={!mPin}
             isLoading={isLoading}
-            Customstyle={{ marginBottom: hp(4) }}
+            Customstyle={{
+              position: "absolute",
+              alignSelf: "center",
+              bottom: hp(5),
+            }}
             titleStyle={{ fontWeight: 600 }}
             title="Continue"
             onPressHandler={handleMpinAuth}

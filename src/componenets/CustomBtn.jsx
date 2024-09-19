@@ -15,6 +15,7 @@ const CustomBtn = ({
   title,
   onPressHandler,
   isLoading,
+  disabled,
   Customstyle,
   titleStyle,
 }) => {
@@ -23,7 +24,7 @@ const CustomBtn = ({
       className="bg-secondary"
       activeOpacity={0.7}
       onPress={onPressHandler}
-      disabled={isLoading}
+      disabled={isLoading || disabled}
       style={[styles.main, Customstyle]}
     >
       {isLoading ? (

@@ -7,10 +7,14 @@ export const Loader = () => {
   return (
     <View
       style={{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "white",
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        zIndex: 1000,
+        // flex: 1,
+        // alignItems: "center",
+        // justifyContent: "center",
+        // backgroundColor: "white",
       }}
     >
       <ActivityIndicator size={"large"} color={themePrimaryColor} />

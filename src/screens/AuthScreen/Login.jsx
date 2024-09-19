@@ -14,6 +14,7 @@ import { commonStyle } from "../../constants/commonStyle";
 import TextInputwithLogo from "../../componenets/TextInputwithLogo";
 import { CommonActions } from "@react-navigation/native";
 import { Icon } from "../../constants/Icon";
+import { constant } from "../../constants/constant";
 
 const Login = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -25,6 +26,11 @@ const Login = ({ navigation }) => {
   const ServerBaseUrl = userMpinData?.ServerBaseUrl;
   const mPin = userMpinData?.mPin;
 
+  const [errors, setErrors] = useState({
+    username: null,
+    password: null,
+  });
+
   const navigate = (tab) => {
     return navigation.dispatch(
       CommonActions.reset({
@@ -34,29 +40,48 @@ const Login = ({ navigation }) => {
     );
   };
 
-  const handleLogin = async () => {
-    try {
-      setIsLoading(true);
-      await dispatch(
-        login({
-          username,
-          password,
-          mPin,
-          ServerBaseUrl,
-          navigate,
-          dispatch,
-          setUserData,
-        })
-      );
-      setIsLoading(false);
-    } catch (error) {
-      console.log("Login error:", error);
-      setIsLoading(false);
-    } finally {
-      setIsLoading(false);
+  const checkTextInputValidation = () => {
+    if (!username.trim()) {
+      alert("Please Enter Username");
+      return;
+    }
+    if (!password.trim()) {
+      alert("Please Enter Password");
+      return;
     }
   };
 
+  const handleLogin = async () => {
+    const newErrors = {
+      username: username ? null : "Username is required",
+      password: password ? null : "Password is required",
+    };
+    setErrors(newErrors);
+    const hasErrors = Object.values(newErrors).some((error) => error !== null);
+    // checkTextInputValidation();
+    if (!hasErrors) {
+      try {
+        setIsLoading(true);
+        dispatch(
+          login({
+            username,
+            password,
+            mPin,
+            ServerBaseUrl,
+            navigate,
+            dispatch,
+            setUserData,
+          })
+        );
+        setIsLoading(false);
+      } catch (error) {
+        console.log("Login error:", error);
+        setIsLoading(false);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
   return (
     <SafeAreaView
       style={[commonStyle.container, { backgroundColor: "#1254a5" }]}
@@ -69,10 +94,13 @@ const Login = ({ navigation }) => {
               className="text-white text-center font-gsemibold"
               style={{ fontSize: hp(6) }}
             >
-              Login to your account
+              {constant.loginScreenTitle1}
             </Text>
-            <Text className="text-white text-center font-glight text-base mt-3">
-              Please enter your details
+            <Text
+              style={{ fontSize: hp(2) }}
+              className="text-white text-center font-glight mt-3"
+            >
+              {constant.loginScreenTitle2}
             </Text>
           </View>
         </View>
@@ -96,6 +124,7 @@ const Login = ({ navigation }) => {
                 icon={Icon.userNameIcon}
                 label="Username"
                 value={username}
+                errorMessage={errors.username}
                 onChangeText={(e) => setUsername(e)}
                 customStyle={{ alignSelf: "center" }}
               />
@@ -106,6 +135,7 @@ const Login = ({ navigation }) => {
                 icon={Icon.passwordIcon}
                 label="Password"
                 value={password}
+                errorMessage={errors.password}
                 onChangeText={(e) => setPassword(e)}
                 customStyle={{ alignSelf: "center" }}
                 secureTextEntry
@@ -116,11 +146,16 @@ const Login = ({ navigation }) => {
             </View>
           </View>
           <CustomBtn
+            disabled={!username || !password}
             isLoading={isLoading}
-            Customstyle={{ marginBottom: hp(4) }}
             titleStyle={{ fontWeight: 600 }}
             title="Log In"
             onPressHandler={handleLogin}
+            Customstyle={{
+              position: "absolute",
+              alignSelf: "center",
+              bottom: hp(5),
+            }}
           />
         </View>
       </ScrollView>

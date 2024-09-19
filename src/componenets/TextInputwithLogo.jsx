@@ -5,7 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -24,10 +24,14 @@ const TextInputwithLogo = ({
   textInputwrapperStyle,
   onPress,
   showPassword,
+  errorMessage,
   ...props
 }) => {
   return (
     <View style={[styles.inputContainer, customStyle]}>
+      {errorMessage ? (
+        <Text style={styles.errorText}>{errorMessage}</Text>
+      ) : null}
       <Image style={styles.usernamelogo} source={icon} contentFit="contain" />
       <View className="bg-white" style={styles.label}>
         <Text style={styles.labeltext}>{label}</Text>
@@ -63,6 +67,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "900",
     color: "#004787",
+  },
+  errorText: {
+    color: "red",
+    fontSize: hp(1.5),
+    position: "absolute",
+    paddingHorizontal: wp(1.9),
+    top: hp(-3.3),
+    zIndex: 999,
+    left: wp(2),
   },
   label: {
     position: "absolute",
@@ -111,6 +124,7 @@ const styles = StyleSheet.create({
   },
   eyeContainer: {
     alignSelf: "center",
+    marginRight: hp("1.3%"),
   },
   eyelogo: {
     width: hp("3%"),

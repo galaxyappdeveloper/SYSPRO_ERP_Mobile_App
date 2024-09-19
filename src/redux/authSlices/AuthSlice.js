@@ -62,6 +62,27 @@ export const logOut = createAsyncThunk("auth/logout", async () => {
   }
 });
 
+// export const updateUserData = createAsyncThunk(
+//   "auth/updateUserData",
+//   async ({ newUserData, setUserData, dispatch }) => {
+//     try {
+//       await AsyncStorage.setItem(userData, JSON.stringify(newUserData));
+//       const localStorage = await AsyncStorage.getItem(userData);
+//       dispatch(setUserData(newUserData));
+//       console.log(
+//         "New User data updated in store and async storage : ",
+//         newUserData
+//       );
+
+//       console.log("localStorage : ", localStorage);
+//       return true;
+//     } catch (error) {
+//       console.log("Error updating user data:", error);
+//       throw error;
+//     }
+//   }
+// );
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -75,7 +96,7 @@ const authSlice = createSlice({
     setMpinData: (state, { payload }) => {
       state.mpinData = payload;
     },
-    setUserData: (state, { payload }) => {
+    setUserDataSuccess: (state, { payload }) => {
       state.userData = payload;
     },
     setAuthLoading: (state, { payload }) => {
@@ -84,19 +105,34 @@ const authSlice = createSlice({
   },
 });
 
+export const setUserData = (userdata) => async (dispatch) => {
+  try {
+    await AsyncStorage.setItem(userData, JSON.stringify(userdata));
+    dispatch(authSlice.actions.setUserDataSuccess(userdata));
+    console.log(
+      "User data updated in AsyncStorage and Redux store : ",
+      userdata
+    );
+  } catch (error) {
+    console.error("Failed to save user data to AsyncStorage:", error);
+  }
+};
+
 export const loadMpinData = () => async (dispatch) => {
   const mpinData = await AsyncStorage.getItem(mPinData);
+  const parsedMpinData = mpinData != null ? JSON.parse(mpinData) : null;
   if (mpinData) {
-    dispatch(authSlice.actions.setMpinData(mpinData));
+    dispatch(authSlice.actions.setMpinData(parsedMpinData));
   }
 };
 
 export const loadUserData = () => async (dispatch) => {
   const userdata = await AsyncStorage.getItem(userData);
+  const parsedUserData = userdata != null ? JSON.parse(userdata) : null;
   if (userdata) {
-    dispatch(authSlice.actions.setUserData(userdata));
+    dispatch(authSlice.actions.setUserDataSuccess(parsedUserData));
   }
 };
 
 export default authSlice.reducer;
-export const { setMpinData, setUserData, setAuthLoading } = authSlice.actions;
+export const { setMpinData, setAuthLoading } = authSlice.actions;

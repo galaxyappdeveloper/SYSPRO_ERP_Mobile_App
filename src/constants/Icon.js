@@ -11,6 +11,7 @@ import ShowPasswordIcon from "../../assets/Icons/showPasswordIcon.svg";
 import SYSPROIcon from "../../assets/Icons/sysproIcon.svg";
 import YearIcon from "../../assets/Icons/yearIcon.svg";
 import PasswordIcon from "../../assets/Icons/passwordIcon.svg";
+import SettingIcon from "../../assets/Icons/setting.svg";
 
 export const Icon = {
   arrowRound: ArrowRound,
@@ -26,4 +27,5 @@ export const Icon = {
   showPasswordIcon: ShowPasswordIcon,
   sYSPROIcon: SYSPROIcon,
   yearIcon: YearIcon,
+  settingIcon: SettingIcon,
 };
