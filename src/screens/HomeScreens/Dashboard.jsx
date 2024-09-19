@@ -5,184 +5,195 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { themePrimaryColor } from "../../constants/constant";
-import { images } from "../../constants/images";
+import Carousel from "react-native-reanimated-carousel";
+import { images } from "./../../constants/images";
+import { LinearGradient } from "expo-linear-gradient";
 
 const Dashboard = () => {
-  const screenWidth = Dimensions.get("window").width;
+  const screenWidth = Dimensions.get("screen").width;
+  const imageData = [
+    {
+      id: 1,
+      images: images.creditCard,
+    },
+  ];
 
   return (
-    <View style={{ top: hp(1) }}>
-      <FlatList
-        horizontal={true}
-        pagingEnabled={true}
-        showsHorizontalScrollIndicator={false}
-        data={[1, 2, 3]}
-        renderItem={() => {
-          return (
-            <View
-              style={{
-                width: screenWidth,
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+    <View style={styles.DashboardContainer}>
+      <View style={styles.headerContainerLable}>
+        <Text className="font-gregular " style={styles.headerText}>
+          Good Morning !,
+        </Text>
+        <Text className="font-gregular" style={styles.headerText}>
+          {" "}
+          Janani Designer
+        </Text>
+      </View>
+      <View style={styles.carouselContainer}>
+        <Carousel
+          loop
+          width={screenWidth}
+          height={hp(30)}
+          autoPlay={true}
+          data={[imageData]}
+          scrollAnimationDuration={3000}
+          renderItem={({ index }) => (
+            <LinearGradient
+              style={styles.gradiant}
+              colors={["#0093E9", "#80D0C7"]}
             >
-              <View style={styles.Box} className=" rounded-xl">
-                <View style={{ flex: 1 }}>
-                  <Text
-                    style={{
-                      position: "absolute",
-                      color: "white",
-                      fontSize: hp(2),
-                      top: 15,
-                      zIndex: 1,
-                      paddingLeft: 12,
-                    }}
-                  >
-                    07/09/2024
-                  </Text>
-                  <Text
-                    style={{
-                      flex: 1,
-                      position: "absolute",
-                      alignItems: "center",
-                      color: "white",
-                      fontSize: hp(2),
-                      width: wp(90),
-                      textAlign: "right",
-                      top: 15,
-                      paddingRight: 12,
-                      zIndex: 1,
-                      //   borderWidth: 1,
-                    }}
-                  >
-                    Today's Sale
-                  </Text>
-                  <Text
-                    style={{
-                      position: "absolute",
-                      color: "white",
-                      width: wp(90),
-                      fontSize: hp(4),
-                      fontWeight: "bold",
-                      textAlign: "center",
-                      top: 60,
-                      zIndex: 1,
-                      //   borderWidth: 1,
-                    }}
-                  >
-                    ₹ 200.90
-                  </Text>
-                  <Text
-                    style={{
-                      position: "absolute",
-                      color: "white",
-                      fontSize: 20,
-                      textAlign: "center",
-                      marginTop: "32%",
-                      zIndex: 1,
-                      width: wp(90),
-                    }}
-                  >
-                    Total Sale
-                  </Text>
-                  <Image style={styles.image} source={images.creditCard} />
-                </View>
+              <View>
+                <Text style={styles.gradiantText}>Hello</Text>
               </View>
-            </View>
-          );
-        }}
-      ></FlatList>
-      <FlatList
-        horizontal={true}
-        pagingEnabled={true}
-        showsHorizontalScrollIndicator={false}
-        data={[1, 2, 3]}
-        renderItem={() => {
-          return (
-            <View
-              style={{
-                width: screenWidth,
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <View
-                style={{
-                  marginTop: hp(2),
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <View style={styles.Box1} className=" rounded-xl">
-                  <View style={styles.Box2} className=" rounded-xl"></View>
+            </LinearGradient>
+          )}
+        />
+      </View>
+      <View style={styles.BoxContainerSale}>
+        <FlatList
+          horizontal
+          pagingEnabled={true}
+          showsHorizontalScrollIndicator={false}
+          data={[1, 2]}
+          renderItem={() => {
+            return (
+              <>
+                <View style={styles.Box}>
+                  <Text style={styles.BoxText}>0</Text>
+                  <View>
+                    <Text style={styles.BoxTextOrder}>Today Order</Text>
+                    <Text style={styles.BoxTextOrderOne}>More</Text>
+                  </View>
                 </View>
-              </View>
-            </View>
-          );
-        }}
-      ></FlatList>
-      <FlatList
-        horizontal={true}
-        pagingEnabled={true}
-        showsHorizontalScrollIndicator={false}
-        data={[1, 2, 3]}
-        renderItem={() => {
-          return (
-            <View
-              style={{
-                width: screenWidth,
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <View style={styles.Box3} className=" rounded-xl"></View>
-            </View>
-          );
-        }}
-      ></FlatList>
+
+                <View style={styles.Box1}>
+                  <Text style={styles.BoxText}>0</Text>
+                  <View>
+                    <Text style={styles.BoxTextOrder}>Today Sales</Text>
+                    <Text style={styles.BoxTextOrderOne}>More</Text>
+                  </View>
+                </View>
+              </>
+            );
+          }}
+        />
+      </View>
+
+      <View style={styles.BoxContainerOne}>
+        <FlatList
+          horizontal
+          pagingEnabled={true}
+          showsHorizontalScrollIndicator={false}
+          data={[1, 2, 3, 4, 5, 6]}
+          renderItem={() => {
+            return (
+              <>
+                <View style={styles.Box2}>
+                  <Text style={styles.BoxText}>0</Text>
+                  <View>
+                    <Text style={styles.BoxTextOrder}>Today PO</Text>
+                    <Text style={styles.BoxTextOrderOne}>More</Text>
+                  </View>
+                </View>
+                <View style={styles.Box3}>
+                  <Text style={styles.BoxText}>0</Text>
+                  <View>
+                    <Text style={styles.BoxTextOrder}>Today Purchase</Text>
+                    <Text style={styles.BoxTextOrderOne}>More</Text>
+                  </View>
+                </View>
+              </>
+            );
+          }}
+        />
+      </View>
     </View>
   );
 };
 const styles = StyleSheet.create({
+  DashboardContainer: {
+    flex: 1,
+  },
+  carouselContainer: {
+    height: hp(30),
+  },
+  BoxContainerSale: {
+    // height: hp(30),
+  },
+  BoxText: {
+    fontSize: 30,
+    fontWeight: "semibold",
+    textAlign: "center",
+    padding: hp(2),
+    color: "white",
+  },
+  BoxTextOrder: {
+    fontSize: 22,
+    fontWeight: "semibold",
+    textAlign: "center",
+    marginTop: hp(0),
+    color: "white",
+  },
+  BoxTextOrderOne: {
+    fontSize: 20,
+    textAlign: "center",
+    marginTop: hp(3),
+    color: "white",
+  },
   Box: {
-    margin: 10,
-    width: wp(90),
-    height: hp(25),
-    elevation: 15,
+    height: hp(20),
+    width: wp(40),
+    margin: 22,
+    backgroundColor: "#6AB04A",
+    borderRadius: 20,
   },
   Box1: {
-    margin: 10,
-    // top: hp(10),
-    marginLeft: wp(-45),
+    height: hp(20),
     width: wp(40),
-    height: hp(25),
-    backgroundColor: "gray",
-    elevation: 15,
+    margin: 22,
+    backgroundColor: "#EC4849",
+    borderRadius: 20,
   },
+
   Box2: {
-    margin: 10,
-    marginLeft: wp(45),
-    marginTop: hp(0),
+    height: hp(20),
     width: wp(40),
-    height: hp(25),
-    backgroundColor: "gray",
-    elevation: 15,
+    margin: 22,
+    backgroundColor: "#6AB04A",
+    borderRadius: 20,
   },
   Box3: {
-    margin: 25,
-    width: wp(90),
-    height: hp(25),
-    elevation: 15,
-    backgroundColor: themePrimaryColor,
-  },
-  image: {
-    width: wp(90),
-    height: hp(25),
+    height: hp(20),
+    width: wp(40),
+    margin: 22,
+    backgroundColor: "#6AB04A",
     borderRadius: 20,
+  },
+  gradiant: {
+    flex: 3,
+    borderRadius: 20,
+    margin: 20,
+  },
+  gradiantText: {
+    color: "black",
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    margin: 10,
+    padding: hp(10),
+  },
+  headerContainerLable: {
+    margin: 10,
+    flex: 1,
+
+    height: hp(8),
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#239fe4",
+    borderRadius: 20,
+  },
+  headerText: {
+    fontSize: hp(3),
   },
 });
 
