@@ -61,9 +61,9 @@ const CompanyConfig = ({ navigation }) => {
   const handleConfigSubmit = async () => {
     const newErrors = {
       company: company ? null : "Company is required",
-      duration: duration ? null : "Duration is required",
+      duration: duration ? null : "Year Duration is required",
       premise: premise ? null : "Premise is required",
-      location: location ? null : "Location is required",
+      location: location ? null : "Department is required",
     };
 
     setErrors(newErrors);
@@ -115,6 +115,7 @@ const CompanyConfig = ({ navigation }) => {
               LeftIcon={Icon.companyIcon}
               rightIcon={Icon.dropDownIcon}
               label="Company"
+              isRequired={true}
               requiredLabel={errors.company}
               onChangeValue={(value) => {
                 setCompany(value);
@@ -134,6 +135,7 @@ const CompanyConfig = ({ navigation }) => {
               LeftIcon={Icon.yearIcon}
               rightIcon={Icon.dropDownIcon}
               label="Year"
+              isRequired={true}
               requiredLabel={errors.duration}
               onChangeValue={(value) => {
                 setDuration(value);
@@ -152,6 +154,7 @@ const CompanyConfig = ({ navigation }) => {
               LeftIcon={Icon.primiseIcon}
               rightIcon={Icon.dropDownIcon}
               label="Premise"
+              isRequired={true}
               requiredLabel={errors.premise}
               onChangeValue={(value) => {
                 setPremise(value);
@@ -170,6 +173,7 @@ const CompanyConfig = ({ navigation }) => {
               LeftIcon={Icon.departmentIcon}
               rightIcon={Icon.dropDownIcon}
               label="Department"
+              isRequired={true}
               requiredLabel={errors.location}
               onChangeValue={(value) => {
                 setLocation(value);
@@ -232,6 +236,5 @@ const styles = StyleSheet.create({
   dropDownSelectors: {
     marginTop: hp(4),
     alignSelf: "center",
-    gap: hp(1),
   },
 });

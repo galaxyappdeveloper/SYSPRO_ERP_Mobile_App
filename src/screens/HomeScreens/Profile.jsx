@@ -159,7 +159,7 @@ export const DrawerProfile = (props) => {
         </TouchableOpacity>
       </View>
 
-      <DrawerItemList {...props} />
+      {/* <DrawerItemList {...props} /> */}
     </DrawerContentScrollView>
   );
 };

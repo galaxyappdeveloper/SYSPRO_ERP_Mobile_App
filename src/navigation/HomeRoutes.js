@@ -17,7 +17,8 @@ import { Image } from "expo-image";
 import { Icon } from "../constants/Icon";
 import { View } from "react-native";
 import { TouchableOpacity } from "react-native";
-import { Greeting } from "../componenets/Greeting";
+import { Greeting } from "../functions/Greeting";
+import CustomDrawerContent from "./CustomDrawerContent";
 
 const Drawer = createDrawerNavigator();
 
@@ -30,7 +31,8 @@ const HomeRoutes = () => {
           backgroundColor: "white",
         },
       }}
-      drawerContent={(props) => <DrawerProfile {...props} />}
+      // drawerContent={(props) => <DrawerProfile {...props} />
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen
         options={({ navigation, route }) => ({
@@ -57,12 +59,15 @@ const HomeRoutes = () => {
         component={Dashboard}
       />
       <Drawer.Screen
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          drawerLabel: () => null,
+        }}
         name={ScreenName.profile}
         component={Profile}
       />
       <Drawer.Screen
-        options={{ headerShown: false }}
+        options={{ headerShown: false, drawerLabel: () => null }}
         name={ScreenName.companyConfig}
         component={CompanyConfig}
       />

@@ -16,6 +16,7 @@ const DropdownComponent = ({
   valueField,
   onChangeValue,
   customStyle,
+  isRequired,
   requiredLabel,
 }) => {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -23,7 +24,9 @@ const DropdownComponent = ({
 
   const renderLabel = () => {
     return (
-      <Text style={[styles.label, isFocus && { color: "blue" }]}>{label}</Text>
+      <Text style={[styles.label, isFocus && { color: "blue" }]}>
+        {label} {isRequired && <Text style={styles.requiredLabelstar}>*</Text>}
+      </Text>
     );
   };
 
@@ -87,17 +90,17 @@ export default DropdownComponent;
 
 const styles = StyleSheet.create({
   container: {
-    top: hp(-2),
-    backgroundColor: "white",
     padding: 16,
+    paddingBottom: hp(3),
   },
   requiredLabelText: {
     color: "red",
     fontSize: hp(1.5),
     position: "absolute",
     paddingHorizontal: wp(1.9),
-    top: hp(10),
-    zIndex: 999,
+    top: hp(10.5),
+    marginBottom: hp(1),
+    zIndex: 999999,
     left: wp(4),
   },
   dropdown: {
@@ -124,6 +127,9 @@ const styles = StyleSheet.create({
     left: wp(10),
     backgroundColor: "white",
     color: "#5C658C",
+  },
+  requiredLabelstar: {
+    color: "red",
   },
   placeholderStyle: {
     padding: hp(1.5),
