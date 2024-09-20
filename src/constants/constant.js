@@ -15,3 +15,10 @@ export const constant = {
   loginScreenTitle1: "Login to your account",
   loginScreenTitle2: "Please enter your details",
 };
+
+
+
+
+export const colors={
+  themePrimaryColor: "#1254a5",
+}
