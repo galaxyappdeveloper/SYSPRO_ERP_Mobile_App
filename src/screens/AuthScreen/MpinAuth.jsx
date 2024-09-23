@@ -93,51 +93,50 @@ const MpinAuth = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView
-      style={[commonStyle.container, { backgroundColor: "#1254a5" }]}
-    >
+    <SafeAreaView style={[commonStyle.container, { backgroundColor: "white" }]}>
       <StatusBar
         backgroundColor={themePrimaryColor}
         barStyle={"light-content"}
       />
       <ScrollView keyboardShouldPersistTaps="handled">
         {/* top container */}
-        <View style={{ height: hp(27) }}>
-          <View className="mt-8">
+        <View style={{ height: hp(58) }}>
+          <View style={styles.topContainer}>
             <Text
-              className="text-white text-center font-gsemibold"
-              style={{ fontSize: hp(6) }}
+              className="text-black text-center font-gbold"
+              style={{ fontSize: hp(5) }}
             >
               {constant.mpinScreenTitle1}
             </Text>
             <Text
               style={{ fontSize: hp(2) }}
-              className="text-white text-center font-glight  mt-3"
+              className="text-[#9397A8] text-center font-glight   mt-3"
             >
               {constant.mpinScreenTitle2}
             </Text>
             <Text
               style={{ fontSize: hp(2) }}
-              className="text-white  text-center font-glight"
+              className="text-[#9397A8]  text-center font-glight"
             >
               {constant.mpinScreenTitle3}
             </Text>
           </View>
         </View>
+        {/* White Container */}
         <View
           style={[
             commonStyle.innerContainer,
             {
-              height: hp(73),
+              height: hp(40),
               backgroundColor: "white",
               justifyContent: "space-between",
             },
           ]}
-          className="w-[100%] mt-14 bg-white rounded-t-[26px]"
+          // className="w-[100%] mt-14 bg-white rounded-t-[26px]"
         >
-          <View className="flex-1 p-8">
-            <Text className="font-gsemibold text-2xl ml-[-10]">MPin</Text>
-            <View className="mt-4">
+          <View className="flex-1 ">
+            {/* <Text className="font-gsemibold text-2xl ml-[-10]">MPin</Text> */}
+            <View className="mt-2">
               <TextInputwithLogo
                 placeholder="Enter your mpin "
                 icon={Icon.mpinIcon}
@@ -222,5 +221,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  topContainer: {
+    marginTop: hp(45),
+  },
+  Imagecontainer: {
+    
   },
 });

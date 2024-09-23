@@ -1,3 +1,4 @@
+
 export const token = "access_token";
 export const userData = "userData";
 export const mPinData = "mpinData";
@@ -10,10 +11,11 @@ export const urls = {
 
 export const constant = {
   mpinScreenTitle1: "Let's Connect",
-  mpinScreenTitle2: "Please enter info to connect",
-  mpinScreenTitle3: "your business",
-  loginScreenTitle1: "Login to your account",
-  loginScreenTitle2: "Please enter your details",
+  mpinScreenTitle2: "Please fill in the m-pin below to make it",
+  mpinScreenTitle3: "easier for us get to know you",
+  loginScreenTitle1: "Welcome Back! ",
+  loginScreenTitle2: "Please fill username and password",
+  loginScreenTitle3: "to continue",
 };
 
 
