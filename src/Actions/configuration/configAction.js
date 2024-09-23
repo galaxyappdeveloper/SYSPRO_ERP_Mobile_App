@@ -59,7 +59,7 @@ export const getCompany = () => async (dispatch) => {
     dispatch(setLoading(true));
     const response = await ConfigService.getCompanyByUser(body);
     dispatch(setCompany(response?.data?.Data?.Table1));
-    console.log("Company data : ", response?.data?.Data?.Table1);
+    // console.log("Company data : ", response?.data?.Data?.Table1);
     dispatch(setLoading(false));
   } catch (error) {
     if (
@@ -82,7 +82,7 @@ export const getYearDuration = () => async (dispatch) => {
     dispatch(setLoading(true));
     const response = await ConfigService.getYearByUser(body);
     dispatch(setYearDuration(response?.data?.Data?.Table1));
-    console.log("Year duration data : ", response?.data?.Data?.Table1);
+    // console.log("Year duration data : ", response?.data?.Data?.Table1);
 
     dispatch(setLoading(false));
   } catch (error) {
@@ -105,7 +105,7 @@ export const getPremise = () => async (dispatch) => {
   try {
     dispatch(setLoading(true));
     const response = await ConfigService.getPremiseByUser(body);
-    console.log("premise data : ", response?.data?.Data?.Table1);
+    // console.log("premise data : ", response?.data?.Data?.Table1);
 
     dispatch(setPremise(response?.data?.Data?.Table1));
     dispatch(setLoading(false));
@@ -132,8 +132,8 @@ export const getLocation = () => async (dispatch) => {
     const response = await ConfigService.getDepartmentByUser(body);
     dispatch(setLocation(response?.data?.Data?.Table1));
     const localStoragedata = await AsyncStorage.getItem(userData);
-    console.log("localStoragedata : ", localStoragedata);
-    console.log("department data : ", response?.data?.Data);
+    // console.log("localStoragedata : ", localStoragedata);
+    // console.log("department data : ", response?.data?.Data);
 
     dispatch(setLoading(false));
   } catch (error) {
@@ -199,7 +199,7 @@ export const saveCompanyConfig =
       const response = await ConfigService.saveCompanyConfig(body);
       dispatch(setUserData(response?.data?.Data));
 
-      console.log("Save company configuration Demo : ", response?.data?.Data);
+      // console.log("Save company configuration Demo : ", response?.data?.Data);
       notifyMessage("Company Configuration save Successfully !");
     } catch (error) {
       if (

@@ -49,20 +49,8 @@ const Dashboard = () => {
 
   return (
     <ScrollView style={styles.DashboardContainer}>
-      <View 
-        style={styles.headerContainerLable}
-      >
-        <Text className="font-gbold " style={styles.headerText}>
-          Good Morning !
-        </Text>
-        <Text className="font-gregular" style={styles.headerText2}>
-          Janani Designer
-        </Text>
-      </View>
-
       <View style={styles.carouselContainer}>
         <Carousel
-          // key={({ item, index }) => item.id}
           loop
           width={screenWidth}
           height={hp(30)}
@@ -374,7 +362,7 @@ const styles = StyleSheet.create({
     marginLeft: wp(-45),
     width: wp(40),
     height: hp(20),
-    backgroundColor:"#F4F7F9"
+    backgroundColor: "#F4F7F9",
   },
   Box2: {
     margin: 10,

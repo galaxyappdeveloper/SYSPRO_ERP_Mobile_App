@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { scale, moderateScale } from "react-native-size-matters";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { images } from "../../constants/images";
@@ -15,6 +15,7 @@ import TextInputwithLogo from "../../componenets/TextInputwithLogo";
 import { CommonActions } from "@react-navigation/native";
 import { Icon } from "../../constants/Icon";
 import { constant } from "../../constants/constant";
+import { useEffect } from "react";
 
 const Login = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -30,6 +31,7 @@ const Login = ({ navigation }) => {
     username: null,
     password: null,
   });
+  const passwordRef = useRef(null);
 
   const navigate = (tab) => {
     return navigation.dispatch(
@@ -50,6 +52,10 @@ const Login = ({ navigation }) => {
       return;
     }
   };
+
+  // const handleFocus = () => {
+  //   inputRef.current.focus();
+  // };
 
   const handleLogin = async () => {
     const newErrors = {
@@ -127,6 +133,9 @@ const Login = ({ navigation }) => {
                 errorMessage={errors.username}
                 onChangeText={(e) => setUsername(e)}
                 customStyle={{ alignSelf: "center" }}
+                returnKeyType="next"
+                onSubmitEditing={() => passwordRef.current.focus()}
+                blurOnSubmit={false}
               />
             </View>
             <View className="mt-3">
@@ -142,6 +151,9 @@ const Login = ({ navigation }) => {
                 rightIcon={true}
                 onPress={() => setShowPassword(!showPassword)}
                 showPassword={showPassword}
+                ref={passwordRef}
+                returnKeyType="done"
+                onSubmitEditing={() => handleLogin()}
               />
             </View>
           </View>

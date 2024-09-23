@@ -5,7 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { forwardRef } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -13,54 +13,60 @@ import {
 import { Image } from "expo-image";
 import { Icon } from "./../constants/Icon";
 
-const TextInputwithLogo = ({
-  icon,
-  placeholder,
-  onChangeText,
-  value,
-  label,
-  customStyle,
-  rightIcon,
-  textInputwrapperStyle,
-  onPress,
-  showPassword,
-  errorMessage,
-  ...props
-}) => {
-  return (
-    <View style={[styles.inputContainer, customStyle]}>
-      {errorMessage ? (
-        <Text style={styles.errorText}>{errorMessage}</Text>
-      ) : null}
-      <Image style={styles.usernamelogo} source={icon} contentFit="contain" />
-      <View className="bg-white" style={styles.label}>
-        <Text style={styles.labeltext}>{label}</Text>
+const TextInputwithLogo = forwardRef(
+  (
+    {
+      icon,
+      placeholder,
+      onChangeText,
+      value,
+      label,
+      customStyle,
+      rightIcon,
+      textInputwrapperStyle,
+      onPress,
+      showPassword,
+      errorMessage,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <View style={[styles.inputContainer, customStyle]}>
+        {errorMessage ? (
+          <Text style={styles.errorText}>{errorMessage}</Text>
+        ) : null}
+        <Image style={styles.usernamelogo} source={icon} contentFit="contain" />
+        <View className="bg-white" style={styles.label}>
+          <Text style={styles.labeltext}>{label}</Text>
+        </View>
+        <TextInput
+          {...props}
+          style={styles.input}
+          placeholder={placeholder}
+          placeholderTextColor="#5C658C"
+          textAlign="start"
+          onChangeText={onChangeText}
+          cursorColor="#5C658C"
+          value={value}
+          secureTextEntry={showPassword}
+          ref={ref}
+        />
+        {rightIcon && (
+          <TouchableOpacity style={styles.eyeContainer} onPress={onPress}>
+            <Image
+              style={styles.eyelogo}
+              source={
+                !showPassword ? Icon.showPasswordIcon : Icon.hidePasswordIcon
+              }
+              contentFit="contain"
+            />
+          </TouchableOpacity>
+        )}
       </View>
-      <TextInput
-        {...props}
-        style={styles.input}
-        placeholder={placeholder}
-        placeholderTextColor="#5C658C"
-        textAlign="start"
-        onChangeText={onChangeText}
-        cursorColor="#5C658C"
-        value={value}
-        secureTextEntry={showPassword}
-      />
-      {rightIcon && (
-        <TouchableOpacity style={styles.eyeContainer} onPress={onPress}>
-          <Image
-            style={styles.eyelogo}
-            source={
-              !showPassword ? Icon.showPasswordIcon : Icon.hidePasswordIcon
-            }
-            contentFit="contain"
-          />
-        </TouchableOpacity>
-      )}
-    </View>
-  );
-};
+    );
+  }
+);
 
 const styles = StyleSheet.create({
   title: {

@@ -96,10 +96,7 @@ const MpinAuth = ({ navigation }) => {
     <SafeAreaView
       style={[commonStyle.container, { backgroundColor: "#1254a5" }]}
     >
-      <StatusBar
-        backgroundColor={themePrimaryColor}
-        barStyle={"light-content"}
-      />
+      <StatusBar backgroundColor={themePrimaryColor} barStyle={"default"} />
       <ScrollView keyboardShouldPersistTaps="handled">
         {/* top container */}
         <View style={{ height: hp(27) }}>
@@ -146,6 +143,8 @@ const MpinAuth = ({ navigation }) => {
                 errorMessage={errors.mpin}
                 onChangeText={handleMpinChange}
                 customStyle={{ alignSelf: "center" }}
+                returnKeyType="done"
+                onSubmitEditing={() => handleMpinAuth()}
               />
             </View>
           </View>
