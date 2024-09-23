@@ -47,6 +47,17 @@ const Dashboard = () => {
     },
   ];
 
+  const renderCardContainer = (BgColor) => {
+    return (
+      <View
+        style={[styles.CardContainer, { backgroundColor: BgColor}]}
+      >
+        <Text style={{ fontSize: hp(3), alignSelf: "center" }}>0</Text>
+        <Text className="text-center font-gsemibold text-lg" style={{ alignSelf: "center" }}>Today Sales</Text>
+      </View>
+    );
+  };
+
   return (
     <ScrollView style={styles.DashboardContainer}>
       <View style={styles.carouselContainer}>
@@ -58,271 +69,105 @@ const Dashboard = () => {
           data={imageData}
           scrollAnimationDuration={3000}
           renderItem={({ item, index }) => (
-            <LinearGradient
-              style={styles.gradiant}
-              colors={["#7a70ba", "#000000"]}
-            >
+            <View style={styles.gradiant}>
               <View>
                 <Text style={styles.gradiantText}>{item.title}</Text>
               </View>
-            </LinearGradient>
+            </View>
           )}
         />
       </View>
-
-      {/* <Pagination data={imageData} paginationIndex /> */}
-      <View style={styles.BoxContainerSale}>
-        <View>
-          <Text
-            style={{
-              marginLeft: hp(5),
-              fontWeight: "600",
-              fontSize: hp(3),
-              color: themePrimaryColor,
-            }}
-          >
-            Sales
-          </Text>
-        </View>
+      <View style={styles.SaleContainer}>
+        <Text style={styles.SaleText}>Sale</Text>
         <FlatList
-          horizontal={true}
-          pagingEnabled={true}
+          horizontal
           showsHorizontalScrollIndicator={false}
-          data={[1, 2, 3]}
-          renderItem={() => {
-            return (
-              <View
-                style={{
-                  width: screenWidth,
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <View
-                  style={{
-                    // marginTop: hp(2),
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <LinearGradient
-                    colors={["#7a70ba", "#000000"]}
-                    style={styles.Box1}
-                    className=" rounded-xl"
-                  >
-                    <Text style={styles.BoxText}>0</Text>
-                    <View>
-                      <Text style={styles.BoxTextOrder}>Today Order</Text>
-                      <Text style={styles.BoxTextOrderOne}>More</Text>
-                    </View>
-                    <LinearGradient
-                      colors={["#7a70ba", "#000000"]}
-                      style={styles.Box2}
-                      className=" rounded-xl"
-                    >
-                      <Text style={styles.BoxText}>1</Text>
-                      <View>
-                        <Text style={styles.BoxTextOrder}>Today Sales</Text>
-                        <Text style={styles.BoxTextOrderOne}>More</Text>
-                      </View>
-                    </LinearGradient>
-                  </LinearGradient>
-                </View>
-              </View>
-            );
-          }}
-        ></FlatList>
+          renderItem={() => renderCardContainer("#F9F9F9")}
+          data={[
+            {
+              id: 1,
+              title: "Sales",
+            }
+          ]}
+        />
       </View>
-
-      <View style={styles.BoxContainerOne}>
-        <View>
-          <Text
-            style={{
-              marginLeft: hp(5),
-              fontWeight: "600",
-              fontSize: hp(3),
-              color: themePrimaryColor,
-            }}
-          >
-            Purchases
-          </Text>
-        </View>
+      <View style={styles.PurchaseContainer}>
+        <Text style={styles.PurchaseText}>Purchase</Text>
         <FlatList
-          horizontal={true}
-          pagingEnabled={true}
+          horizontal
           showsHorizontalScrollIndicator={false}
-          data={[1, 2, 3]}
-          renderItem={() => {
-            return (
-              <View
-                style={{
-                  width: screenWidth,
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <View
-                  style={{
-                    // marginTop: hp(2),
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <LinearGradient
-                    colors={["#7a70ba", "#000000"]}
-                    style={styles.Box3}
-                    className=" rounded-xl"
-                  >
-                    <Text style={styles.BoxText}>2</Text>
-                    <View>
-                      <Text style={styles.BoxTextOrder}>Today Order</Text>
-                      <Text style={styles.BoxTextOrderOne}>More</Text>
-                    </View>
-                    <LinearGradient
-                      colors={["#7a70ba", "#000000"]}
-                      style={styles.Box4}
-                      className=" rounded-xl"
-                    >
-                      <Text style={styles.BoxText}>3</Text>
-                      <View>
-                        <Text style={styles.BoxTextOrder}>Today Sales</Text>
-                        <Text style={styles.BoxTextOrderOne}>More</Text>
-                      </View>
-                    </LinearGradient>
-                  </LinearGradient>
-                </View>
-              </View>
-            );
-          }}
-        ></FlatList>
+          renderItem={() => renderCardContainer("#F9F9F9")}
+          data={[
+            {
+              id: 1,
+              title: "Sales",
+            },
+            {
+              id: 2,
+              title: "Purchase",
+            },
+            {
+              id: 3,
+              title: "Job Work",
+            },
+            {
+              id: 4,
+              title: "Account",
+            },
+          ]}
+        />
       </View>
-      <View style={styles.BoxContainerSale}>
-        <View>
-          <Text
-            style={{
-              marginLeft: hp(5),
-              fontWeight: "600",
-              fontSize: hp(3),
-              color: themePrimaryColor,
-            }}
-          >
-            Job Work
-          </Text>
-        </View>
+      <View style={styles.JobworkContainer}>
+        <Text style={styles.JobworkText}>Job Work</Text>
         <FlatList
-          horizontal={true}
-          pagingEnabled={true}
+          horizontal
           showsHorizontalScrollIndicator={false}
-          data={[1, 2, 3]}
-          renderItem={() => {
-            return (
-              <View
-                style={{
-                  width: screenWidth,
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <View
-                  style={{
-                    // marginTop: hp(2),
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <LinearGradient
-                    colors={["#7a70ba", "#000000"]}
-                    style={styles.Box1}
-                    className=" rounded-xl"
-                  >
-                    <Text style={styles.BoxText}>0</Text>
-                    <View>
-                      <Text style={styles.BoxTextOrder}>Today Order</Text>
-                      <Text style={styles.BoxTextOrderOne}>More</Text>
-                    </View>
-                    <LinearGradient
-                      colors={["#7a70ba", "#000000"]}
-                      style={styles.Box2}
-                      className=" rounded-xl"
-                    >
-                      <Text style={styles.BoxText}>1</Text>
-                      <View>
-                        <Text style={styles.BoxTextOrder}>Today Sales</Text>
-                        <Text style={styles.BoxTextOrderOne}>More</Text>
-                      </View>
-                    </LinearGradient>
-                  </LinearGradient>
-                </View>
-              </View>
-            );
-          }}
-        ></FlatList>
+          renderItem={()=>renderCardContainer("#F9F9F9")}
+          data={[
+            {
+              id: 1,
+              title: "Sales",
+            },
+            {
+              id: 2,
+              title: "Purchase",
+            },
+            {
+              id: 3,
+              title: "Job Work",
+            },
+            {
+              id: 4,
+              title: "Account",
+            },
+          ]}
+        />
       </View>
-      <View style={styles.BoxContainerSale}>
-        <View>
-          <Text
-            style={{
-              marginLeft: hp(5),
-              fontWeight: "600",
-              fontSize: hp(3),
-              color: themePrimaryColor,
-            }}
-          >
-            Accounts
-          </Text>
-        </View>
+      <View style={styles.AccountContainer}>
+        <Text style={styles.AccountText}>Account</Text>
         <FlatList
-          horizontal={true}
-          pagingEnabled={true}
+          horizontal
           showsHorizontalScrollIndicator={false}
-          data={[1, 2, 3]}
-          renderItem={() => {
-            return (
-              <View
-                style={{
-                  width: screenWidth,
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <View
-                  style={{
-                    // marginTop: hp(2),
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <LinearGradient
-                    colors={["#7a70ba", "#000000"]}
-                    style={styles.Box1}
-                    className=" rounded-xl"
-                  >
-                    <Text style={styles.BoxText}>0</Text>
-                    <View>
-                      <Text style={styles.BoxTextOrder}>Today Order</Text>
-                      <Text style={styles.BoxTextOrderOne}>More</Text>
-                    </View>
-                    <LinearGradient
-                      colors={["#7a70ba", "#000000"]}
-                      style={styles.Box2}
-                      className=" rounded-xl"
-                    >
-                      <Text style={styles.BoxText}>1</Text>
-                      <View>
-                        <Text style={styles.BoxTextOrder}>Today Sales</Text>
-                        <Text style={styles.BoxTextOrderOne}>More</Text>
-                      </View>
-                    </LinearGradient>
-                  </LinearGradient>
-                </View>
-              </View>
-            );
-          }}
-        ></FlatList>
+          renderItem={()=>renderCardContainer("#F9F9F9")}
+          data={[
+            {
+              id: 1,
+              title: "Sales",
+            },
+            {
+              id: 2,
+              title: "Purchase",
+            },
+            {
+              id: 3,
+              title: "Job Work",
+            },
+            {
+              id: 4,
+              title: "Account",
+            },
+          ]}
+        />
       </View>
     </ScrollView>
   );
@@ -330,65 +175,12 @@ const Dashboard = () => {
 const styles = StyleSheet.create({
   DashboardContainer: {
     flex: 1,
-  },
-  carouselContainer: {
-    height: hp(30),
-  },
-  BoxContainerSale: {
-    // height: hp(30),
-  },
-  BoxText: {
-    fontSize: hp(3),
-    fontWeight: "semibold",
-    textAlign: "center",
-    padding: hp(2),
-    color: "white",
-  },
-  BoxTextOrder: {
-    fontSize: hp(2),
-    fontWeight: "semibold",
-    textAlign: "center",
-    marginTop: hp(0),
-    color: "white",
-  },
-  BoxTextOrderOne: {
-    fontSize: hp(2),
-    textAlign: "center",
-    marginTop: hp(3),
-    color: "white",
-  },
-  Box1: {
-    margin: 10,
-    marginLeft: wp(-45),
-    width: wp(40),
-    height: hp(20),
-    backgroundColor: "#F4F7F9",
-  },
-  Box2: {
-    margin: 10,
-    marginLeft: wp(45),
-    marginTop: hp(-16.4),
-    width: wp(40),
-    height: hp(20),
-  },
-  Box3: {
-    margin: 10,
-    marginLeft: wp(-45),
-    width: wp(40),
-    height: hp(20),
-  },
-  Box4: {
-    margin: 10,
-    marginLeft: wp(45),
-    marginTop: hp(-16.4),
-    width: wp(40),
-    height: hp(20),
-  },
-
+  },  
   gradiant: {
     flex: 1,
     borderRadius: 20,
     margin: hp(2),
+    backgroundColor: "#0252A7",
   },
   gradiantText: {
     color: "white",
@@ -398,22 +190,42 @@ const styles = StyleSheet.create({
     margin: hp(1),
     padding: hp(8),
   },
-  headerContainerLable: {
-    marginHorizontal: hp(2),
-    marginVertical: hp(1),
-    flex: 1,
-    alignItems: "start",
-    justifyContent: "center",
-    // backgroundColor: "#239fe4",
+  CardContainer: {
+    height: hp(15),
+    width: wp(45),
+    backgroundColor: "#F9F9F9",
     borderRadius: 20,
-    marginLeft: hp(5),
+    borderWidth: 1,
+    margin: hp(1),  
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 7,
   },
-  headerText: {
-    fontSize: hp(3),
+  SaleContainer:{
   },
-  headerText2: {
-    fontSize: hp(3),
-    paddingLeft: hp(4),
+  SaleText: {
+    fontSize: hp(2.5),
+    fontWeight: "600",
+    color: themePrimaryColor,
+    marginHorizontal: hp(3),
+  },
+  PurchaseText: {
+    fontSize: hp(2.5),
+    fontWeight: "600",
+    color: themePrimaryColor,
+    marginHorizontal: hp(3),
+  },
+  JobworkText: {
+    fontSize: hp(2.5),
+    fontWeight: "600",
+    color: themePrimaryColor,
+    marginHorizontal: hp(3),
+  },
+  AccountText: {
+    fontSize: hp(2.5),
+    fontWeight: "600",
+    color: themePrimaryColor,
+    marginHorizontal: hp(3),
   },
 });
 
