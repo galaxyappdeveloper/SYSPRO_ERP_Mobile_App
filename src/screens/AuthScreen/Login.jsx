@@ -90,23 +90,29 @@ const Login = ({ navigation }) => {
   };
   return (
     <SafeAreaView
-      style={[commonStyle.container, { backgroundColor: "#1254a5" }]}
+      style={[commonStyle.container]}
     >
       <ScrollView keyboardShouldPersistTaps="handled">
         {/* top container */}
-        <View style={{ height: hp(27) }}>
-          <View className="mt-8">
+        <View style={{ height: hp(60) }}>
+          <View style={styles.topContainer}>
             <Text
-              className="text-white text-center font-gsemibold"
-              style={{ fontSize: hp(6) }}
+              className="text-black text-center font-gbold"
+              style={{ fontSize: hp(5) }}
             >
               {constant.loginScreenTitle1}
             </Text>
             <Text
               style={{ fontSize: hp(2) }}
-              className="text-white text-center font-glight mt-3"
+              className="text-[#9397A8] text-center font-glight mt-3"
             >
               {constant.loginScreenTitle2}
+            </Text>
+            <Text
+              style={{ fontSize: hp(2) }}
+              className="text-[#9397A8] text-center font-glight mt-3"
+            >
+              {constant.loginScreenTitle3}
             </Text>
           </View>
         </View>
@@ -115,16 +121,16 @@ const Login = ({ navigation }) => {
           style={[
             commonStyle.innerContainer,
             {
-              height: hp(73),
+              height: hp(40),
               backgroundColor: "white",
               justifyContent: "space-between",
             },
           ]}
-          className="w-[100%] mt-14 bg-white rounded-t-[26px]"
+          // className="w-[100%] mt-14 bg-white rounded-t-[26px]"
         >
-          <View className="flex-1 p-8">
-            <Text className="font-gsemibold text-2xl ml-[-10]">Login</Text>
-            <View className="mt-4">
+          <View className="flex-1">
+            {/* <Text className="font-gsemibold text-2xl ml-[-10]">Login</Text> */}
+            <View>
               <TextInputwithLogo
                 placeholder="Enter your Username "
                 icon={Icon.userNameIcon}
@@ -231,4 +237,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  topContainer:{
+    marginTop:hp(45)
+  }
 });
