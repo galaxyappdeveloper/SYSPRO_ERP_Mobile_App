@@ -32,6 +32,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import TextInputwithLogo from "../../componenets/TextInputwithLogo";
 import { commonStyle } from "../../constants/commonStyle";
 import { Icon } from "../../constants/Icon";
+import { images } from "../../constants/images";
 
 const MpinAuth = ({ navigation }) => {
   const [mPin, setMPin] = useState("");
@@ -99,8 +100,15 @@ const MpinAuth = ({ navigation }) => {
       />
       <ScrollView keyboardShouldPersistTaps="handled">
         {/* top container */}
-        <View style={{ height: hp(58) }}>
-          <View style={styles.topContainer}>
+        <View style={styles.topContainer}>
+          <View style={styles.Imagecontainer}>
+            <Image
+              resizeMode="contain"
+              source={images.companyLogo}
+              style={styles.Companylogo}
+            />
+          </View>
+          <View>
             <Text
               className="text-black text-center font-gbold"
               style={{ fontSize: hp(5) }}
@@ -126,7 +134,7 @@ const MpinAuth = ({ navigation }) => {
           style={[
             commonStyle.innerContainer,
             {
-              height: hp(40),
+              height: hp(30),
               backgroundColor: "white",
               justifyContent: "space-between",
             },
@@ -224,7 +232,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   topContainer: {
-    marginTop: hp(45),
+    marginTop: hp(4),
   },
-  Imagecontainer: {},
+  Imagecontainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  Companylogo: {
+    width: hp(46),
+    height: hp(22),
+  },
 });

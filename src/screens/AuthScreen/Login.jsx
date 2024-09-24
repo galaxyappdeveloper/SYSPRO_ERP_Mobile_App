@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { scale, moderateScale } from "react-native-size-matters";
-import { View, Text, StyleSheet, ScrollView, StatusBar } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
 import { images } from "../../constants/images";
 import {
   widthPercentageToDP as wp,
@@ -86,14 +86,17 @@ const Login = ({ navigation }) => {
   };
   return (
     <SafeAreaView style={[commonStyle.container]}>
-      <StatusBar
-        // backgroundColor={themePrimaryColor}
-        barStyle={"dark-content"}
-      />
       <ScrollView keyboardShouldPersistTaps="handled">
         {/* top container */}
-        <View style={{ height: hp(60) }}>
-          <View style={styles.topContainer}>
+        <View style={styles.topContainer}>
+          <View style={styles.Imagecontainer}>
+            <Image
+              resizeMode="contain"
+              source={images.companyLogo}
+              style={styles.Companylogo}
+            />
+          </View>
+          <View>
             <Text
               className="text-black text-center font-gbold"
               style={{ fontSize: hp(5) }}
@@ -236,6 +239,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   topContainer: {
-    marginTop: hp(45),
+    marginTop: hp(4),
+  },
+  Imagecontainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  Companylogo: {
+    width: hp(46),
+    height: hp(22),
   },
 });
