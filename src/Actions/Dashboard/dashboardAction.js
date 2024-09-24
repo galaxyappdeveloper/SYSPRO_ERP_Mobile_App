@@ -1,14 +1,16 @@
+import {
+  setDashboardLoading,
+  setDashboardPermissionData,
+} from "../../redux/dashboardSlices/DashboardSlice";
 import dashboardService from "../../services/dashboardService";
 
 export const getDashboardPermission = () => async (dispatch) => {
-  const body = {};
-
   try {
-    // dispatch(setLoading(true));
-    const response = await dashboardService.getDashboardPermission(body);
-    // dispatch(setYearDuration(response?.data?.Data?.Table1));
-    // console.log("Year duration data : ", response?.data?.Data?.Table1);
-    // dispatch(setLoading(false));
+    dispatch(setDashboardLoading(true));
+    const response = await dashboardService.getDashboardPermission();
+    // dispatch(setDashboardPermissionData());
+    console.log("Dashboard Permission data : ", response?.data?.Data);
+    dispatch(setDashboardLoading(false));
   } catch (error) {
     if (
       error.response &&
@@ -20,5 +22,6 @@ export const getDashboardPermission = () => async (dispatch) => {
       // notifyMessage("Unexpected Error in get year duration API.");
     }
     // dispatch(setLoading(false));
+    dispatch(setDashboardLoading(false));
   }
 };

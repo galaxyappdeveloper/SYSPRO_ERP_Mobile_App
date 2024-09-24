@@ -13,5 +13,13 @@ export const dashboardSlice = createSlice({
     setDashboardPermissionData: (state, { payload }) => {
       state.DashboardPermissionData = payload;
     },
+    setDashboardLoading: (state, { payload }) => {
+      state.loading = payload;
+    },
   },
 });
+
+export const { setDashboardPermissionData, setDashboardLoading } =
+  dashboardSlice.actions;
+
+export default dashboardSlice.reducer;

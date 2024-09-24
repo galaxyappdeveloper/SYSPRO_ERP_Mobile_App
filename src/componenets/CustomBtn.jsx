@@ -10,6 +10,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { themePrimaryColor } from "../constants/constant";
 
 const CustomBtn = ({
   title,
@@ -21,7 +22,7 @@ const CustomBtn = ({
 }) => {
   return (
     <TouchableOpacity
-      className="bg-secondary"
+      // className="bg-secondary"
       activeOpacity={0.7}
       onPress={onPressHandler}
       disabled={isLoading || disabled}
@@ -57,6 +58,7 @@ const styles = StyleSheet.create({
     padding: 15,
     width: wp("90%"),
     height: hp(8.5),
+    backgroundColor: themePrimaryColor,
   },
 
   BtnTitle: {

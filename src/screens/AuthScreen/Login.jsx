@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { scale, moderateScale } from "react-native-size-matters";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, StatusBar } from "react-native";
 import { images } from "../../constants/images";
 import {
   widthPercentageToDP as wp,
@@ -53,10 +53,6 @@ const Login = ({ navigation }) => {
     }
   };
 
-  // const handleFocus = () => {
-  //   inputRef.current.focus();
-  // };
-
   const handleLogin = async () => {
     const newErrors = {
       username: username ? null : "Username is required",
@@ -89,9 +85,11 @@ const Login = ({ navigation }) => {
     }
   };
   return (
-    <SafeAreaView
-      style={[commonStyle.container]}
-    >
+    <SafeAreaView style={[commonStyle.container]}>
+      <StatusBar
+        // backgroundColor={themePrimaryColor}
+        barStyle={"dark-content"}
+      />
       <ScrollView keyboardShouldPersistTaps="handled">
         {/* top container */}
         <View style={{ height: hp(60) }}>
@@ -237,7 +235,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  topContainer:{
-    marginTop:hp(45)
-  }
+  topContainer: {
+    marginTop: hp(45),
+  },
 });

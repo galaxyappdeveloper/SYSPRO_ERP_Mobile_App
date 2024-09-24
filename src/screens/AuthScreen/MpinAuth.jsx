@@ -94,9 +94,8 @@ const MpinAuth = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[commonStyle.container, { backgroundColor: "white" }]}>
-      <StatusBar
-        backgroundColor={themePrimaryColor}
-        barStyle={"light-content"}
+      <StatusBar // backgroundColor={themePrimaryColor}
+        barStyle={"dark-content"}
       />
       <ScrollView keyboardShouldPersistTaps="handled">
         {/* top container */}
@@ -227,7 +226,5 @@ const styles = StyleSheet.create({
   topContainer: {
     marginTop: hp(45),
   },
-  Imagecontainer: {
-    
-  },
+  Imagecontainer: {},
 });

@@ -109,10 +109,6 @@ export const setUserData = (userdata) => async (dispatch) => {
   try {
     await AsyncStorage.setItem(userData, JSON.stringify(userdata));
     dispatch(authSlice.actions.setUserDataSuccess(userdata));
-    console.log(
-      "User data updated in AsyncStorage and Redux store : ",
-      userdata
-    );
   } catch (error) {
     console.error("Failed to save user data to AsyncStorage:", error);
   }

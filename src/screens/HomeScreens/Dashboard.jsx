@@ -6,7 +6,7 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -16,8 +16,16 @@ import Carousel from "react-native-reanimated-carousel";
 import { images } from "./../../constants/images";
 import { LinearGradient } from "expo-linear-gradient";
 import { themePrimaryColor } from "../../constants/constant";
+import { useDispatch } from "react-redux";
+import { getDashboardPermission } from "../../Actions/Dashboard/dashboardAction";
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getDashboardPermission());
+  }, [dispatch]);
+
   const screenWidth = Dimensions.get("screen").width;
   const imageData = [
     {
