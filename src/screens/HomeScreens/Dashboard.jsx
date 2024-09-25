@@ -5,8 +5,9 @@ import {
   View,
   Dimensions,
   ScrollView,
+  RefreshControl,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -16,166 +17,144 @@ import Carousel from "react-native-reanimated-carousel";
 import { images } from "./../../constants/images";
 import { LinearGradient } from "expo-linear-gradient";
 import { themePrimaryColor } from "../../constants/constant";
-import { useDispatch } from "react-redux";
-import { getDashboardPermission } from "../../Actions/Dashboard/dashboardAction";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getDashboardPermission,
+  getDashboardTotal,
+} from "../../Actions/Dashboard/dashboardAction";
+import { commonStyle } from "../../constants/commonStyle";
+import { Loader } from "../../componenets/Loading";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const DashboardPermissionData = useSelector(
+    (state) => state?.dashboard?.DashboardPermissionData
+  );
+  const DashboardSaleTotal = useSelector(
+    (state) => state?.dashboard?.DashboardSaleTotal
+  );
+
+  // console.log("DashboardTotalData : ", DashboardSaleTotal);
+
+  const loading = useSelector((state) => state.dashboard.loading);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    dispatch(getDashboardPermission());
+    setRefreshing(false);
+  };
 
   useEffect(() => {
     dispatch(getDashboardPermission());
   }, [dispatch]);
 
-  const screenWidth = Dimensions.get("screen").width;
-  const imageData = [
-    {
-      id: 1,
-      images: images.creditCard,
-      title: "Sales",
-    },
-    {
-      id: 2,
-      images: images.creditCard,
-      tilte: "purchases",
-    },
-    {
-      id: 3,
-      images: images.creditCard,
-      tilte: "Orders",
-    },
-    {
-      id: 4,
-      images: images.creditCard,
-      tilte: "Total",
-    },
-    {
-      id: 5,
-      images: images.creditCard,
-      title: "Amount",
-    },
-  ];
+  useEffect(() => {
+    dispatch(getDashboardTotal(1));
+  }, [dispatch]);
 
-  const renderCardContainer = (BgColor) => {
+  // useEffect(() => {
+  //   if (DashboardPermissionData !== null) {
+  //     const DashboardPermissionKeys = Object.keys(DashboardPermissionData);
+
+  //     if (DashboardPermissionKeys.length > 0) {
+  //       const menuMap = {};
+
+  //       DashboardPermissionKeys.map((item) => {
+  //         DashboardPermissionData[item]?.map((item2) => {
+  //           if (item2.Menu === "DashBoardSaleContainer") {
+  //             let obje = {};
+
+  //             if (!menuMap[item2.Menu]) {
+  //               obje["title"] = "Sales";
+  //               obje["data"] = [];
+  //               menuMap[item2.Menu] = obje;
+  //             }
+
+  //             menuMap[item2.Menu]["data"].push(item2);
+  //           }
+  //           if (item2.Menu === "DashBoardPurchaseContainer") {
+  //             let obje = {};
+
+  //             if (!menuMap[item2.Menu]) {
+  //               obje["title"] = "Purchase";
+  //               obje["data"] = [];
+  //               menuMap[item2.Menu] = obje;
+  //             }
+
+  //             menuMap[item2.Menu]["data"].push(item2);
+  //           }
+  //           if (item2.Menu === "DashBoardJobWorkContainer") {
+  //             let obje = {};
+
+  //             if (!menuMap[item2.Menu]) {
+  //               obje["title"] = "Job Work";
+  //               obje["data"] = [];
+  //               menuMap[item2.Menu] = obje;
+  //             }
+
+  //             menuMap[item2.Menu]["data"].push(item2);
+  //           }
+  //           if (item2.Menu === "DashBoardAccountContainer") {
+  //             let obje = {};
+
+  //             if (!menuMap[item2.Menu]) {
+  //               obje["title"] = "Accounts";
+  //               obje["data"] = [];
+  //               menuMap[item2.Menu] = obje;
+  //             }
+  //             menuMap[item2.Menu]["data"].push(item2);
+  //           }
+  //         });
+  //       });
+  //       const structuredData = Object.values(menuMap);
+  //       setDashboardFilter(structuredData);
+  //       setDashboardFilter(data);
+  //     }
+  //   }
+  // }, [DashboardPermissionData]);
+
+  const renderCardContainer = (item) => {
     return (
-      <View
-        style={[styles.CardContainer, { backgroundColor: BgColor}]}
-      >
-        <Text style={{ fontSize: hp(3), alignSelf: "center" }}>0</Text>
-        <Text className="text-center font-gsemibold text-lg" style={{ alignSelf: "center" }}>Today Sales</Text>
+      <View style={[styles.CardContainer]}>
+        <Text style={{ fontSize: hp(3), alignSelf: "center" }}>
+          {DashboardSaleTotal.Table[0].TtlSale}
+        </Text>
+        <Text
+          className="text-center mt-2 font-gsemibold"
+          style={styles.cardInnerTitle}
+        >
+          {item.Widget}
+        </Text>
       </View>
     );
   };
 
   return (
-    <ScrollView style={styles.DashboardContainer}>
-      <View style={styles.carouselContainer}>
-        <Carousel
-          loop
-          width={screenWidth}
-          height={hp(30)}
-          autoPlay={true}
-          data={imageData}
-          scrollAnimationDuration={3000}
-          renderItem={({ item, index }) => (
-            <View style={styles.gradiant}>
-              <View>
-                <Text style={styles.gradiantText}>{item.title}</Text>
+    <ScrollView
+      style={[commonStyle.container, styles.DashboardContainer]}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={() => onRefresh()} />
+      }
+    >
+      {loading && <Loader />}
+      <View>
+        <View>
+          {DashboardPermissionData.map((dashItem, index) => {
+            return (
+              <View key={index}>
+                <Text style={styles.cardsContainerTitle}>{dashItem.Title}</Text>
+                <FlatList
+                  data={dashItem.Data}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={({ item }) => renderCardContainer(item)}
+                />
               </View>
-            </View>
-          )}
-        />
-      </View>
-      <View style={styles.SaleContainer}>
-        <Text style={styles.SaleText}>Sale</Text>
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          renderItem={() => renderCardContainer("#F9F9F9")}
-          data={[
-            {
-              id: 1,
-              title: "Sales",
-            }
-          ]}
-        />
-      </View>
-      <View style={styles.PurchaseContainer}>
-        <Text style={styles.PurchaseText}>Purchase</Text>
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          renderItem={() => renderCardContainer("#F9F9F9")}
-          data={[
-            {
-              id: 1,
-              title: "Sales",
-            },
-            {
-              id: 2,
-              title: "Purchase",
-            },
-            {
-              id: 3,
-              title: "Job Work",
-            },
-            {
-              id: 4,
-              title: "Account",
-            },
-          ]}
-        />
-      </View>
-      <View style={styles.JobworkContainer}>
-        <Text style={styles.JobworkText}>Job Work</Text>
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          renderItem={()=>renderCardContainer("#F9F9F9")}
-          data={[
-            {
-              id: 1,
-              title: "Sales",
-            },
-            {
-              id: 2,
-              title: "Purchase",
-            },
-            {
-              id: 3,
-              title: "Job Work",
-            },
-            {
-              id: 4,
-              title: "Account",
-            },
-          ]}
-        />
-      </View>
-      <View style={styles.AccountContainer}>
-        <Text style={styles.AccountText}>Account</Text>
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          renderItem={()=>renderCardContainer("#F9F9F9")}
-          data={[
-            {
-              id: 1,
-              title: "Sales",
-            },
-            {
-              id: 2,
-              title: "Purchase",
-            },
-            {
-              id: 3,
-              title: "Job Work",
-            },
-            {
-              id: 4,
-              title: "Account",
-            },
-          ]}
-        />
+            );
+          })}
+        </View>
       </View>
     </ScrollView>
   );
@@ -183,20 +162,6 @@ const Dashboard = () => {
 const styles = StyleSheet.create({
   DashboardContainer: {
     flex: 1,
-  },  
-  gradiant: {
-    flex: 1,
-    borderRadius: 20,
-    margin: hp(2),
-    backgroundColor: "#0252A7",
-  },
-  gradiantText: {
-    color: "white",
-    fontSize: hp(3),
-    fontWeight: "bold",
-    textAlign: "center",
-    margin: hp(1),
-    padding: hp(8),
   },
   CardContainer: {
     height: hp(15),
@@ -204,32 +169,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#F9F9F9",
     borderRadius: 20,
     borderWidth: 1,
-    margin: hp(1),  
+    margin: hp(1),
     justifyContent: "center",
     alignItems: "center",
-    elevation: 7,
   },
-  SaleContainer:{
+  cardInnerTitle: {
+    alignSelf: "center",
   },
-  SaleText: {
-    fontSize: hp(2.5),
-    fontWeight: "600",
-    color: themePrimaryColor,
-    marginHorizontal: hp(3),
-  },
-  PurchaseText: {
-    fontSize: hp(2.5),
-    fontWeight: "600",
-    color: themePrimaryColor,
-    marginHorizontal: hp(3),
-  },
-  JobworkText: {
-    fontSize: hp(2.5),
-    fontWeight: "600",
-    color: themePrimaryColor,
-    marginHorizontal: hp(3),
-  },
-  AccountText: {
+  cardsContainerTitle: {
     fontSize: hp(2.5),
     fontWeight: "600",
     color: themePrimaryColor,

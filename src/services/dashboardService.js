@@ -1,13 +1,13 @@
 import { http } from "../../API_Interceptor";
 
 class DashboardService {
-  getDashboardPermission() {
-    return http.get("api/HomeApi/GetDashboardPermission");
+  getDashboardPermission(body) {
+    return http.post("api/HomeApi/DashboardPermission", body);
   }
 
-  // getYearByUser(body) {
-  //   return http.post("api/HomeApi/GetYearByUser", body);
-  // }
+  getDashboardTotal(body) {
+    return http.post("api/HomeApi/GetDashboard", body);
+  }
 }
 
 export default new DashboardService();

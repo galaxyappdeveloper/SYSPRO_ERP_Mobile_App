@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   topContainer: {
-    marginTop: hp(4),
+    marginTop: hp(14),
   },
   Imagecontainer: {
     flex: 1,
