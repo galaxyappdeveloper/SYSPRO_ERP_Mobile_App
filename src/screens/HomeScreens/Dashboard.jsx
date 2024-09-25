@@ -6,6 +6,7 @@ import {
   Dimensions,
   ScrollView,
   RefreshControl,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
@@ -15,7 +16,6 @@ import {
 } from "react-native-responsive-screen";
 import Carousel from "react-native-reanimated-carousel";
 import { images } from "./../../constants/images";
-import { LinearGradient } from "expo-linear-gradient";
 import { themePrimaryColor } from "../../constants/constant";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -24,8 +24,9 @@ import {
 } from "../../Actions/Dashboard/dashboardAction";
 import { commonStyle } from "../../constants/commonStyle";
 import { Loader } from "../../componenets/Loading";
+import { ScreenName } from "../../constants/screenName";
 
-const Dashboard = () => {
+const Dashboard = ({ navigation }) => {
   const dispatch = useDispatch();
   const DashboardPermissionData = useSelector(
     (state) => state?.dashboard?.DashboardPermissionData
@@ -117,15 +118,19 @@ const Dashboard = () => {
   const renderCardContainer = (item) => {
     return (
       <View style={[styles.CardContainer]}>
-        <Text style={{ fontSize: hp(3), alignSelf: "center" }}>
-          {DashboardSaleTotal.Table[0].TtlSale}
-        </Text>
-        <Text
-          className="text-center mt-2 font-gsemibold"
-          style={styles.cardInnerTitle}
+        <TouchableOpacity
+          onPress={() => navigation.navigate(ScreenName.dashboardSummery)}
         >
-          {item.Widget}
-        </Text>
+          <Text style={{ fontSize: hp(3), alignSelf: "center" }}>
+            {DashboardSaleTotal.Table[0].TtlSale}
+          </Text>
+          <Text
+            className="text-center mt-2 font-gsemibold"
+            style={styles.cardInnerTitle}
+          >
+            {item.Widget}
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -144,13 +149,19 @@ const Dashboard = () => {
             return (
               <View key={index}>
                 <Text style={styles.cardsContainerTitle}>{dashItem.Title}</Text>
-                <FlatList
-                  data={dashItem.Data}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  keyExtractor={(item, index) => index.toString()}
-                  renderItem={({ item }) => renderCardContainer(item)}
-                />
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(ScreenName.dashboardSummery)
+                  }
+                >
+                  <FlatList
+                    data={dashItem.Data}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => renderCardContainer(item)}
+                  />
+                </TouchableOpacity>
               </View>
             );
           })}
@@ -159,6 +170,7 @@ const Dashboard = () => {
     </ScrollView>
   );
 };
+
 const styles = StyleSheet.create({
   DashboardContainer: {
     flex: 1,
@@ -166,9 +178,10 @@ const styles = StyleSheet.create({
   CardContainer: {
     height: hp(15),
     width: wp(45),
-    backgroundColor: "#F9F9F9",
-    borderRadius: 20,
+    backgroundColor: "#00b894",
+    borderRadius: 10,
     borderWidth: 1,
+    margin: hp(1),
     margin: hp(1),
     justifyContent: "center",
     alignItems: "center",

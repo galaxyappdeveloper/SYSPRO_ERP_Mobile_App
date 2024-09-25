@@ -19,6 +19,9 @@ import { View } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { Greeting } from "../functions/Greeting";
 import CustomDrawerContent from "./CustomDrawerContent";
+import DashboardSummery from "../screens/DashboardScreens/DashboardSummery";
+import SummeryDetails from "../screens/DashboardScreens/SummeryDetails";
+import PdfReader from "../screens/DashboardScreens/PdfReader";
 
 const Drawer = createDrawerNavigator();
 
@@ -70,6 +73,21 @@ const HomeRoutes = () => {
         options={{ headerShown: false, drawerLabel: () => null }}
         name={ScreenName.companyConfig}
         component={CompanyConfig}
+      />
+      <Drawer.Screen
+      options={{ headerShown: false, drawerLabel: () => null }}
+      name={ScreenName.dashboardSummery}
+      component={DashboardSummery}
+      />
+       <Drawer.Screen
+      options={{ headerShown: false, drawerLabel: () => null }}
+      name={ScreenName.summeryDetails}
+      component={SummeryDetails}
+      />
+       <Drawer.Screen
+      options={{ headerShown: false, drawerLabel: () => null }}
+      name={ScreenName.pdfReader}
+      component={PdfReader}
       />
     </Drawer.Navigator>
   );

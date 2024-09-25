@@ -23,4 +23,5 @@ export const constant = {
 
 export const colors={
   themePrimaryColor: "#1254a5",
+  themeSecondaryColor: "#1C274C",
 }
