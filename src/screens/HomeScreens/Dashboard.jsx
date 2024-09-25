@@ -5,6 +5,7 @@ import {
   View,
   Dimensions,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect } from "react";
 import { StyleSheet } from "react-native";
@@ -14,12 +15,12 @@ import {
 } from "react-native-responsive-screen";
 import Carousel from "react-native-reanimated-carousel";
 import { images } from "./../../constants/images";
-import { LinearGradient } from "expo-linear-gradient";
 import { themePrimaryColor } from "../../constants/constant";
 import { useDispatch } from "react-redux";
 import { getDashboardPermission } from "../../Actions/Dashboard/dashboardAction";
+import { ScreenName } from "../../constants/screenName";
 
-const Dashboard = () => {
+const Dashboard = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -57,47 +58,52 @@ const Dashboard = () => {
 
   const renderCardContainer = (BgColor) => {
     return (
-      <View
-        style={[styles.CardContainer, { backgroundColor: BgColor}]}
-      >
+      <View style={[styles.CardContainer, { backgroundColor: BgColor }]}>
         <Text style={{ fontSize: hp(3), alignSelf: "center" }}>0</Text>
-        <Text className="text-center font-gsemibold text-lg" style={{ alignSelf: "center" }}>Today Sales</Text>
+        <Text
+          className="text-center font-gsemibold text-lg"
+          style={{ alignSelf: "center" }}
+        >
+          Today Sales
+        </Text>
       </View>
     );
   };
 
   return (
     <ScrollView style={styles.DashboardContainer}>
-      <View style={styles.carouselContainer}>
-        <Carousel
-          loop
-          width={screenWidth}
-          height={hp(30)}
-          autoPlay={true}
-          data={imageData}
-          scrollAnimationDuration={3000}
-          renderItem={({ item, index }) => (
-            <View style={styles.gradiant}>
-              <View>
-                <Text style={styles.gradiantText}>{item.title}</Text>
-              </View>
+      <Carousel
+        loop
+        width={screenWidth}
+        height={hp(30)}
+        autoPlay={true}
+        data={imageData}
+        scrollAnimationDuration={3000}
+        renderItem={({ item, index }) => (
+          <View style={styles.gradiant}>
+            <View>
+              <Text style={styles.gradiantText}>{item.title}</Text>
             </View>
-          )}
-        />
-      </View>
+          </View>
+        )}
+      />
       <View style={styles.SaleContainer}>
         <Text style={styles.SaleText}>Sale</Text>
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          renderItem={() => renderCardContainer("#F9F9F9")}
-          data={[
-            {
-              id: 1,
-              title: "Sales",
-            }
-          ]}
-        />
+        <TouchableOpacity
+          onPress={() => navigation.navigate(ScreenName.dashboardSummery)}
+        >
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            renderItem={() => renderCardContainer("#F9F9F9")}
+            data={[
+              {
+                id: 1,
+                title: "Sales",
+              },
+            ]}
+          />
+        </TouchableOpacity>
       </View>
       <View style={styles.PurchaseContainer}>
         <Text style={styles.PurchaseText}>Purchase</Text>
@@ -130,7 +136,7 @@ const Dashboard = () => {
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={()=>renderCardContainer("#F9F9F9")}
+          renderItem={() => renderCardContainer("#F9F9F9")}
           data={[
             {
               id: 1,
@@ -156,7 +162,7 @@ const Dashboard = () => {
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={()=>renderCardContainer("#F9F9F9")}
+          renderItem={() => renderCardContainer("#F9F9F9")}
           data={[
             {
               id: 1,
@@ -183,7 +189,7 @@ const Dashboard = () => {
 const styles = StyleSheet.create({
   DashboardContainer: {
     flex: 1,
-  },  
+  },
   gradiant: {
     flex: 1,
     borderRadius: 20,
@@ -201,16 +207,14 @@ const styles = StyleSheet.create({
   CardContainer: {
     height: hp(15),
     width: wp(45),
-    backgroundColor: "#F9F9F9",
-    borderRadius: 20,
+    backgroundColor: "#00b894",
+    borderRadius: 10,
     borderWidth: 1,
-    margin: hp(1),  
+    margin: hp(1),
     justifyContent: "center",
     alignItems: "center",
-    elevation: 7,
   },
-  SaleContainer:{
-  },
+  SaleContainer: {},
   SaleText: {
     fontSize: hp(2.5),
     fontWeight: "600",

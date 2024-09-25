@@ -12,6 +12,13 @@ import SYSPROIcon from "../../assets/Icons/sysproIcon.svg";
 import YearIcon from "../../assets/Icons/yearIcon.svg";
 import PasswordIcon from "../../assets/Icons/passwordIcon.svg";
 import SettingIcon from "../../assets/Icons/setting.svg";
+import SearchIcon from "../../assets/Icons/searchIcon.svg";
+import FilterIcon from "../../assets/Icons/filterIcon.svg";
+import Arrowright from "../../assets/Icons/arrowright.svg";
+import CloseIcon from "../../assets/Icons/closeIcon.svg";
+import PrinterIcon from "../../assets/Icons/printerIcon.svg";
+import DownloadIcon from "../../assets/Icons/downloadIcon.svg";
+import ShareIcon from "../../assets/Icons/shareIcon.svg";
 
 export const Icon = {
   arrowRound: ArrowRound,
@@ -28,4 +35,12 @@ export const Icon = {
   sYSPROIcon: SYSPROIcon,
   yearIcon: YearIcon,
   settingIcon: SettingIcon,
+  searchIcon: SearchIcon,
+  filterIcon: FilterIcon,
+  arrowright: Arrowright,
+  closeIcon: CloseIcon,
+  printerIcon: PrinterIcon,
+  downloadIcon: DownloadIcon,
+  shareIcon: ShareIcon
+
 };

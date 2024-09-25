@@ -4,6 +4,11 @@ export const ScreenName = {
   dashboard: "Dashboard",
   profile: "Profile",
   companyConfig: "CompanyConfig",
+  dashboardSummery:"DashboardSummery",
+  summeryDetails:"SummeryDetails",
+  filterModel:"FilterModel",
+  pdfReader:"PdfReader",
+
 };
 
 export const NavigationNames = {
