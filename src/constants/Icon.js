@@ -19,6 +19,8 @@ import CloseIcon from "../../assets/Icons/closeIcon.svg";
 import PrinterIcon from "../../assets/Icons/printerIcon.svg";
 import DownloadIcon from "../../assets/Icons/downloadIcon.svg";
 import ShareIcon from "../../assets/Icons/shareIcon.svg";
+import AccountIcon from "../../assets/Icons/accountIcon.svg";
+import SendIcon from "../../assets/Icons/sendIcon.svg";
 
 export const Icon = {
   arrowRound: ArrowRound,
@@ -41,6 +43,8 @@ export const Icon = {
   closeIcon: CloseIcon,
   printerIcon: PrinterIcon,
   downloadIcon: DownloadIcon,
-  shareIcon: ShareIcon
+  shareIcon: ShareIcon,
+  accountIcon: AccountIcon,
+  sendIcon: SendIcon,
 
 };
