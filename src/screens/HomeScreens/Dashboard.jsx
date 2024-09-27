@@ -29,7 +29,7 @@ import { Icon } from "../../constants/Icon";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Dashboard = ({ navigation }) => {
-  const [cards, setCards] = useState([1, 2,3]);
+  const [cards, setCards] = useState([1, 2, 3]);
   const [secondCard, setSecondCard] = useState([1]);
   const deleteCard = (index) => {
     const updatedCards = cards.filter((_, i) => i !== index);
@@ -147,25 +147,81 @@ const Dashboard = ({ navigation }) => {
   //   }
   // }, [DashboardPermissionData]);
 
-  const renderCardContainer = (item) => {
+  // const renderCardContainer = (item) => {
+  //   return (
+  //     <View style={[styles.CardContainer]}>
+  //       <TouchableOpacity
+  //         onPress={() => navigation.navigate(ScreenName.dashboardSummery)}
+  //       >
+  //         <Text style={{ fontSize: hp(3), alignSelf: "center" }}>
+  //           {getTotalNumber(item)}
+  //         </Text>
+  //         <Text
+  //           className="text-center mt-2 font-gsemibold"
+  //           style={styles.cardInnerTitle}
+  //         >
+  //           {item.Caption}
+  //         </Text>
+  //       </TouchableOpacity>
+  //     </View>
+  //   );
+  // };
+
+  const renderCardContainer = (item, dashItem) => {
     return (
-      <View style={[styles.CardContainer]}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(ScreenName.dashboardSummery)}
+      <View style={styles.container}>
+        <View
+          style={[
+            styles.card,
+            cards.length === 1 ? styles.fullWidthCard : styles.halfWidthCard,
+          ]}
         >
-          <Text style={{ fontSize: hp(3), alignSelf: "center" }}>
-            {getTotalNumber(item)}
-          </Text>
-          <Text
-            className="text-center mt-2 font-gsemibold"
-            style={styles.cardInnerTitle}
+          <View style={styles.accountIconContainer}>
+            <Image source={Icon.accountIcon} style={styles.accountIcon} />
+            <View>
+              <Text
+                className="font-gsemibold text-lg"
+                style={{
+                  height: hp(3.6),
+                  width: hp(13),
+                  lineHeight: hp(3.6),
+                  left: wp(2.6),
+                }}
+              >
+                {dashItem.Title}
+              </Text>
+            </View>
+          </View>
+          <View>
+            <Text className="font-gbold text-xl text-center">
+              {" "}
+              {getTotalNumber(item)}
+            </Text>
+          </View>
+          <View
+            style={{
+              alignItems: "center",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
           >
-            {item.Caption}
-          </Text>
-        </TouchableOpacity>
+            <View style={styles.todaySaleButton}>
+              <Text numberOfLines={1} style={styles.todaySaleText}>
+                {item.Caption}
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => navigation.navigate(ScreenName.dashboardSummery)}
+              style={styles.sendIconButton}
+            >
+              <Image style={styles.sendIcon} source={Icon.sendIcon} />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     );
   };
+
   const getTotalNumber = (item) => {
     const totaldata = dashboardTotal.find((e, i) => e.Widget == item.Widget);
     return totaldata?.Total ?? 0;
@@ -185,86 +241,32 @@ const Dashboard = ({ navigation }) => {
               <View key={index}>
                 <Text style={styles.cardsContainerTitle}>{dashItem.Title}</Text>
 
-                <FlatList
+                {/* <FlatList
                   data={dashItem.Data}
                   horizontal
                   showsHorizontalScrollIndicator={false}
                   keyExtractor={(item, index) => index.toString()}
                   renderItem={({ item }) => renderCardContainer(item)}
+                /> */}
+                <FlatList
+                  data={dashItem.Data}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  // numColumns={3}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={({ item, index }) =>
+                    renderCardContainer(item, dashItem)
+                  }
                 />
               </View>
             );
           })}
         </View>
-        <FlatList
-          data={cards}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          // numColumns={3}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item, index }) => (
-            <>
-              <View style={styles.container}>
-                <View
-                  style={[
-                    styles.card,
-                    cards.length === 1
-                      ? styles.fullWidthCard
-                      : styles.halfWidthCard,
-                  ]}
-                >
-                  <View style={styles.accountIconContainer}>
-                    <Image
-                      source={Icon.accountIcon}
-                      style={styles.accountIcon}
-                    />
-                    <View>
-                      <Text
-                        className="font-gsemibold text-lg"
-                        style={{
-                          height: hp(3.6),
-                          width: hp(10),
-                          lineHeight: hp(3.6),
-                          left: wp(2.6),
-                        }}
-                      >
-                        Sales O/S
-                      </Text>
-                    </View>
-                  </View>
-                  <View>
-                    <Text className="font-gbold text-xl text-center">
-                      72854652
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      alignItems: "center",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <View style={styles.todaySaleButton}>
-                      <Text style={styles.todaySaleText}>Today Sale</Text>
-                    </View>
-                    <TouchableOpacity
-                      onPress={() => deleteCard(index)}
-                      style={styles.sendIconButton}
-                    >
-                      <Image style={styles.sendIcon} source={Icon.sendIcon} />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            </>
-          )}
-        />
 
         {/* This is for third card */}
-        <FlatList
+        {/* <FlatList
           data={secondCard}
           showsHorizontalScrollIndicator={false}
-          // numColumns={}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => (
             <>
@@ -313,10 +315,9 @@ const Dashboard = ({ navigation }) => {
                   </View>
                 </View>
               </View>
-              {/* This is for third card */}
             </>
           )}
-        />
+        /> */}
       </SafeAreaView>
     </ScrollView>
   );
@@ -402,6 +403,7 @@ const styles = StyleSheet.create({
   todaySaleText: {
     color: "#021121",
     textAlign: "center",
+    fontSize: hp(1.5),
     fontWeight: "gilroy-bold",
   },
   sendIconButton: {

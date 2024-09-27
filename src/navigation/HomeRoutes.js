@@ -40,6 +40,7 @@ const HomeRoutes = () => {
       <Drawer.Screen
         options={({ navigation, route }) => ({
           headerShown: true,
+          headerStyle: { backgroundColor: "#e4eafa" },
           headerTitle: () => (
             <View>
               <Greeting customtextStyle={{ fontSize: hp(2) }} />
@@ -75,19 +76,19 @@ const HomeRoutes = () => {
         component={CompanyConfig}
       />
       <Drawer.Screen
-      options={{ headerShown: false, drawerLabel: () => null }}
-      name={ScreenName.dashboardSummery}
-      component={DashboardSummery}
+        options={{ headerShown: false, drawerLabel: () => null }}
+        name={ScreenName.dashboardSummery}
+        component={DashboardSummery}
       />
-       <Drawer.Screen
-      options={{ headerShown: false, drawerLabel: () => null }}
-      name={ScreenName.summeryDetails}
-      component={SummeryDetails}
+      <Drawer.Screen
+        options={{ headerShown: false, drawerLabel: () => null }}
+        name={ScreenName.summeryDetails}
+        component={SummeryDetails}
       />
-       <Drawer.Screen
-      options={{ headerShown: false, drawerLabel: () => null }}
-      name={ScreenName.pdfReader}
-      component={PdfReader}
+      <Drawer.Screen
+        options={{ headerShown: false, drawerLabel: () => null }}
+        name={ScreenName.pdfReader}
+        component={PdfReader}
       />
     </Drawer.Navigator>
   );
