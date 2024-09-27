@@ -31,12 +31,26 @@ const Dashboard = ({ navigation }) => {
   const DashboardPermissionData = useSelector(
     (state) => state?.dashboard?.DashboardPermissionData
   );
-  const DashboardSaleTotal = useSelector(
-    (state) => state?.dashboard?.DashboardSaleTotal
+  const dashboardTotal = useSelector(
+    (state) => state?.dashboard?.dashboardTotal
   );
 
-  // console.log("DashboardTotalData : ", DashboardSaleTotal);
+  // console.log(
+  //   "DashboardPermissionData : ",
+  //   JSON.stringify(DashboardPermissionData)
+  // );
+  // console.log("dashboardTotal : ", JSON.stringify(dashboardTotal));
+  if (loading) {
+    return <Loader />;
+  }
 
+  if (DashboardPermissionData === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Data not found.</Text>
+      </View>
+    );
+  }
   const loading = useSelector((state) => state.dashboard.loading);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -51,8 +65,18 @@ const Dashboard = ({ navigation }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(getDashboardTotal(1));
-  }, [dispatch]);
+    if (DashboardPermissionData?.length > 0) {
+      DashboardPermissionData.forEach((dashItem) => {
+        dashItem.Data.forEach((item) => {
+          dispatch(getDashboardTotal(item.SYSKey));
+        });
+      });
+    }
+  }, [DashboardPermissionData, dispatch]);
+
+  // useEffect(() => {
+  //   dispatch(getDashboardTotal(1));
+  // }, [dispatch]);
 
   // useEffect(() => {
   //   if (DashboardPermissionData !== null) {
@@ -122,19 +146,22 @@ const Dashboard = ({ navigation }) => {
           onPress={() => navigation.navigate(ScreenName.dashboardSummery)}
         >
           <Text style={{ fontSize: hp(3), alignSelf: "center" }}>
-            {DashboardSaleTotal.Table[0].TtlSale}
+            {getTotalNumber(item)}
           </Text>
           <Text
             className="text-center mt-2 font-gsemibold"
             style={styles.cardInnerTitle}
           >
-            {item.Widget}
+            {item.Caption}
           </Text>
         </TouchableOpacity>
       </View>
     );
   };
-
+  const getTotalNumber = (item) => {
+    const totaldata = dashboardTotal.find((e, i) => e.Widget == item.Widget);
+    return totaldata?.Total ?? 0;
+  };
   return (
     <ScrollView
       style={[commonStyle.container, styles.DashboardContainer]}
@@ -149,19 +176,14 @@ const Dashboard = ({ navigation }) => {
             return (
               <View key={index}>
                 <Text style={styles.cardsContainerTitle}>{dashItem.Title}</Text>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate(ScreenName.dashboardSummery)
-                  }
-                >
-                  <FlatList
-                    data={dashItem.Data}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => renderCardContainer(item)}
-                  />
-                </TouchableOpacity>
+
+                <FlatList
+                  data={dashItem.Data}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={({ item }) => renderCardContainer(item)}
+                />
               </View>
             );
           })}

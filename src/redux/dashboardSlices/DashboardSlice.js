@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   DashboardPermissionData: [],
-  DashboardSaleTotal: [],
+  dashboardTotal: [],
   loading: false,
   error: null,
 };
@@ -17,16 +17,47 @@ export const dashboardSlice = createSlice({
     setDashboardPermissionData: (state, { payload }) => {
       state.DashboardPermissionData = payload;
     },
-    setDashboardSaleTotal: (state, { payload }) => {
-      state.DashboardSaleTotal = payload;
+
+    setDashboardTotal: (state, { payload }) => {
+      if (state.dashboardTotal.length > 0) {
+        state.dashboardTotal = [...state.dashboardTotal, ...payload];
+      } else {
+        state.dashboardTotal = payload;
+      }
     },
+
+    // setDashboardTotal: (state, { payload }) => {
+    //   const { data, syskey } = payload;
+    //   // console.log("payload : ", JSON.stringify(payload));
+    //   const permData = [...state.DashboardPermissionData];
+
+    //   const permission = permData.map((section) => {
+    //     return {
+    //       ...section,
+    //       Data: section.Data.map((widget) => {
+    //         if (widget.SYSKey === syskey) {
+    //           return {
+    //             ...widget,
+    //             totalCount: data[0]?.Total ?? 0,
+    //           };
+    //         }
+    //         return widget;
+    //       }),
+    //     };
+    //   });
+    //   console.log(
+    //     "state updated data in dahboard permission  : ",
+    //     JSON.stringify(permission)
+    //   );
+    //   state.DashboardPermissionData = permData;
+    // },
   },
 });
 
 export const {
   setDashboardPermissionData,
   setDashboardLoading,
-  setDashboardSaleTotal,
+  setDashboardTotal,
 } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;
