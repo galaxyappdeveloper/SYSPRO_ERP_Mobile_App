@@ -21,6 +21,7 @@ import DownloadIcon from "../../assets/Icons/downloadIcon.svg";
 import ShareIcon from "../../assets/Icons/shareIcon.svg";
 import AccountIcon from "../../assets/Icons/accountIcon.svg";
 import SendIcon from "../../assets/Icons/sendIcon.svg";
+import ClipboardIcon from "../../assets/Icons/clipboardIcon.svg";
 
 export const Icon = {
   arrowRound: ArrowRound,
@@ -46,5 +47,6 @@ export const Icon = {
   shareIcon: ShareIcon,
   accountIcon: AccountIcon,
   sendIcon: SendIcon,
+  clipboardIcon: ClipboardIcon,
 
 };

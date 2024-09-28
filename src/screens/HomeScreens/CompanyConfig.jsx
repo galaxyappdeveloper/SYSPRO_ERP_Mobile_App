@@ -220,8 +220,10 @@ const styles = StyleSheet.create({
     left: 0,
   },
   backIcon: {
-    width: hp(4),
-    height: hp(4),
+    width: hp(5),
+    height: hp(5),
+    margin: wp(2),
+    elevation: 5,
   },
   headerConfigruation: {
     fontSize: hp(3),

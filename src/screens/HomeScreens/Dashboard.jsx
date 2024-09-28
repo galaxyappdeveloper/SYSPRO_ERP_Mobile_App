@@ -209,13 +209,13 @@ const Dashboard = ({ navigation }) => {
               <Text numberOfLines={1} style={styles.todaySaleText}>
                 {item.Caption}
               </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate(ScreenName.dashboardSummery)}
+                style={styles.sendIconButton}
+              >
+                <Image style={styles.sendIcon} source={Icon.sendIcon} />
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              onPress={() => navigation.navigate(ScreenName.dashboardSummery)}
-              style={styles.sendIconButton}
-            >
-              <Image style={styles.sendIcon} source={Icon.sendIcon} />
-            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -392,8 +392,6 @@ const styles = StyleSheet.create({
   todaySaleButton: {
     flex: 1,
     marginTop: hp(1),
-    paddingHorizontal: hp(2),
-    paddingVertical: hp(2),
     width: wp(24),
     backgroundColor: "#F5F8FB",
     borderRadius: 50,
@@ -405,15 +403,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: hp(1.5),
     fontWeight: "gilroy-bold",
+    top: hp(2.5),
+    right: hp(3),
   },
   sendIconButton: {
-    padding: hp(2),
-    width: hp(6),
-    height: hp(6),
+    padding: hp(1.5),
+    width: hp(5),
+    height: hp(5),
     backgroundColor: "#F5F8FB",
     borderRadius: 50,
-    left: hp(0.5),
-    top: hp(0.5),
+    left: hp(13),
+    top: hp(-1),
     borderWidth: 1,
     borderColor: "#E6E6E6",
     cursor: "pointer",
