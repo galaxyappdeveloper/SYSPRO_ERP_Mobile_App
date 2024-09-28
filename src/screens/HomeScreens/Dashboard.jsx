@@ -44,11 +44,6 @@ const Dashboard = ({ navigation }) => {
     (state) => state?.dashboard?.dashboardTotal
   );
 
-  // console.log(
-  //   "DashboardPermissionData : ",
-  //   JSON.stringify(DashboardPermissionData)
-  // );
-  // console.log("dashboardTotal : ", JSON.stringify(dashboardTotal));
   if (loading) {
     return <Loader />;
   }
@@ -82,91 +77,6 @@ const Dashboard = ({ navigation }) => {
       });
     }
   }, [DashboardPermissionData, dispatch]);
-
-  // useEffect(() => {
-  //   dispatch(getDashboardTotal(1));
-  // }, [dispatch]);
-
-  // useEffect(() => {
-  //   if (DashboardPermissionData !== null) {
-  //     const DashboardPermissionKeys = Object.keys(DashboardPermissionData);
-
-  //     if (DashboardPermissionKeys.length > 0) {
-  //       const menuMap = {};
-
-  //       DashboardPermissionKeys.map((item) => {
-  //         DashboardPermissionData[item]?.map((item2) => {
-  //           if (item2.Menu === "DashBoardSaleContainer") {
-  //             let obje = {};
-
-  //             if (!menuMap[item2.Menu]) {
-  //               obje["title"] = "Sales";
-  //               obje["data"] = [];
-  //               menuMap[item2.Menu] = obje;
-  //             }
-
-  //             menuMap[item2.Menu]["data"].push(item2);
-  //           }
-  //           if (item2.Menu === "DashBoardPurchaseContainer") {
-  //             let obje = {};
-
-  //             if (!menuMap[item2.Menu]) {
-  //               obje["title"] = "Purchase";
-  //               obje["data"] = [];
-  //               menuMap[item2.Menu] = obje;
-  //             }
-
-  //             menuMap[item2.Menu]["data"].push(item2);
-  //           }
-  //           if (item2.Menu === "DashBoardJobWorkContainer") {
-  //             let obje = {};
-
-  //             if (!menuMap[item2.Menu]) {
-  //               obje["title"] = "Job Work";
-  //               obje["data"] = [];
-  //               menuMap[item2.Menu] = obje;
-  //             }
-
-  //             menuMap[item2.Menu]["data"].push(item2);
-  //           }
-  //           if (item2.Menu === "DashBoardAccountContainer") {
-  //             let obje = {};
-
-  //             if (!menuMap[item2.Menu]) {
-  //               obje["title"] = "Accounts";
-  //               obje["data"] = [];
-  //               menuMap[item2.Menu] = obje;
-  //             }
-  //             menuMap[item2.Menu]["data"].push(item2);
-  //           }
-  //         });
-  //       });
-  //       const structuredData = Object.values(menuMap);
-  //       setDashboardFilter(structuredData);
-  //       setDashboardFilter(data);
-  //     }
-  //   }
-  // }, [DashboardPermissionData]);
-
-  // const renderCardContainer = (item) => {
-  //   return (
-  //     <View style={[styles.CardContainer]}>
-  //       <TouchableOpacity
-  //         onPress={() => navigation.navigate(ScreenName.dashboardSummery)}
-  //       >
-  //         <Text style={{ fontSize: hp(3), alignSelf: "center" }}>
-  //           {getTotalNumber(item)}
-  //         </Text>
-  //         <Text
-  //           className="text-center mt-2 font-gsemibold"
-  //           style={styles.cardInnerTitle}
-  //         >
-  //           {item.Caption}
-  //         </Text>
-  //       </TouchableOpacity>
-  //     </View>
-  //   );
-  // };
 
   const renderCardContainer = (item, dashItem) => {
     const type = item?.SYSType;
@@ -209,6 +119,31 @@ const Dashboard = ({ navigation }) => {
               justifyContent: "space-between",
             }}
           >
+            {/* <View style={styles.todaySaleButton}>
+              <Text numberOfLines={1} style={styles.todaySaleText}>
+                {item.Caption}
+              </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate(ScreenName.dashboardSummery)}
+                style={styles.sendIconButton}
+              >
+                <Image style={styles.sendIcon} source={Icon.sendIcon} />
+              </TouchableOpacity>
+
+            </View> */}
+
+            {/* <TouchableOpacity
+              activeOpacity={0.9}
+              onPress={() =>
+                navigation.navigate(ScreenName.dashboardSummery, {
+                  type,
+                  container,
+                })
+              }
+              style={styles.sendIconButton}
+            >
+              <Image style={styles.sendIcon} source={Icon.sendIcon} />
+            </TouchableOpacity> */}
             <View style={styles.todaySaleButton}>
               <Text numberOfLines={1} style={styles.todaySaleText}>
                 {item.Caption}
@@ -264,63 +199,6 @@ const Dashboard = ({ navigation }) => {
             );
           })}
         </View>
-
-        {/* This is for third card */}
-
-        {/* <FlatList
-          data={secondCard}
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item, index }) => (
-            <>
-              <View style={styles.SecondCardcontainer}>
-                <View style={[styles.Secondcard, styles.fullWidthCard]}>
-                  <View style={styles.accountIconContainer}>
-                    <Image
-                      source={Icon.accountIcon}
-                      style={styles.accountIcon}
-                    />
-                    <View>
-                      <Text
-                        className="font-gsemibold text-lg"
-                        style={{
-                          height: hp(3.6),
-                          width: hp(10),
-                          lineHeight: hp(3.6),
-                          left: wp(2.6),
-                        }}
-                      >
-                        Sales O/S
-                      </Text>
-                    </View>
-                  </View>
-                  <View>
-                    <Text className="font-gbold text-xl text-center">
-                      72854652
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      alignItems: "center",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <View style={styles.todaySaleButton}>
-                      <Text style={styles.todaySaleText}>Today Sale</Text>
-                    </View>
-                    <TouchableOpacity
-                      onPress={() => deleteCard(index)}
-                      style={styles.sendIconButton}
-                    >
-                      <Image style={styles.sendIcon} source={Icon.sendIcon} />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            </>
-          )}
-        /> */}
       </SafeAreaView>
     </ScrollView>
   );

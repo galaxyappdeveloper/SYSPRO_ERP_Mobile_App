@@ -14,7 +14,7 @@ export const commonStyle = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#FAFAFA",
   },
   innerContainer: {
     paddingHorizontal: moderateScale(15),
