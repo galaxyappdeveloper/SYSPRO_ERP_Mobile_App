@@ -27,6 +27,7 @@ import { ScreenName } from "../../constants/screenName";
 import { Image } from "expo-image";
 import { Icon } from "../../constants/Icon";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { setReportType } from "../../redux/dashboardSlices/DashboardSlice";
 
 const Dashboard = ({ navigation }) => {
   const [cards, setCards] = useState([1, 2, 3]);
@@ -168,21 +169,25 @@ const Dashboard = ({ navigation }) => {
   // };
 
   const renderCardContainer = (item, dashItem) => {
+    const type = item?.SYSType;
+    const container = item?.Container;
+    // dispatch(setReportType(type));
     return (
       <View style={styles.container}>
         <View
           style={[
             styles.card,
-            cards.length === 1 ? styles.fullWidthCard : styles.halfWidthCard,
+            item.length === 1 ? styles.fullWidthCard : styles.halfWidthCard,
           ]}
         >
           <View style={styles.accountIconContainer}>
             <Image source={Icon.accountIcon} style={styles.accountIcon} />
             <View>
               <Text
-                className="font-gsemibold text-lg"
+                className="font-gsemibold"
                 style={{
                   height: hp(3.6),
+                  fontSize: hp(2),
                   width: hp(13),
                   lineHeight: hp(3.6),
                   left: wp(2.6),
@@ -193,8 +198,7 @@ const Dashboard = ({ navigation }) => {
             </View>
           </View>
           <View>
-            <Text className="font-gbold text-xl text-center">
-              {" "}
+            <Text style={styles.totalcount} className="font-gbold text-center">
               {getTotalNumber(item)}
             </Text>
           </View>
@@ -211,7 +215,13 @@ const Dashboard = ({ navigation }) => {
               </Text>
             </View>
             <TouchableOpacity
-              onPress={() => navigation.navigate(ScreenName.dashboardSummery)}
+              activeOpacity={0.9}
+              onPress={() =>
+                navigation.navigate(ScreenName.dashboardSummery, {
+                  type,
+                  container,
+                })
+              }
               style={styles.sendIconButton}
             >
               <Image style={styles.sendIcon} source={Icon.sendIcon} />
@@ -240,14 +250,6 @@ const Dashboard = ({ navigation }) => {
             return (
               <View key={index}>
                 <Text style={styles.cardsContainerTitle}>{dashItem.Title}</Text>
-
-                {/* <FlatList
-                  data={dashItem.Data}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  keyExtractor={(item, index) => index.toString()}
-                  renderItem={({ item }) => renderCardContainer(item)}
-                /> */}
                 <FlatList
                   data={dashItem.Data}
                   horizontal
@@ -264,6 +266,7 @@ const Dashboard = ({ navigation }) => {
         </View>
 
         {/* This is for third card */}
+
         {/* <FlatList
           data={secondCard}
           showsHorizontalScrollIndicator={false}
@@ -354,6 +357,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: hp(0),
   },
+  totalcount: {
+    fontSize: hp(2.5),
+  },
   SecondCardcontainer: {
     flex: 1,
     flexDirection: "row",
@@ -362,7 +368,7 @@ const styles = StyleSheet.create({
   },
   card: {
     justifyContent: "space-between",
-    backgroundColor: "#e4eafa",
+    backgroundColor: "#fff",
     borderWidth: 1,
     borderColor: "#E6E6E6",
     padding: wp(2),
@@ -373,7 +379,7 @@ const styles = StyleSheet.create({
   },
   Secondcard: {
     justifyContent: "space-between",
-    backgroundColor: "#e4eafa",
+    backgroundColor: "#fff",
     borderWidth: 1,
     borderColor: "#E6E6E6",
     padding: wp(2),

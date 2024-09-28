@@ -18,6 +18,8 @@ import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SearchComponent from "../../componenets/SearchComponent";
 import { ScreenName } from "../../constants/screenName";
+import { useRoute } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
 const renderClientSummery = ({ navigation }) => {
   return (
@@ -90,6 +92,11 @@ const renderClientSummery = ({ navigation }) => {
 };
 
 const SummreyDetails = ({ navigation }) => {
+  const route = useRoute();
+  const accountId = useState(route.params?.accountId || "");
+
+  // const reportType = useSelector((state) => state.dashboard.reportType);
+
   return (
     <SafeAreaView>
       <View
@@ -110,7 +117,7 @@ const SummreyDetails = ({ navigation }) => {
           />
         </TouchableOpacity>
 
-        <Text className="font-gsemibold text-lg  " style={styles.ClientName}>
+        <Text className="font-gsemibold text-lg" style={styles.ClientName}>
           Client Name
         </Text>
         <View style={{ position: "static", right: wp(8) }}>

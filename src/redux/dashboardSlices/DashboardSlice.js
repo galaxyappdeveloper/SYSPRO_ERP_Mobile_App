@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   DashboardPermissionData: [],
   dashboardTotal: [],
+  dashboardSummary: [],
+  reportType: "",
   loading: false,
   error: null,
 };
@@ -24,6 +26,12 @@ export const dashboardSlice = createSlice({
       } else {
         state.dashboardTotal = payload;
       }
+    },
+    setDashboardSummary: (state, { payload }) => {
+      state.dashboardSummary = payload;
+    },
+    setReportType: (state, { payload }) => {
+      state.reportType = payload;
     },
 
     // setDashboardTotal: (state, { payload }) => {
@@ -58,6 +66,8 @@ export const {
   setDashboardPermissionData,
   setDashboardLoading,
   setDashboardTotal,
+  setDashboardSummary,
+  setReportType,
 } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;

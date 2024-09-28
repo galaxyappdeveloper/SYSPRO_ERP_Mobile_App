@@ -1,4 +1,5 @@
 import {
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -6,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -18,17 +19,26 @@ import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SearchComponent from "../../componenets/SearchComponent";
 import { ScreenName } from "../../constants/screenName";
+import { useDispatch, useSelector } from "react-redux";
+import { getDashboardSummary } from "../../Actions/Dashboard/dashboardAction";
+import { useRoute } from "@react-navigation/native";
+import { Loader } from "../../componenets/Loading";
 
-const renderClientSummery = ({navigation}) => {
-  return (
-    <View>
-      {/* Sales No Data Found */}
-      {/* <View style={{justifyContent: "center", alignItems: "center"}}>
-    <Text style={{fontSize: hp(2), marginVertical: hp(50)}}>No Data</Text>
-  </View> */}
-
-      <TouchableOpacity
-        onPress={() => navigation.navigate(ScreenName.summeryDetails)}
+const renderClientSummery = ({ item, navigation }) => {
+  const accountId = item.Account_Id;
+  if (item.length === 0) {
+    return (
+      <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <Text
+          style={{ fontSize: hp(2), marginVertical: hp(50), color: "blue" }}
+        >
+          No Data
+        </Text>
+      </View>
+    );
+  } else {
+    return (
+      <View
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
@@ -38,12 +48,14 @@ const renderClientSummery = ({navigation}) => {
         }}
       >
         <View>
-          <Text className="font-gsemibold text-sm ml-6">A.K.R FABRICS</Text>
+          <Text className="font-gsemibold text-sm ml-6">
+            {item.Account_Name}
+          </Text>
           <View
             style={{ flexDirection: "row", marginLeft: wp(6), gap: wp(10) }}
           >
-            <Text className="text-gray-500 text-sm">Qty-10</Text>
-            <Text className="text-gray-500 text-sm">Amt.-210.00</Text>
+            <Text className="text-gray-500 text-sm">{item.Pcs}</Text>
+            <Text className="text-gray-500 text-sm">Amt. {item.TtlAmt}</Text>
             <View
               style={{
                 flexDirection: "row",
@@ -51,112 +63,145 @@ const renderClientSummery = ({navigation}) => {
                 alignSelf: "center",
               }}
             >
-              <Text style={styles.CountingPage}>1</Text>
+              <Text style={styles.CountingPage}>{item.NoOfOrder}</Text>
             </View>
           </View>
         </View>
         <View>
-          <Image
-            source={Icon.arrowright}
-            style={styles.ArrowRightIcon}
-            contentFit="contain"
-          />
-        </View>
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-const DashboardSummery = ({ navigation }) => {
-  const [searchVisible, setSearchVisible] = useState(false);
-  const [searchText, setSearchText] = useState("");
-
-  const toggleSearchBar = () => {
-    setSearchVisible(!searchVisible);
-  };
-  return (
-    <SafeAreaView>
-      <View
-        style={{
-          marginHorizontal: wp(2),
-          justifyContent: "space-evenly",
-          flexDirection: "row",
-        }}
-      >
-        <TouchableOpacity
-          style={styles.backIconContainer}
-          onPress={() => navigation.goBack()}
-        >
-          <Image
-            source={Icon.arrowRound}
-            style={styles.backIcon}
-            contentFit="contain"
-          />
-        </TouchableOpacity>
-
-        <Text
-          className="font-gsemibold text-lg  "
-          style={styles.SalesOrderPage}
-        >
-          Sales Order Activity
-        </Text>
-        <View>
-          <SearchComponent />
-        </View>
-        <Image
-          source={Icon.filterIcon}
-          style={styles.filterIcon}
-          contentFit="contain"
-        />
-   
-      </View>
-      <ScrollView style={{ marginBottom: hp(6) }}>
-        <FlatList
-        scrollEnabled={false}
-          data={[
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-            20, 21, 22, 23,
-          ]}
-          showsHorizontalScrollIndicator={false}
-          renderItem={() => renderClientSummery({navigation})}
-        />
-        <TouchableOpacity
-          onPress={() => navigation.navigate(ScreenName.summeryDetails)}
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingBottom: hp(2.5),
-            marginTop: hp(1),
-          }}
-        >
-          <View>
-            <Text className="font-gsemibold text-sm ml-6">Total</Text>
-            <View
-              style={{ flexDirection: "row", marginLeft: wp(6), gap: wp(10) }}
-            >
-              <Text className="text-gray-500 text-sm">Qty-10</Text>
-              <Text className="text-gray-500 text-sm">Amt.-210.00</Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginHorizontal: wp(28),
-                  alignSelf: "center",
-                }}
-              >
-                <Text style={styles.CountingPage}>1</Text>
-              </View>
-            </View>
-          </View>
-          <View>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate(ScreenName.summeryDetails, { accountId })
+            }
+          >
             <Image
               source={Icon.arrowright}
               style={styles.ArrowRightIcon}
               contentFit="contain"
             />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+};
+
+const DashboardSummery = ({ navigation }) => {
+  const [searchVisible, setSearchVisible] = useState(false);
+
+  const [searchText, setSearchText] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [filterType, setFilterType] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
+
+  const dispatch = useDispatch();
+  const route = useRoute();
+  const [type, setType] = useState(route.params?.type || "");
+  const [container, setContainer] = useState(route.params?.container || "");
+
+  const dashboardSummaryData = useSelector(
+    (state) => state.dashboard.dashboardSummary
+  );
+  const loading = useSelector((state) => state.dashboard.loading);
+
+  useEffect(() => {
+    if (route.params?.type || route.params?.container) {
+      setType(route.params.type);
+      setContainer(route.params.container);
+    }
+  }, [route.params?.type || route.params?.container]);
+
+  useEffect(() => {
+    dispatch(getDashboardSummary(type));
+  }, [dispatch, type]);
+
+  const toggleSearchBar = () => {
+    setSearchVisible(!searchVisible);
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    dispatch(getDashboardSummary(type));
+    setRefreshing(false);
+  };
+
+  return (
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={() => onRefresh()} />
+      }
+    >
+      <SafeAreaView>
+        <View
+          style={{
+            marginHorizontal: wp(2),
+            justifyContent: "space-evenly",
+            flexDirection: "row",
+          }}
+        >
+          <TouchableOpacity
+            style={styles.backIconContainer}
+            onPress={() => navigation.goBack()}
+          >
+            <Image
+              source={Icon.arrowRound}
+              style={styles.backIcon}
+              contentFit="contain"
+            />
+          </TouchableOpacity>
+
+          <Text
+            className="font-gsemibold text-lg"
+            style={styles.SalesOrderPage}
+          >
+            {container} Activity
+          </Text>
+          <View>
+            <SearchComponent />
           </View>
-        </TouchableOpacity>
-      </ScrollView>
-    </SafeAreaView>
+          <Image
+            source={Icon.filterIcon}
+            style={styles.filterIcon}
+            contentFit="contain"
+          />
+        </View>
+        {loading && <Loader />}
+        <ScrollView style={{ marginBottom: hp(6) }}>
+          {dashboardSummaryData?.Table &&
+          dashboardSummaryData?.Table?.length > 0 ? (
+            <FlatList
+              scrollEnabled={false}
+              data={dashboardSummaryData?.Table}
+              // data={[1, 2, 3, 4, 5]}
+              showsHorizontalScrollIndicator={false}
+              renderItem={({ item, index }) =>
+                renderClientSummery({ item, navigation })
+              }
+            />
+          ) : (
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Text
+                style={{
+                  fontSize: hp(2),
+                  marginTop: hp(40),
+                  color: themePrimaryColor,
+                }}
+              >
+                No Record Found for Today
+              </Text>
+              <Text
+                style={{
+                  fontSize: hp(1.5),
+                  color: themePrimaryColor,
+                }}
+              >
+                Please Apply Filter
+              </Text>
+            </View>
+          )}
+        </ScrollView>
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 

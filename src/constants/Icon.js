@@ -46,5 +46,4 @@ export const Icon = {
   shareIcon: ShareIcon,
   accountIcon: AccountIcon,
   sendIcon: SendIcon,
-
 };

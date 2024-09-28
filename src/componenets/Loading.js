@@ -12,10 +12,7 @@ export const Loader = ({ customStyle }) => {
           top: "50%",
           left: "50%",
           zIndex: 1000,
-          // flex: 1,
-          // alignItems: "center",
-          // justifyContent: "center",
-          // backgroundColor: "white",
+          transform: [{ translateX: -25 }, { translateY: -25 }],
         },
         customStyle,
       ]}

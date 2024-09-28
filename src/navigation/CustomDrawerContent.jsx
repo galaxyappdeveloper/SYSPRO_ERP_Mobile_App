@@ -52,7 +52,7 @@ const CustomDrawerContent = (props) => {
         label="Dashboard"
         onPress={() => props.navigation.navigate(ScreenName.dashboard)}
       />
-      <View>
+      {/* <View>
         <TouchableOpacity onPress={toggleMenu}>
           <Text className="font-gsemibold" style={styles.menuTitle}>
             Reports
@@ -70,7 +70,7 @@ const CustomDrawerContent = (props) => {
             />
           </View>
         </Animated.View>
-      </View>
+      </View> */}
     </DrawerContentScrollView>
   );
 };

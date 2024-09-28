@@ -36,8 +36,8 @@ export const login = createAsyncThunk(
       const userResponse = response?.data?.Data;
       const Token = userResponse?.Token;
       await AsyncStorage.setItem(token, Token);
-      await AsyncStorage.setItem(userData, JSON.stringify(userResponse));
-      dispatch(setUserData(userResponse));
+      // await AsyncStorage.setItem(userData, JSON.stringify(userResponse));
+      await dispatch(setUserData(userResponse));
       navigate(NavigationNames.homeRoutes);
       notifyMessage(response?.data?.Message);
       return true;
@@ -121,6 +121,26 @@ export const loadMpinData = () => async (dispatch) => {
     dispatch(authSlice.actions.setMpinData(parsedMpinData));
   }
 };
+
+// export const loadMpinData = () => async (dispatch, getState) => {
+//   const { mpinData } = getState().auth;
+
+//   if (!mpinData) {
+//     // Only load if mpinData is not already in the state
+//     const storedMpinData = await AsyncStorage.getItem("mPinData");
+//     const parsedMpinData =
+//       storedMpinData != null ? JSON.parse(storedMpinData) : null;
+
+//     if (parsedMpinData) {
+//       console.log("Loading MPIN data from AsyncStorage...");
+//       dispatch(authSlice.actions.setMpinData(parsedMpinData));
+//     }
+//   } else {
+//     console.log(
+//       "MPIN data already exists in state, no need to load from AsyncStorage."
+//     );
+//   }
+// };
 
 export const loadUserData = () => async (dispatch) => {
   const userdata = await AsyncStorage.getItem(userData);

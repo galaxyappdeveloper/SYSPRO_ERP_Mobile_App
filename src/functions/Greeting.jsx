@@ -18,14 +18,14 @@ export const Greeting = ({ customtextStyle }) => {
   if (hours < 12) {
     greet = "Morning ☕";
   } else if (hours >= 12 && hours <= 17) {
-    greet = "Afternoon 👋";
+    greet = "Afternoon 👋🏻";
   } else {
     greet = "Evening ⛅";
   }
 
   return (
     <Text style={customtextStyle}>
-      Good {greet}! , {capitalizeFirstLetter(userdata?.CompanyName)}
+      Good {greet}, {capitalizeFirstLetter(userdata?.CompanyName)}
     </Text>
   );
 };
