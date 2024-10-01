@@ -107,9 +107,9 @@ const styles = StyleSheet.create({
     width: wp(90),
     height: hp(8.5),
     borderColor: "#E7EAF3",
-    borderWidth: 2,
     borderRadius: 16,
     paddingHorizontal: 8,
+    elevation: 5, 
   },
   icon: {
     width: wp(7),
@@ -127,6 +127,9 @@ const styles = StyleSheet.create({
     left: wp(10),
     backgroundColor: "white",
     color: "#5C658C",
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    
   },
   requiredLabelstar: {
     color: "red",

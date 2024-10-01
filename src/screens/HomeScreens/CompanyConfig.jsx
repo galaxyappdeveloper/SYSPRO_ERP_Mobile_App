@@ -104,9 +104,9 @@ const CompanyConfig = ({ navigation }) => {
             </Text>
           </View>
 
-          <Text className="font-gsemibold" style={styles.CompanyConfigHeader}>
+          {/* <Text className="font-gsemibold" style={styles.CompanyConfigHeader}>
             Company Configuration Setting
-          </Text>
+          </Text> */}
           <View style={styles.dropDownSelectors}>
             <DropdownComponent
               DisplayField="Company_name"
@@ -125,6 +125,7 @@ const CompanyConfig = ({ navigation }) => {
                   company: null,
                 }));
               }}
+              customStyle={{ backgroundColor: "white" }}
             />
             {/* 7864 */}
 
@@ -145,6 +146,7 @@ const CompanyConfig = ({ navigation }) => {
                   duration: null,
                 }));
               }}
+              customStyle={{ backgroundColor: "white" }}
             />
 
             <DropdownComponent
@@ -164,6 +166,7 @@ const CompanyConfig = ({ navigation }) => {
                   premise: null,
                 }));
               }}
+              customStyle={{ backgroundColor: "white" }}
             />
 
             <DropdownComponent
@@ -183,6 +186,7 @@ const CompanyConfig = ({ navigation }) => {
                 }));
                 console.log("Department value :", value);
               }}
+              customStyle={{ backgroundColor: "white" }}
             />
           </View>
         </ScrollView>
@@ -206,7 +210,7 @@ export default CompanyConfig;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffff",
+    backgroundColor: "#FAFAFA",
   },
   header: {
     flexDirection: "row",
@@ -218,23 +222,25 @@ const styles = StyleSheet.create({
   IconContainer: {
     position: "absolute",
     left: 0,
+    borderRadius: 50,
+    backgroundColor: "#fff",
+    elevation: 5,
   },
   backIcon: {
-    width: hp(5),
-    height: hp(5),
+    width: hp(4),
+    height: hp(4),
     margin: wp(2),
-    elevation: 5,
   },
   headerConfigruation: {
     fontSize: hp(3),
     fontWeight: "400",
   },
-  CompanyConfigHeader: {
-    fontSize: hp(2.5),
-    alignSelf: "center",
-    color: "#021121",
-    marginTop: hp(6),
-  },
+  // CompanyConfigHeader: {
+  //   fontSize: hp(2.5),
+  //   alignSelf: "center",
+  //   color: "#021121",
+  //   marginTop: hp(6),
+  // },
   dropDownSelectors: {
     marginTop: hp(4),
     alignSelf: "center",

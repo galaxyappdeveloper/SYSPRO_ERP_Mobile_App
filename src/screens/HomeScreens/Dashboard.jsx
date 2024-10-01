@@ -5,6 +5,7 @@ import {
   ScrollView,
   RefreshControl,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
@@ -12,7 +13,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { themePrimaryColor } from "../../constants/constant";
+import Carousel from "react-native-reanimated-carousel";
+import { images } from "./../../constants/images";
+import { colors, themePrimaryColor } from "../../constants/constant";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getDashboardPermission,
@@ -78,8 +81,10 @@ const Dashboard = ({ navigation }) => {
     const type = item?.SYSType;
     const container = item?.Container;
     return (
-      <View style={styles.container}>
-        <View
+      <View>
+        <ImageBackground
+          imageStyle={styles.image}
+          source={images.backgroundShiny}
           style={[
             styles.card,
             item.length === 1 ? styles.fullWidthCard : styles.halfWidthCard,
@@ -113,7 +118,6 @@ const Dashboard = ({ navigation }) => {
             style={{
               alignItems: "center",
               flexDirection: "row",
-              justifyContent: "space-between",
             }}
           >
             <TouchableOpacity
@@ -135,7 +139,7 @@ const Dashboard = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           </View>
-        </View>
+        </ImageBackground>
       </View>
     );
   };
@@ -181,27 +185,12 @@ const styles = StyleSheet.create({
   DashboardContainer: {
     flex: 1,
   },
-  CardContainer: {
-    height: hp(15),
-    width: wp(45),
-    backgroundColor: "#00b894",
-    borderRadius: 10,
-    borderWidth: 1,
-    margin: hp(1),
-    margin: hp(1),
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  cardInnerTitle: {
-    alignSelf: "center",
-  },
   cardsContainerTitle: {
     fontSize: hp(2.5),
     fontWeight: "600",
     color: themePrimaryColor,
     marginHorizontal: hp(3),
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   container: {
     flex: 1,
     flexDirection: "row",
@@ -226,7 +215,10 @@ const styles = StyleSheet.create({
     margin: hp(1),
     borderRadius: 26,
     height: hp(22),
-    elevation: 5,
+  },
+  image: {
+    borderRadius: 22,
+    borderWidth: 1,
   },
   Secondcard: {
     justifyContent: "space-between",
@@ -238,7 +230,6 @@ const styles = StyleSheet.create({
     borderRadius: 26,
     height: hp(22),
     elevation: 5,
-    // marginHorizontal: hp(-30.5),
   },
   halfWidthCard: {
     width: wp("45%"), // Two cards in a row
@@ -288,7 +279,13 @@ const styles = StyleSheet.create({
     height: hp(4.5),
     width: hp(4.5),
     tintColor: themePrimaryColor,
+    marginRight: wp(1),
+    borderWidth: 1,
+    borderRadius: 50,
+    // borderColor: "grey",
+    backgroundColor: colors.themebackgroundColor,
   },
+  flatListContainer: {},
 });
 
 export default Dashboard;

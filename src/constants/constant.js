@@ -10,12 +10,11 @@ export const urls = {
 };
 
 export const constant = {
-  mpinScreenTitle1: "Let's Connect",
-  mpinScreenTitle2: "Please fill in the m-pin below to make it",
-  mpinScreenTitle3: "easier for us get to know you",
-  loginScreenTitle1: "Welcome Back! ",
-  loginScreenTitle2: "Please fill username and password",
-  loginScreenTitle3: "to continue",
+  mpinScreenTitle1: "mPin",
+  mpinScreenTitle2: "Connect to your bussiness", 
+  // mpinScreenTitle3: "your bussiness",
+  loginScreenTitle1: "Login to your Account",
+  loginScreenTitle2: "Please enter your Details",
 };
 
 
