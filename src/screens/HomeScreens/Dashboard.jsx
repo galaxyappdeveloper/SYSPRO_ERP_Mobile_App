@@ -6,6 +6,7 @@ import {
   ScrollView,
   RefreshControl,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
@@ -15,7 +16,7 @@ import {
 } from "react-native-responsive-screen";
 import Carousel from "react-native-reanimated-carousel";
 import { images } from "./../../constants/images";
-import { themePrimaryColor } from "../../constants/constant";
+import { colors, themePrimaryColor } from "../../constants/constant";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getDashboardPermission,
@@ -83,8 +84,10 @@ const Dashboard = ({ navigation }) => {
     const container = item?.Container;
     // dispatch(setReportType(type));
     return (
-      <View style={styles.container}>
-        <View
+      <View>
+        <ImageBackground
+          imageStyle={styles.image}
+          source={images.backgroundShiny}
           style={[
             styles.card,
             item.length === 1 ? styles.fullWidthCard : styles.halfWidthCard,
@@ -116,53 +119,33 @@ const Dashboard = ({ navigation }) => {
             style={{
               alignItems: "center",
               flexDirection: "row",
-              justifyContent: "space-between",
             }}
           >
-            {/* <View style={styles.todaySaleButton}>
-              <Text numberOfLines={1} style={styles.todaySaleText}>
-                {item.Caption}
-              </Text>
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ScreenName.dashboardSummery)}
-                style={styles.sendIconButton}
-              >
-                <Image style={styles.sendIcon} source={Icon.sendIcon} />
-              </TouchableOpacity>
-
-            </View> */}
-
-            {/* <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={() =>
-                navigation.navigate(ScreenName.dashboardSummery, {
-                  type,
-                  container,
-                })
-              }
-              style={styles.sendIconButton}
-            >
-              <Image style={styles.sendIcon} source={Icon.sendIcon} />
-            </TouchableOpacity> */}
-            <View style={styles.todaySaleButton}>
-              <Text numberOfLines={1} style={styles.todaySaleText}>
-                {item.Caption}
-              </Text>
-            </View>
             <TouchableOpacity
-              activeOpacity={0.9}
               onPress={() =>
                 navigation.navigate(ScreenName.dashboardSummery, {
                   type,
                   container,
                 })
               }
-              style={styles.sendIconButton}
+              style={styles.ExploreTextContainer}
             >
-              <Image style={styles.sendIcon} source={Icon.sendIcon} />
+              <View
+                style={styles.ExploreTextBtn}
+                animation={"flipOutY"}
+                activeOpacity={0.5}
+                duration={1000}
+              >
+                <Text numberOfLines={1} style={styles.ExploreText}>
+                  Explore
+                </Text>
+              </View>
+              <View style={styles.sendIconButtonContainer}>
+                <Image style={styles.sendIcon} source={Icon.sendIcon} />
+              </View>
             </TouchableOpacity>
           </View>
-        </View>
+        </ImageBackground>
       </View>
     );
   };
@@ -208,27 +191,12 @@ const styles = StyleSheet.create({
   DashboardContainer: {
     flex: 1,
   },
-  CardContainer: {
-    height: hp(15),
-    width: wp(45),
-    backgroundColor: "#00b894",
-    borderRadius: 10,
-    borderWidth: 1,
-    margin: hp(1),
-    margin: hp(1),
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  cardInnerTitle: {
-    alignSelf: "center",
-  },
   cardsContainerTitle: {
     fontSize: hp(2.5),
     fontWeight: "600",
     color: themePrimaryColor,
     marginHorizontal: hp(3),
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   container: {
     flex: 1,
     flexDirection: "row",
@@ -253,7 +221,10 @@ const styles = StyleSheet.create({
     margin: hp(1),
     borderRadius: 26,
     height: hp(22),
-    elevation: 5,
+  },
+  image: {
+    borderRadius: 22,
+    borderWidth: 1,
   },
   Secondcard: {
     justifyContent: "space-between",
@@ -265,7 +236,6 @@ const styles = StyleSheet.create({
     borderRadius: 26,
     height: hp(22),
     elevation: 5,
-    // marginHorizontal: hp(-30.5),
   },
   halfWidthCard: {
     width: wp("45%"), // Two cards in a row
@@ -273,40 +243,38 @@ const styles = StyleSheet.create({
   fullWidthCard: {
     width: wp("95%"), // Full width if only one card
   },
-  todaySaleButton: {
+  ExploreTextContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     flex: 1,
-    marginTop: hp(1),
-    paddingHorizontal: hp(2),
-    paddingVertical: hp(2),
-    width: wp(24),
+  },
+  ExploreTextBtn: {
     backgroundColor: "#F5F8FB",
     borderRadius: 50,
-    borderWidth: 1,
     borderColor: "#E6E6E6",
+    borderWidth: 1,
+    paddingHorizontal: hp(1),
+    flex: 1,
+    elevation: 1,
   },
-  todaySaleText: {
+  ExploreText: {
     color: "#021121",
+    marginVertical: hp(1.5),
     textAlign: "center",
     fontSize: hp(1.5),
     fontWeight: "gilroy-bold",
   },
-  sendIconButton: {
-    padding: hp(2),
-    width: hp(6),
-    height: hp(6),
-    backgroundColor: "#F5F8FB",
+  sendIconButtonContainer: {
     borderRadius: 50,
-    left: hp(0.5),
-    top: hp(0.5),
-    borderWidth: 1,
-    borderColor: "#E6E6E6",
-    cursor: "pointer",
+    backgroundColor: "#fff",
+    padding: hp(1.5),
+    elevation: 5,
+    position: "absolute",
+    right: 0,
   },
   sendIcon: {
-    height: hp(2),
-    width: hp(2),
-    borderRadius: 50,
-    alignSelf: "center",
+    width: wp(5),
+    height: wp(5),
   },
   accountIconContainer: {
     flexDirection: "row",
@@ -316,7 +284,13 @@ const styles = StyleSheet.create({
     height: hp(4.5),
     width: hp(4.5),
     tintColor: themePrimaryColor,
+    marginRight: wp(1),
+    borderWidth: 1,
+    borderRadius: 50,
+    // borderColor: "grey",
+    backgroundColor: colors.themebackgroundColor,
   },
+  flatListContainer: {},
 });
 
 export default Dashboard;

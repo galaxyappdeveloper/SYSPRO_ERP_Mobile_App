@@ -27,7 +27,7 @@ import { Loader } from "../../componenets/Loading";
 import { commonStyle } from "../../constants/commonStyle";
 import CustomBtn from "./../../componenets/CustomBtn";
 import Modal from "react-native-modal";
-import FilterModal from "./FilterModel";
+import FilterModal from "./FilterModal";
 
 const renderClientSummery = ({ item, navigation }) => {
   const accountId = item?.Account_Id;
