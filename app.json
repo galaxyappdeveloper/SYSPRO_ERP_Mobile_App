@@ -29,6 +29,10 @@
       "eas": {
         "projectId": "b39da156-6741-40e6-b29e-f5d7776d84f9"
       }
-    }
+    },
+    "plugins": [
+      "@config-plugins/react-native-blob-util",
+      "@config-plugins/react-native-pdf"
+    ]
   }
 }

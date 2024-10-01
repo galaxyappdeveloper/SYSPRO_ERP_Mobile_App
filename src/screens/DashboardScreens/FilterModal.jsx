@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-// import Icon from "react-native-vector-icons/Ionicons"; // For icons
-import DateTimePicker from "@react-native-community/datetimepicker"; // Optional for date picker functionality
+import DateTimePicker from "@react-native-community/datetimepicker";
 import CustomBtn from "../../componenets/CustomBtn";
 import {
   heightPercentageToDP as hp,
@@ -9,7 +8,6 @@ import {
 } from "react-native-responsive-screen";
 import { Image } from "expo-image";
 import { Icon } from "../../constants/Icon";
-// import { Icon } from "../../constants/Icon";
 
 const FilterModal = ({ toggle }) => {
   const [fromDate, setFromDate] = useState(new Date());

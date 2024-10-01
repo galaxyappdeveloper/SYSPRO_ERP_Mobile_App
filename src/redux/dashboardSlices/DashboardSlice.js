@@ -4,6 +4,8 @@ const initialState = {
   DashboardPermissionData: [],
   dashboardTotal: [],
   dashboardSummary: [],
+  dashboardSummaryDetail: [],
+  dashboardReportPrint: "",
   reportType: "",
   loading: false,
   error: null,
@@ -29,6 +31,12 @@ export const dashboardSlice = createSlice({
     },
     setDashboardSummary: (state, { payload }) => {
       state.dashboardSummary = payload;
+    },
+    setDashboardSummaryDetail: (state, { payload }) => {
+      state.dashboardSummaryDetail = payload;
+    },
+    setDashboardReportPrint: (state, { payload }) => {
+      state.dashboardReportPrint = payload;
     },
     setReportType: (state, { payload }) => {
       state.reportType = payload;
@@ -67,6 +75,8 @@ export const {
   setDashboardLoading,
   setDashboardTotal,
   setDashboardSummary,
+  setDashboardSummaryDetail,
+  setDashboardReportPrint,
   setReportType,
 } = dashboardSlice.actions;
 

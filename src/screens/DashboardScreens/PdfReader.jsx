@@ -1,4 +1,5 @@
 import {
+  Linking,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -13,8 +14,33 @@ import { Icon } from "../../constants/Icon";
 import { themePrimaryColor } from "../../constants/constant";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScreenName } from "../../constants/screenName";
+// import PDFReader from "rn-pdf-reader-js";
+// import PDFReader from "react-native-pdf";
+import { useEffect, useState } from "react";
+import { useRoute } from "@react-navigation/native";
+import { getDashReportPrint } from "../../Actions/Dashboard/dashboardAction";
+import { useDispatch, useSelector } from "react-redux";
+import { Loader } from "../../componenets/Loading";
 
 const PdfReader = ({ navigation }) => {
+  const [pdfUri, setPdfUri] = useState(null);
+  // const [loading, setLoading] = useState(true);
+
+  const loading = useSelector((state) => state.dashboard.loading);
+
+  const dispatch = useDispatch();
+
+  const route = useRoute();
+  const item = route.params?.item || "";
+
+  useEffect(() => {
+    if (item) {
+      dispatch(getDashReportPrint(item));
+    }
+  }, [item]);
+
+  const pdflink = useSelector((state) => state.dashboard?.dashboardReportPrint);
+
   return (
     <SafeAreaView
       style={{
@@ -44,7 +70,7 @@ const PdfReader = ({ navigation }) => {
         </TouchableOpacity>
 
         <Text className="font-gsemibold text-lg " style={styles.ClientName}>
-          #463
+          #{item?.OrderId}
         </Text>
         <TouchableOpacity>
           <View>
@@ -65,6 +91,20 @@ const PdfReader = ({ navigation }) => {
           </View>
         </TouchableOpacity>
       </View>
+      {loading && <Loader />}
+      {pdflink && (
+        <Text
+          onPress={() => Linking.openURL(pdflink)}
+          style={{
+            flex: 1,
+            color: "black",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          PDF Link <Text style={{ color: "blue" }}>Click Here </Text>
+        </Text>
+      )}
     </SafeAreaView>
   );
 };

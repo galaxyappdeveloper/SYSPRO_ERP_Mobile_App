@@ -96,7 +96,6 @@ const HomeRoutes = () => {
 
 export default HomeRoutes;
 
-// Styles
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,

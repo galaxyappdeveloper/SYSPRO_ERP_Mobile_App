@@ -2,7 +2,9 @@ import { notifyMessage } from "../../functions/toastMessage";
 import {
   setDashboardLoading,
   setDashboardPermissionData,
+  setDashboardReportPrint,
   setDashboardSummary,
+  setDashboardSummaryDetail,
   setDashboardTotal,
 } from "../../redux/dashboardSlices/DashboardSlice";
 import dashboardService from "../../services/dashboardService";
@@ -99,6 +101,79 @@ export const getDashboardSummary = (type) => async (dispatch) => {
     dispatch(setDashboardSummary([]));
     const response = await dashboardService.getDashboardSummary(body);
     dispatch(setDashboardSummary(response?.data?.Data));
+    dispatch(setDashboardLoading(false));
+  } catch (error) {
+    if (error?.response?.data?.ErrorMessage) {
+      notifyMessage(error.response.data.ErrorMessage);
+    } else {
+      // notifyMessage("Unexpected Error .");
+    }
+    dispatch(setDashboardLoading(false));
+  } finally {
+    dispatch(setDashboardLoading(false));
+  }
+};
+
+export const getDashboardSummaryDetail =
+  (type, accountId) => async (dispatch) => {
+    // fromDate, toDate, type, filterString
+    const date = new Date();
+    const formatedDate = date
+      .toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+      .replace(/\//g, "-");
+
+    const body = {
+      IntReportId: 0,
+      // FromDate: fromDate ? fromDate : formatedDate,
+      // ToDate: toDate ? toDate : formatedDate,
+      FromDate: "25-05-2023",
+      ToDate: "25-05-2024",
+      type: type,
+      Account_Id: accountId,
+      FilterString: "",
+    };
+
+    try {
+      dispatch(setDashboardLoading(true));
+      const response = await dashboardService.getDashboardSummaryDetail(body);
+      dispatch(setDashboardSummaryDetail(response?.data?.Data?.Table));
+      dispatch(setDashboardLoading(false));
+    } catch (error) {
+      if (error?.response?.data?.ErrorMessage) {
+        notifyMessage(error.response.data.ErrorMessage);
+      } else {
+        // notifyMessage("Unexpected Error .");
+      }
+      dispatch(setDashboardLoading(false));
+    } finally {
+      dispatch(setDashboardLoading(false));
+    }
+  };
+
+export const getDashReportPrint = (item) => async (dispatch) => {
+  const body = {
+    Order_Id: item.OrderId,
+    RptFile: item.RptPath,
+    RptSelectFormula: item.RptSelectFormula,
+    ReportName: item.ReportName,
+    CompanyName: "",
+    CompanyAddress1: "",
+    CompanyAddress2: "",
+    CompanyContact: "",
+    CompanyPremise: "",
+    CompanyGSTCST: "",
+  };
+
+  try {
+    dispatch(setDashboardLoading(true));
+    dispatch(setDashboardReportPrint(""));
+    const response = await dashboardService.getDashReportPrint(body);
+    dispatch(setDashboardReportPrint(response?.data?.Data?.ReportPath));
+    console.log("file path : ", response?.data?.Data?.ReportPath);
     dispatch(setDashboardLoading(false));
   } catch (error) {
     if (error?.response?.data?.ErrorMessage) {

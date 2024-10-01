@@ -13,7 +13,7 @@ class DashboardService {
   getDashboardSummaryDetail(body) {
     return http.post("api/HomeApi/GetDashboardDetail", body);
   }
-  getDashPrint(body) {
+  getDashReportPrint(body) {
     return http.post("api/HomeApi/PrintRpt", body);
   }
 }

@@ -25,11 +25,10 @@ import { getDashboardSummary } from "../../Actions/Dashboard/dashboardAction";
 import { useRoute } from "@react-navigation/native";
 import { Loader } from "../../componenets/Loading";
 import { commonStyle } from "../../constants/commonStyle";
-import CustomBtn from "./../../componenets/CustomBtn";
 import Modal from "react-native-modal";
-import FilterModal from "./FilterModel";
+import FilterModal from "./FilterModal";
 
-const renderClientSummery = ({ item, navigation }) => {
+const renderClientSummery = ({ loading, item, type, navigation }) => {
   const accountId = item?.Account_Id;
   // if (item.length === 0) {
   //   return (
@@ -42,9 +41,19 @@ const renderClientSummery = ({ item, navigation }) => {
   //     </View>
   //   );
   // } else {
+
+  const maxLength = 40;
+
+  const trimmedTitle =
+    item?.Account_Name.length > maxLength
+      ? `${item?.Account_Name.slice(0, maxLength)}...`
+      : item?.Account_Name;
+
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate(ScreenName.summeryDetails)}
+      onPress={() =>
+        navigation.navigate(ScreenName.summeryDetails, { type, accountId })
+      }
       style={{
         flex: 1,
       }}
@@ -56,7 +65,7 @@ const renderClientSummery = ({ item, navigation }) => {
             style={styles.Tilte}
             className="font-gsemibold"
           >
-            {item?.Account_Name}
+            {trimmedTitle}
           </Text>
           <View style={styles.CountingContainer}>
             <Text style={styles.OrderQuantity}>{item?.NoOfOrder}</Text>
@@ -80,14 +89,12 @@ const renderClientSummery = ({ item, navigation }) => {
           </View>
         </View>
       </View>
-      {/* </TouchableOpacity> */}
     </TouchableOpacity>
   );
 };
 
 const DashboardSummery = ({ navigation }) => {
   const [searchVisible, setSearchVisible] = useState(false);
-
   const [searchText, setSearchText] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
@@ -102,6 +109,7 @@ const DashboardSummery = ({ navigation }) => {
   const dashboardSummaryData = useSelector(
     (state) => state.dashboard.dashboardSummary
   );
+
   const loading = useSelector((state) => state.dashboard.loading);
 
   const onRefresh = () => {
@@ -132,6 +140,7 @@ const DashboardSummery = ({ navigation }) => {
   };
   return (
     <SafeAreaView style={[commonStyle.container]}>
+      {loading && <Loader />}
       <View style={styles.Header}>
         <View style={styles.backIconContainer}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -174,10 +183,9 @@ const DashboardSummery = ({ navigation }) => {
           <FlatList
             scrollEnabled={false}
             data={dashboardSummaryData?.Table}
-            // data={[1, 2, 3, 4, 5]}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item, index }) =>
-              renderClientSummery({ item, navigation })
+              renderClientSummery({ loading, item, type, navigation })
             }
           />
         ) : (
@@ -212,19 +220,20 @@ const DashboardSummery = ({ navigation }) => {
           }}
         ></TouchableOpacity> */}
       </ScrollView>
-      {/* <View style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
         <Modal isVisible={isModalVisible}>
           <View
             style={{
               flex: 1,
               alignItems: "center",
               justifyContent: "flex-end",
+              top: 40,
             }}
           >
             <FilterModal toggle={toggleModal} />
           </View>
         </Modal>
-      </View> */}
+      </View>
     </SafeAreaView>
   );
 };

@@ -2,7 +2,6 @@ import {
   FlatList,
   Text,
   View,
-  Dimensions,
   ScrollView,
   RefreshControl,
   TouchableOpacity,
@@ -13,8 +12,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import Carousel from "react-native-reanimated-carousel";
-import { images } from "./../../constants/images";
 import { themePrimaryColor } from "../../constants/constant";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -27,7 +24,6 @@ import { ScreenName } from "../../constants/screenName";
 import { Image } from "expo-image";
 import { Icon } from "../../constants/Icon";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { setReportType } from "../../redux/dashboardSlices/DashboardSlice";
 
 const Dashboard = ({ navigation }) => {
   const [cards, setCards] = useState([1, 2, 3]);
@@ -44,9 +40,9 @@ const Dashboard = ({ navigation }) => {
     (state) => state?.dashboard?.dashboardTotal
   );
 
-  if (loading) {
-    return <Loader />;
-  }
+  // if (loading) {
+  //   return <Loader />;
+  // }
 
   if (DashboardPermissionData === null) {
     return (
@@ -81,7 +77,6 @@ const Dashboard = ({ navigation }) => {
   const renderCardContainer = (item, dashItem) => {
     const type = item?.SYSType;
     const container = item?.Container;
-    // dispatch(setReportType(type));
     return (
       <View style={styles.container}>
         <View
@@ -94,16 +89,18 @@ const Dashboard = ({ navigation }) => {
             <Image source={Icon.accountIcon} style={styles.accountIcon} />
             <View>
               <Text
+                // numberOfLines={1}
                 className="font-gsemibold"
                 style={{
                   height: hp(3.6),
                   fontSize: hp(2),
-                  width: hp(13),
+                  width: hp(15),
                   lineHeight: hp(3.6),
-                  left: wp(2.6),
+                  left: wp(1.8),
                 }}
               >
-                {dashItem.Title}
+                {/* {dashItem.Title} */}
+                {item.Caption}
               </Text>
             </View>
           </View>
@@ -119,47 +116,23 @@ const Dashboard = ({ navigation }) => {
               justifyContent: "space-between",
             }}
           >
-            {/* <View style={styles.todaySaleButton}>
-              <Text numberOfLines={1} style={styles.todaySaleText}>
-                {item.Caption}
-              </Text>
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ScreenName.dashboardSummery)}
-                style={styles.sendIconButton}
-              >
-                <Image style={styles.sendIcon} source={Icon.sendIcon} />
-              </TouchableOpacity>
-
-            </View> */}
-
-            {/* <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={() =>
-                navigation.navigate(ScreenName.dashboardSummery, {
-                  type,
-                  container,
-                })
-              }
-              style={styles.sendIconButton}
-            >
-              <Image style={styles.sendIcon} source={Icon.sendIcon} />
-            </TouchableOpacity> */}
-            <View style={styles.todaySaleButton}>
-              <Text numberOfLines={1} style={styles.todaySaleText}>
-                {item.Caption}
-              </Text>
-            </View>
             <TouchableOpacity
-              activeOpacity={0.9}
               onPress={() =>
                 navigation.navigate(ScreenName.dashboardSummery, {
                   type,
                   container,
                 })
               }
-              style={styles.sendIconButton}
+              style={styles.ExploreTextContainer}
             >
-              <Image style={styles.sendIcon} source={Icon.sendIcon} />
+              <View style={styles.ExploreTextBtn}>
+                <Text numberOfLines={1} style={styles.ExploreText}>
+                  Explore
+                </Text>
+              </View>
+              <View style={styles.sendIconButtonContainer}>
+                <Image style={styles.sendIcon} source={Icon.sendIcon} />
+              </View>
             </TouchableOpacity>
           </View>
         </View>
@@ -181,7 +154,7 @@ const Dashboard = ({ navigation }) => {
       {loading && <Loader />}
       <SafeAreaView>
         <View>
-          {DashboardPermissionData.map((dashItem, index) => {
+          {DashboardPermissionData?.map((dashItem, index) => {
             return (
               <View key={index}>
                 <Text style={styles.cardsContainerTitle}>{dashItem.Title}</Text>
@@ -273,40 +246,39 @@ const styles = StyleSheet.create({
   fullWidthCard: {
     width: wp("95%"), // Full width if only one card
   },
-  todaySaleButton: {
+
+  ExploreTextContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     flex: 1,
-    marginTop: hp(1),
-    paddingHorizontal: hp(2),
-    paddingVertical: hp(2),
-    width: wp(24),
+  },
+  ExploreTextBtn: {
     backgroundColor: "#F5F8FB",
     borderRadius: 50,
-    borderWidth: 1,
     borderColor: "#E6E6E6",
+    borderWidth: 1,
+    paddingHorizontal: hp(1),
+    flex: 1,
+    elevation: 1,
   },
-  todaySaleText: {
+  ExploreText: {
     color: "#021121",
+    marginVertical: hp(1.5),
     textAlign: "center",
     fontSize: hp(1.5),
     fontWeight: "gilroy-bold",
   },
-  sendIconButton: {
-    padding: hp(2),
-    width: hp(6),
-    height: hp(6),
-    backgroundColor: "#F5F8FB",
+  sendIconButtonContainer: {
     borderRadius: 50,
-    left: hp(0.5),
-    top: hp(0.5),
-    borderWidth: 1,
-    borderColor: "#E6E6E6",
-    cursor: "pointer",
+    backgroundColor: "#fff",
+    padding: hp(1.5),
+    elevation: 5,
+    position: "absolute",
+    right: 0,
   },
   sendIcon: {
-    height: hp(2),
-    width: hp(2),
-    borderRadius: 50,
-    alignSelf: "center",
+    width: wp(5),
+    height: wp(5),
   },
   accountIconContainer: {
     flexDirection: "row",

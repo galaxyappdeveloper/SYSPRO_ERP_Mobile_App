@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -20,19 +20,20 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import SearchComponent from "../../componenets/SearchComponent";
 import { ScreenName } from "../../constants/screenName";
 import { useRoute } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { commonStyle } from "../../constants/commonStyle";
 import CustomBtn from "./../../componenets/CustomBtn";
 import Modal from "react-native-modal";
+import {
+  getDashboardSummaryDetail,
+  getDashReportPrint,
+} from "../../Actions/Dashboard/dashboardAction";
+import { Loader } from "../../componenets/Loading";
+import { formatDate } from "../../functions/formatDate";
 
-const renderClientSummery = ({ navigation }) => {
+const renderClientSummery = ({ item, navigation }) => {
   return (
     <View>
-      {/* Sales No Data Found */}
-      {/* <View style={{justifyContent: "center", alignItems: "center"}}>
-    <Text style={{fontSize: hp(2), marginVertical: hp(50)}}>No Data</Text>
-  </View> */}
-
       <TouchableOpacity
         onPress={() => navigation.navigate(ScreenName.summeryDetails)}
         style={{
@@ -42,10 +43,14 @@ const renderClientSummery = ({ navigation }) => {
         <View style={styles.Container}>
           <View style={styles.TitleContainer}>
             <Text style={styles.Tilte} className="font-gsemibold">
-              #300
+              #{item.OrderId}
             </Text>
             <View style={styles.PrinterContainer}>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate(ScreenName.pdfReader, { item })
+                }
+              >
                 <Image source={Icon.printerIcon} style={styles.printerIcon} />
               </TouchableOpacity>
             </View>
@@ -53,17 +58,21 @@ const renderClientSummery = ({ navigation }) => {
           <View
             style={{ flexDirection: "row", marginLeft: wp(6), gap: wp(10) }}
           >
+            {/* <View style={styles.BillNoConatiner}>
+              <Text style={styles.Bill}>Bill No.</Text>
+              <Text style={styles.BillDate}>{item.BillNo}</Text>
+            </View> */}
             <View style={styles.BillContainer}>
               <Text style={styles.Bill}>Bill Date</Text>
-              <Text style={styles.BillDate}>20/10/2023</Text>
+              <Text style={styles.BillDate}>{formatDate(item.BillDt)}</Text>
             </View>
             <View style={styles.QuantityContainer}>
               <Text style={styles.Quantity}>Quantity</Text>
-              <Text style={styles.QuantityNumber}>100</Text>
+              <Text style={styles.QuantityNumber}>{item.Pcs}</Text>
             </View>
             <View style={styles.AmountContainer}>
               <Text style={styles.Amount}>Amount</Text>
-              <Text style={styles.AmountNumber}>₹100</Text>
+              <Text style={styles.AmountNumber}>₹{item.TtlAmt}</Text>
             </View>
           </View>
         </View>
@@ -74,15 +83,29 @@ const renderClientSummery = ({ navigation }) => {
 
 const SummreyDetails = ({ navigation }) => {
   const route = useRoute();
-  const accountId = useState(route.params?.accountId || "");
+  const [type, setType] = useState(route.params?.type || "");
+  const [accountId, setAccountId] = useState(route.params?.accountId || "");
+
+  useEffect(() => {
+    if (route.params?.type || route.params?.accountId) {
+      setType(route.params.type);
+      setAccountId(route.params.accountId);
+    }
+  }, [route.params?.type || route.params?.accountId]);
 
   // const reportType = useSelector((state) => state.dashboard.reportType);
 
   const [searchVisible, setSearchVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
-
   const [isModalVisible, setModalVisible] = useState(false);
+  const dashboardSummaryDetailData = useSelector(
+    (state) => state.dashboard.dashboardSummaryDetail
+  );
 
+  const loading = useSelector((state) => state.dashboard.loading);
+  const pdflink = useSelector((state) => state.dashboard.dashboardReportPrint);
+  console.log("PDFLink : ", pdflink);
+  const dispatch = useDispatch();
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -90,6 +113,18 @@ const SummreyDetails = ({ navigation }) => {
   const toggleSearchBar = () => {
     setSearchVisible(!searchVisible);
   };
+
+  useEffect(() => {
+    dispatch(getDashboardSummaryDetail(type, accountId));
+  }, [accountId]);
+
+  // const handlePrint = async () => {
+  //   dispatch(getDashReportPrint());
+  //   if (pdflink) {
+  //     navigation.navigate(ScreenName.pdfReader, { pdflink });
+  //   }
+  // };
+
   return (
     <SafeAreaView style={[commonStyle.container]}>
       <View style={styles.Header}>
@@ -122,15 +157,18 @@ const SummreyDetails = ({ navigation }) => {
         </View>
       </View>
       <SearchComponent placeholder="Search" rightIcon />
-
+      {loading && <Loader />}
       <ScrollView style={{ marginBottom: hp(6) }}>
-        <FlatList
-          scrollEnabled={false}
-          data={[1]}
-          showsHorizontalScrollIndicator={false}
-          renderItem={() => renderClientSummery({ navigation })}
-        />
-        <TouchableOpacity
+        {dashboardSummaryDetailData && (
+          <FlatList
+            scrollEnabled={false}
+            data={dashboardSummaryDetailData}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => renderClientSummery({ item, navigation })}
+          />
+        )}
+
+        {/* <TouchableOpacity
           onPress={() => navigation.navigate(ScreenName.summeryDetails)}
           style={{
             flexDirection: "row",
@@ -138,7 +176,7 @@ const SummreyDetails = ({ navigation }) => {
             paddingBottom: hp(2.5),
             marginTop: hp(10),
           }}
-        ></TouchableOpacity>
+        ></TouchableOpacity> */}
       </ScrollView>
     </SafeAreaView>
   );
@@ -221,6 +259,9 @@ const styles = StyleSheet.create({
     borderBottomColor: "#E7EAF3",
     padding: 15,
   },
+  // BillNoConatiner: {
+  //   padding: 12,
+  // },
   BillContainer: {
     padding: 12,
     right: wp(4),
