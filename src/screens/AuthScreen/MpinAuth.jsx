@@ -4,7 +4,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   TextInput,
   Alert,
   StatusBar,
@@ -33,6 +32,7 @@ import TextInputwithLogo from "../../componenets/TextInputwithLogo";
 import { commonStyle } from "../../constants/commonStyle";
 import { Icon } from "../../constants/Icon";
 import { images } from "../../constants/images";
+import { Image } from "expo-image";
 
 const MpinAuth = ({ navigation }) => {
   const [mPin, setMPin] = useState("");
@@ -103,47 +103,46 @@ const MpinAuth = ({ navigation }) => {
         <View style={styles.topContainer}>
           <View style={styles.Imagecontainer}>
             <Image
-              resizeMode="contain"
+              contentFit="contain"
               source={images.companyLogo}
               style={styles.Companylogo}
             />
           </View>
-          <View>
+          {/* <View style={styles.Imagecontainer}>
+            <Image
+              contentFit="contain"
+              source={images.sysproErpHorizantalLogo}
+              style={styles.Companylogo}
+            />
+          </View> */}
+          <View className="top-5">
             <Text
-              className="text-black text-center font-gbold"
-              style={{ fontSize: hp(5) }}
+              className="text-[#1254a5] text-center font-gsemibold top-2"
+              style={{ fontSize: hp(3) }}
             >
               {constant.mpinScreenTitle1}
             </Text>
             <Text
               style={{ fontSize: hp(2) }}
-              className="text-[#9397A8] text-center font-glight   mt-3"
+              className="text-[#9397A8] text-center font-glight mt-3"
             >
               {constant.mpinScreenTitle2}
             </Text>
-            <Text
-              style={{ fontSize: hp(2) }}
-              className="text-[#9397A8]  text-center font-glight"
-            >
-              {constant.mpinScreenTitle3}
-            </Text>
           </View>
-        </View>
-        {/* White Container */}
-        <View
-          style={[
-            commonStyle.innerContainer,
-            {
-              height: hp(30),
-              backgroundColor: "white",
-              justifyContent: "space-between",
-            },
-          ]}
-          // className="w-[100%] mt-14 bg-white rounded-t-[26px]"
-        >
-          <View className="flex-1 ">
-            {/* <Text className="font-gsemibold text-2xl ml-[-10]">MPin</Text> */}
-            <View className="mt-2">
+          <View
+            style={[
+              commonStyle.innerContainer,
+              {
+                height: hp(32),
+                marginTop: hp(-1.5),
+                backgroundColor: "white",
+                justifyContent: "space-between",
+                zIndex: -1,
+              },
+            ]}
+            // className="w-[100%] mt-14 bg-white rounded-t-[26px]"
+          >
+            <View className="mt-10">
               <TextInputwithLogo
                 placeholder="Enter your mpin "
                 icon={Icon.mpinIcon}
@@ -156,20 +155,40 @@ const MpinAuth = ({ navigation }) => {
                 onSubmitEditing={() => handleMpinAuth()}
               />
             </View>
+            <CustomBtn
+              disabled={!mPin}
+              isLoading={isLoading}
+              Customstyle={{
+                position: "absolute",
+                alignSelf: "center",
+                bottom: hp(30),
+              }}
+              titleStyle={{ fontWeight: 600 }}
+              title="Continue"
+              onPressHandler={handleMpinAuth}
+            />
           </View>
-          <CustomBtn
-            disabled={!mPin}
-            isLoading={isLoading}
-            Customstyle={{
-              position: "absolute",
-              alignSelf: "center",
-              bottom: hp(5),
-            }}
-            titleStyle={{ fontWeight: 600 }}
-            title="Continue"
-            onPressHandler={handleMpinAuth}
+
+          <Image
+            contentFit="contain"
+            source={images.poweredBySysproErp}
+            style={styles.poweredBySyspro}
           />
         </View>
+        {/* <View style={styles.bottomLine}>
+          <Image source={images.ellipse} style={styles.ellipse} />
+        </View> */}
+        
+        {/* White Container */}
+
+        {/* <View style={styles.bottomLine}>
+          <Image
+            contentFit="contain"
+            source={images.poweredBySysproErp}
+            style={styles.poweredBySyspro}
+          />
+          <Image source={images.ellipse} style={styles.ellipse} />
+        </View> */}
       </ScrollView>
     </SafeAreaView>
   );
@@ -232,15 +251,37 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   topContainer: {
-    marginTop: hp(14),
+    marginTop: hp(6),
+    height: hp(90),
   },
   Imagecontainer: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   Companylogo: {
-    width: hp(46),
-    height: hp(22),
+    width: hp(32),
+    height: hp(32),
+    marginBottom: hp(-6),
+    // bottom: hp(10),
+  },
+  // bottomLine: {
+  //   flex: 1,
+  //   alignItems: "center",
+  //   marginTop: hp(3),
+  //   alignSelf: "center",
+  // },
+  // ellipse: {
+  //   position: "absolute",
+  //   bottom: hp(-1),
+  //   width: wp(100),
+  //   height: hp(25),
+  //   zIndex: -1,
+  // },
+  poweredBySyspro: {
+    position: "absolute",
+    alignSelf: "center",
+    bottom: 0,
+    width: wp(45),
+    height: hp(5),
   },
 });

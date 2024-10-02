@@ -5,7 +5,7 @@ export const ScreenName = {
   profile: "Profile",
   companyConfig: "CompanyConfig",
   dashboardSummery: "DashboardSummery",
-  summeryDetails: "SummeryDetails",
+  summaryDetails: "SummaryDetails",
   filterModel: "FilterModel",
   pdfReader: "PdfReader",
 };

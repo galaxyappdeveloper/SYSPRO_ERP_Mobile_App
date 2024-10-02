@@ -1,87 +1,72 @@
 import {
-  View,
-  Text,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
+  View,
 } from "react-native";
-import React, { forwardRef } from "react";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-import { Icon } from "./../constants/Icon";
+import React, { useState } from "react";
+import { Icon } from "../constants/Icon";
 import { Image } from "expo-image";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
+import { themePrimaryColor } from "../constants/constant";
 
-const SearchComponent = forwardRef(
-  (
-    {
-      icon,
-      placeholder,
-      onChangeText,
-      customStyle,
-      rightIcon,
-      textInputwrapperStyle,
-      onPress,
-      ...props
-    },
-    ref
-  ) => {
-    return (
-      <View style={[styles.inputContainer, customStyle]}>
+const SearchComponent = ({ toggleSearchBar }) => {
+  const [searchVisible, setSearchVisible] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
         <TextInput
-          {...props}
-          style={styles.input}
-          placeholder={placeholder}
-          placeholderTextColor="#9397A8"
-          textAlign="start"
-          onChangeText={onChangeText}
+          style={styles.searchBar}
+          placeholder="Search..."
+          onChangeText={(text) => setSearchText(text)}
         />
-        {rightIcon && (
-          <TouchableOpacity style={styles.searchContainer} onPress={onPress}>
-            <Image
-              style={styles.searchIcon}
-              source={Icon.searchIcon}
-              contentFit="contain"
-            />
-          </TouchableOpacity>
-        )}
+
+        <TouchableOpacity onPress={toggleSearchBar}>
+          <Image
+            source={Icon.closeIcon}
+            style={styles.closeIcon}
+            contentFit="contain"
+          />
+        </TouchableOpacity>
       </View>
-    );
-  }
-);
+    </View>
+  );
+};
+
+export default SearchComponent;
 
 const styles = StyleSheet.create({
-  input: {
-    flex: 1,
-    padding: 4,
-    paddingLeft: 13,
-    fontFamily: "Gilroy-Medium",
-    marginLeft: wp(4),
-    color: "#9397A8",
-    fontSize: hp("2%"),
-    alignSelf: "center",
+  container: {
+    height: hp(7),
+    width: wp(100),
+    // flex: 1,
+    padding: hp(1),
+    // position:"relative",
+    // top:0,
+    zIndex: 1,
   },
-  inputContainer: {
-    backgroundColor: "#FFFFFF",
-    marginTop: hp(2.5),
-    borderRadius: 20,
-    padding: 5,
-    textAlign: "center",
-    paddingRight: 10,
+  closeIcon: {
+    width: hp(4),
+    height: hp(4),
+    tintColor: themePrimaryColor,
+  },
+
+  header: {
     flexDirection: "row",
-    alignSelf: "center",
-    width: wp("90%"),
-    height: hp(8),
-    elevation: 5,
+    alignItems: "center",
+    justifyContent: "space-between",
   },
-  searchContainer: {
-    alignSelf: "center",
-    marginRight: hp("1.3%"),
-  },
-  searchIcon: {
-    width: hp("3%"),
-    height: hp("3%"),
+  searchBar: {
+    flex: 1,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: hp(1),
+    backgroundColor: "white",
   },
 });
-export default SearchComponent;

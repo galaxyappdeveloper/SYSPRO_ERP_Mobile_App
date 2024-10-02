@@ -215,6 +215,8 @@ const styles = StyleSheet.create({
     margin: hp(1),
     borderRadius: 26,
     height: hp(22),
+    borderWidth:2,
+    
   },
   image: {
     borderRadius: 22,
@@ -285,7 +287,6 @@ const styles = StyleSheet.create({
     // borderColor: "grey",
     backgroundColor: colors.themebackgroundColor,
   },
-  flatListContainer: {},
 });
 
 export default Dashboard;

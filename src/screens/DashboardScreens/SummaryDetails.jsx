@@ -30,17 +30,6 @@ import FilterModal from "./FilterModal";
 
 const renderClientSummery = ({ loading, item, type, navigation }) => {
   const accountId = item?.Account_Id;
-  // if (item.length === 0) {
-  //   return (
-  //     <View style={{ justifyContent: "center", alignItems: "center" }}>
-  //       <Text
-  //         style={{ fontSize: hp(2), marginVertical: hp(50), color: "blue" }}
-  //       >
-  //         No Data
-  //       </Text>
-  //     </View>
-  //   );
-  // } else {
 
   const maxLength = 40;
 
@@ -52,7 +41,7 @@ const renderClientSummery = ({ loading, item, type, navigation }) => {
   return (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate(ScreenName.summaryDetails, { type, accountId })
+        navigation.navigate(ScreenName.pdfReader, { type, accountId })
       }
       style={{
         flex: 1,
@@ -65,32 +54,39 @@ const renderClientSummery = ({ loading, item, type, navigation }) => {
             style={styles.Tilte}
             className="font-gsemibold"
           >
-            {trimmedTitle}
+            #1811
+            {/* {trimmedTitle} */}
+            {/* {item?.Account_Name} */}
           </Text>
 
           <View style={styles.QuantityContainer}>
             <View>
+              <Text style={styles.bill}>
+                Bill No. -<Text style={styles.billno}> {item.BillNo}</Text>
+              </Text>
               <Text style={styles.Quantity}>
                 Qty -<Text style={styles.QuantityNumber}> {item.Pcs}</Text>
-              </Text>
-            </View>
-            <View style={styles.AmountContainer}>
-              <Text style={styles.Amount}>
-                Amt -<Text style={styles.AmountNumber}> ₹{item.TtlAmt}</Text>
               </Text>
             </View>
           </View>
         </View>
 
         <View style={styles.CountingContainer}>
-          <View style={styles.OrderQuantityContainer}>
-            <Text style={styles.OrderQuantity}>{item?.NoOfOrder}</Text>
+          <View style={styles.BillContainer}>
+            <Text style={styles.Bill}>
+              Bill date -
+              <Text style={styles.BillDate}>
+                {/* ₹{item.TtlAmt} */} 14 Aug, 2024
+              </Text>
+            </Text>
+            <Text style={styles.Amount}>
+              Amt -<Text style={styles.AmountNumber}> ₹ {item.TtlAmt}</Text>
+            </Text>
           </View>
-
           <View style={styles.arrowRightContainer}>
             <Image
               contentFit="contain"
-              source={Icon.arrowright}
+              source={Icon.printerIcon}
               style={styles.arrowRightIcon}
             />
           </View>
@@ -100,7 +96,7 @@ const renderClientSummery = ({ loading, item, type, navigation }) => {
   );
 };
 
-const DashboardSummery = ({ navigation }) => {
+const SummaryDetails = ({ navigation }) => {
   const [searchVisible, setSearchVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [fromDate, setFromDate] = useState("");
@@ -148,7 +144,6 @@ const DashboardSummery = ({ navigation }) => {
   return (
     <SafeAreaView style={[commonStyle.container]}>
       {loading && <Loader />}
-
       {searchVisible ? (
         <View style={styles.searchContainer}>
           <SearchComponent toggleSearchBar={() => toggleSearchBar()} />
@@ -156,7 +151,7 @@ const DashboardSummery = ({ navigation }) => {
       ) : (
         <View style={styles.Header}>
           <View style={styles.backIconContainer}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={() => navigation.navigate(ScreenName.dashboardSummery)}>
               <Image
                 source={Icon.arrowRound}
                 style={styles.backIcon}
@@ -166,7 +161,7 @@ const DashboardSummery = ({ navigation }) => {
           </View>
           <View style={styles.HeaderTitleContainer}>
             <Text className="font-gsemibold  " style={styles.HeaderTitle}>
-              Sales
+              9XN DESIGNER
             </Text>
           </View>
 
@@ -180,31 +175,10 @@ const DashboardSummery = ({ navigation }) => {
                 />
               </TouchableOpacity>
             </View>
-            {!searchVisible && (
-              <View style={styles.filterIconContainer}>
-                <TouchableOpacity onPress={() => toggleModal()}>
-                  <Image
-                    source={Icon.filterIcon}
-                    style={styles.filterIcon}
-                    contentFit="contain"
-                  />
-                </TouchableOpacity>
-              </View>
-            )}
-            {/* <View style={styles.filterIconContainer}>
-            <TouchableOpacity onPress={() => toggleModal()}>
-              <Image
-                source={Icon.filterIcon}
-                style={styles.filterIcon}
-                contentFit="contain"
-              />
-            </TouchableOpacity>
-          </View> */}
           </View>
         </View>
       )}
 
-      <View>{/* <SearchComponent placeholder="Search" rightIcon /> */}</View>
       <ScrollView
         style={{ marginBottom: hp(1), color: "transparent" }}
         refreshControl={
@@ -245,7 +219,6 @@ const DashboardSummery = ({ navigation }) => {
             </Text>
           </View>
         )}
-
       </ScrollView>
       <View style={{ flex: 1 }}>
         <Modal isVisible={isModalVisible}>
@@ -256,22 +229,19 @@ const DashboardSummery = ({ navigation }) => {
               justifyContent: "flex-end",
               top: 40,
             }}
-          >
-            <FilterModal toggle={toggleModal} />
-          </View>
+          ></View>
         </Modal>
       </View>
     </SafeAreaView>
   );
 };
 
-export default DashboardSummery;
+export default SummaryDetails;
 
 const styles = StyleSheet.create({
   searchContainer: {
     marginHorizontal: wp(1),
   },
-
   Header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -285,15 +255,12 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   backIcon: {
-    width: wp(6),
-    height: wp(6),
+    width: wp(5),
+    height: wp(5),
     tintColor: themePrimaryColor,
     alignSelf: "center",
   },
   HeaderTitleContainer: {
-    left: wp(5),
-    // justifyContent: "center",
-    // alignItems: "center",
     alignSelf: "center",
   },
   HeaderTitle: {
@@ -304,27 +271,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: wp(5),
     borderRadius: 50,
-    // backgroundColor: "#fff",
     padding: hp(1),
     right: wp(2),
-
-    // elevation: 5,
   },
   searchIconContainer: {
     alignSelf: "center",
-    left: wp(3),
   },
-
   searchIcon: {
-    width: wp(6),
-    height: wp(6),
-    tintColor: themePrimaryColor,
-  },
-  filterIconContainer: {
-    alignSelf: "center",
-    left: wp(3),
-  },
-  filterIcon: {
     width: wp(6),
     height: wp(6),
     tintColor: themePrimaryColor,
@@ -346,8 +299,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontSize: hp(2),
   },
-  Tilte: {
-  },
+  Tilte: {},
   Container: {
     flex: 1,
     flexDirection: "row",
@@ -356,7 +308,6 @@ const styles = StyleSheet.create({
     width: wp(100),
     borderBottomWidth: 1,
     borderColor: "#9397A8",
-    paddingBottom: hp(1),
   },
   TitleContainer: {
     padding: 8,
@@ -366,35 +317,47 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: hp(5),
   },
+  bill: {
+    color: "#9397A8",
+  },
+
+  billno: {
+    fontWeight: "semibold",
+    color: "#000000",
+  },
   Quantity: {
     color: "#9397A8",
-    // fontSize: hp(2),
   },
   QuantityNumber: {
-    // fontSize: hp(2),
-    marginTop: hp(0.1),
+    // marginTop: hp(0.1),
+    fontWeight: "semibold",
+    color: "#000000",
   },
-  AmountContainer: {
-    // marginTop: hp(-2),
-    // padding: 15,
-    // right: wp(14),
+  BillContainer: {
+    alignSelf: "center",
+    top: hp(1),
+  },
+  Bill: {
+    color: "#9397A8",
+  },
+  BillDate: {
+    color: "#000000",
   },
   Amount: {
     color: "#9397A8",
-    // fontSize: hp(2),
   },
   AmountNumber: {
-    // fontSize: hp(2),
-    marginTop: hp(0.1),
+    color: "#000000",
   },
   arrowRightContainer: {
     alignSelf: "center",
     marginRight: hp(1.5),
+    borderRadius: 50,
+    padding: hp(0.5),
+    backgroundColor: "#E7EAF3",
   },
   arrowRightIcon: {
-    height: hp(2.5),
-    width: hp(2.5),
-    tintColor: "#9397A8",
-    alignSelf: "center",
+    height: hp(3.5),
+    width: hp(3.5),
   },
 });

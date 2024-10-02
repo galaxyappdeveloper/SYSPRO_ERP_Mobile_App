@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { scale, moderateScale } from "react-native-size-matters";
-import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { images } from "../../constants/images";
 import {
   widthPercentageToDP as wp,
@@ -16,6 +16,7 @@ import { CommonActions } from "@react-navigation/native";
 import { Icon } from "../../constants/Icon";
 import { constant } from "../../constants/constant";
 import { useEffect } from "react";
+import { Image } from "expo-image";
 
 const Login = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -85,21 +86,21 @@ const Login = ({ navigation }) => {
     }
   };
   return (
-    <SafeAreaView style={[commonStyle.container]}>
+    <SafeAreaView style={[commonStyle.container, { backgroundColor: "white" }]}>
       <ScrollView keyboardShouldPersistTaps="handled">
         {/* top container */}
         <View style={styles.topContainer}>
-          <View style={styles.Imagecontainer}>
+          {/* <View style={styles.Imagecontainer}>
             <Image
-              resizeMode="contain"
-              source={images.companyLogo}
+              contentFit="contain"
+              source={images.sysproErpHorizantalLogo}
               style={styles.Companylogo}
             />
-          </View>
+          </View> */}
           <View>
             <Text
-              className="text-black text-center font-gbold"
-              style={{ fontSize: hp(5) }}
+              className="text-black text-center font-gsemibold"
+              style={{ fontSize: hp(4) }}
             >
               {constant.loginScreenTitle1}
             </Text>
@@ -145,7 +146,7 @@ const Login = ({ navigation }) => {
                 blurOnSubmit={false}
               />
             </View>
-            <View className="mt-3">
+            <View className="mt-5">
               <TextInputwithLogo
                 placeholder="Enter your Password"
                 icon={Icon.passwordIcon}
@@ -173,10 +174,18 @@ const Login = ({ navigation }) => {
             Customstyle={{
               position: "absolute",
               alignSelf: "center",
-              bottom: hp(5),
+              bottom: hp(3),
             }}
           />
+          <Image
+            contentFit="contain"
+            source={images.poweredBySysproErp}
+            style={styles.poweredBySyspro}
+          />
         </View>
+        {/* <View style={styles.bottomLine}>
+          <Image source={images.ellipse} style={styles.ellipse} />
+        </View> */}
       </ScrollView>
     </SafeAreaView>
   );
@@ -239,7 +248,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   topContainer: {
-    marginTop: hp(4),
+    marginTop: hp(20),
   },
   Imagecontainer: {
     flex: 1,
@@ -247,7 +256,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   Companylogo: {
-    width: hp(46),
-    height: hp(22),
+    width: hp(25),
+    height: hp(5),
+    bottom: hp(10),
+  },
+  // bottomLine: {
+  //   flex: 1,
+  //   alignItems: "center",
+  //   marginTop: hp(26),
+  //   alignSelf: "center",
+  // },
+  // ellipse: {
+  //   position: "absolute",
+  //   bottom: hp(-1),
+  //   width: wp(100),
+  //   height: hp(25),
+  //   zIndex: -1,
+  // },
+  poweredBySyspro: {
+    alignSelf: "center",
+    bottom: hp(-20),
+    width: wp(35),
+    height: hp(5),
   },
 });
