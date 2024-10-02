@@ -5,6 +5,7 @@ import Ellipse from "../../assets/images/ellipse.png";
 import BackgroundShiny from "../../assets/images/backgroundShiny.png";
 import PoweredBySysproErp from "../../assets/images/PoweredBySysproErp.svg";
 import FilterFrame from "../../assets/images/fliterFrame.png";
+import AnimateShape from "../../assets/images/animateShape.png";
 
 export const images = {
   creditCard: CreditCard,
@@ -14,4 +15,5 @@ export const images = {
   backgroundShiny: BackgroundShiny,
   poweredBySysproErp: PoweredBySysproErp,
   filterFrame: FilterFrame,
+  animateShape: AnimateShape,
 };
