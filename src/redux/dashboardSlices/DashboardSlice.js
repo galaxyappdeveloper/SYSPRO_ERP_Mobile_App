@@ -7,6 +7,8 @@ const initialState = {
   dashboardSummaryDetail: [],
   dashboardReportPrint: "",
   reportType: "",
+  stateFromDate: "",
+  stateToDate: "",
   loading: false,
   error: null,
 };
@@ -40,6 +42,12 @@ export const dashboardSlice = createSlice({
     },
     setReportType: (state, { payload }) => {
       state.reportType = payload;
+    },
+    setStateFromDate: (state, { payload }) => {
+      state.stateFromDate = payload;
+    },
+    setStateToDate: (state, { payload }) => {
+      state.stateToDate = payload;
     },
 
     // setDashboardTotal: (state, { payload }) => {
@@ -78,6 +86,8 @@ export const {
   setDashboardSummaryDetail,
   setDashboardReportPrint,
   setReportType,
+  setStateFromDate,
+  setStateToDate,
 } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;

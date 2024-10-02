@@ -1,3 +1,4 @@
+import { formatDate } from "../../functions/formatDate";
 import { notifyMessage } from "../../functions/toastMessage";
 import {
   setDashboardLoading,
@@ -86,14 +87,15 @@ export const getDashboardSummary = (type) => async (dispatch) => {
     })
     .replace(/\//g, "-");
 
+  // FromDate: fromDate ? fromDate : formatedDate,
+  // ToDate: toDate ? toDate : formatedDate,
+
   const body = {
     IntReportId: 0,
-    // FromDate: fromDate ? fromDate : formatedDate,
-    // ToDate: toDate ? toDate : formatedDate,
-    FromDate: "25-05-2023",
-    ToDate: "25-05-2024",
+    FromDate: formatedDate,
+    ToDate: formatedDate,
     type: type,
-    FilterString: "SaleOrder",
+    FilterString: "",
   };
 
   try {
@@ -114,9 +116,12 @@ export const getDashboardSummary = (type) => async (dispatch) => {
   }
 };
 
-export const getDashboardSummaryDetail =
-  (type, accountId) => async (dispatch) => {
+export const getDashboardSummaryFilter =
+  (fromDate, toDate, type, selectedType) => async (dispatch) => {
     // fromDate, toDate, type, filterString
+    const formatedFromDate = formatDate(fromDate);
+    const formatedToDate = formatDate(toDate);
+
     const date = new Date();
     const formatedDate = date
       .toLocaleDateString("en-GB", {
@@ -130,8 +135,45 @@ export const getDashboardSummaryDetail =
       IntReportId: 0,
       // FromDate: fromDate ? fromDate : formatedDate,
       // ToDate: toDate ? toDate : formatedDate,
-      FromDate: "25-05-2023",
-      ToDate: "25-05-2024",
+      FromDate: formatedFromDate,
+      ToDate: formatedToDate,
+      type: type,
+      FilterString: selectedType,
+    };
+
+    try {
+      dispatch(setDashboardLoading(true));
+      dispatch(setDashboardSummary([]));
+      const response = await dashboardService.getDashboardSummary(body);
+      dispatch(setDashboardSummary(response?.data?.Data));
+      dispatch(setDashboardLoading(false));
+    } catch (error) {
+      if (error?.response?.data?.ErrorMessage) {
+        notifyMessage(error.response.data.ErrorMessage);
+      } else {
+        // notifyMessage("Unexpected Error .");
+      }
+      dispatch(setDashboardLoading(false));
+    } finally {
+      dispatch(setDashboardLoading(false));
+    }
+  };
+
+export const getDashboardSummaryDetail =
+  (type, accountId, stateFromDate, stateToDate) => async (dispatch) => {
+    // const date = new Date();
+    // const formatedDate = date
+    //   .toLocaleDateString("en-GB", {
+    //     day: "2-digit",
+    //     month: "2-digit",
+    //     year: "numeric",
+    //   })
+    //   .replace(/\//g, "-");
+
+    const body = {
+      IntReportId: 0,
+      FromDate: stateFromDate,
+      ToDate: stateToDate,
       type: type,
       Account_Id: accountId,
       FilterString: "",

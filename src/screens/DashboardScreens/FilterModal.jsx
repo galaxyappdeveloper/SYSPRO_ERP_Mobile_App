@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,8 +6,7 @@ import {
   StyleSheet,
   ImageBackground,
 } from "react-native";
-// import Icon from "react-native-vector-icons/Ionicons"; // For icons
-import DateTimePicker from "@react-native-community/datetimepicker"; // Optional for date picker functionality
+import DateTimePicker from "@react-native-community/datetimepicker";
 import CustomBtn from "../../componenets/CustomBtn";
 import {
   heightPercentageToDP as hp,
@@ -16,30 +15,71 @@ import {
 import { Image } from "expo-image";
 import { Icon } from "../../constants/Icon";
 import { images } from "../../constants/images";
-// import { Icon } from "../../constants/Icon";
+import { Picker } from "@react-native-picker/picker";
+import { useDispatch } from "react-redux";
+import {
+  getDashboardSummary,
+  getDashboardSummaryFilter,
+} from "../../Actions/Dashboard/dashboardAction";
+import { formatDate } from "../../functions/formatDate";
+import {
+  setStateFromDate,
+  setStateToDate,
+} from "../../redux/dashboardSlices/DashboardSlice";
 
-const FilterModal = ({ toggle }) => {
+const FilterModal = ({
+  dropdownOptions,
+  onSelectDropdown,
+  onSelectFromDate,
+  onSelectToDate,
+  toggle,
+  type,
+}) => {
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
   const [showFromDatePicker, setShowFromDatePicker] = useState(false);
   const [showToDatePicker, setShowToDatePicker] = useState(false);
+  const [selectedType, setSelectedType] = useState(null);
 
-  const onFromDateChange = (event, selectedDate) => {
+  const handleDropdownChange = (selectedOption) => {
+    console.log("Selected Option:", selectedOption);
+    setSelectedType(selectedOption);
+  };
+
+  console.log("From Date : ", formatDate(fromDate));
+  console.log("TO Date : ", formatDate(toDate));
+
+  const handleFromDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || fromDate;
     setShowFromDatePicker(false);
     setFromDate(currentDate);
+    onSelectFromDate(currentDate);
+    console.log("Selected From Date:", currentDate);
   };
 
-  const onToDateChange = (event, selectedDate) => {
+  const handleToDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || toDate;
     setShowToDatePicker(false);
     setToDate(currentDate);
+    onSelectToDate(currentDate);
+    console.log("Selected to Date:", currentDate);
+  };
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setStateFromDate(formatDate(fromDate)));
+    dispatch(setStateToDate(formatDate(toDate)));
+  }, [fromDate, toDate]);
+
+  const handleFilter = () => {
+    dispatch(getDashboardSummaryFilter(fromDate, toDate, type, selectedType));
+    toggle();
   };
 
   return (
     <View style={styles.container}>
       <View source={images.filterFrame} imageStyle={styles.image}>
-        {/* Filter Header */}
         <View style={styles.header}>
           <Text className="font-gsemibold" style={styles.headerText}>
             Filter
@@ -51,75 +91,68 @@ const FilterModal = ({ toggle }) => {
           </TouchableOpacity>
         </View>
 
-        {/* Select Filter Option */}
-        <TouchableOpacity style={styles.inputContainer}>
-          <Image
-            source={Icon.companyIcon}
-            style={styles.icon}
-            contentFit="contain"
-          />
-          <Text style={styles.inputText}>Select</Text>
+        {/* Dropdown */}
 
-          <Image
-            source={Icon.dropDownIcon}
-            style={styles.icon}
-            contentFit="contain"
-          />
-        </TouchableOpacity>
+        <View style={styles.dropdown}>
+          <Picker
+            selectedValue={selectedType}
+            onValueChange={handleDropdownChange}
+            style={styles.dropdown}
+            placeholder="Select Type"
+            mode="dropdown"
+          >
+            {dropdownOptions?.map((option, index) => (
+              <Picker.Item
+                key={index}
+                label={option?.TranOrigin}
+                value={option?.TranOrigin}
+              />
+            ))}
+          </Picker>
+        </View>
 
-        {/* From Date Picker */}
-        <TouchableOpacity
-          style={styles.inputContainer}
-          onPress={() => setShowFromDatePicker(true)}
-        >
-          <Image
-            source={Icon.yearIcon}
-            style={styles.icon}
-            contentFit="contain"
-          />
-          <Text style={styles.inputText}>From Date</Text>
-          <Image
-            source={Icon.dropDownIcon}
-            style={styles.icon}
-            contentFit="contain"
-          />
-        </TouchableOpacity>
-        {showFromDatePicker && (
-          <DateTimePicker
-            value={fromDate}
-            mode="date"
-            display="default"
-            onChange={onFromDateChange}
-          />
-        )}
+        {/* From Date Selector */}
 
-        {/* To Date Picker */}
-        <TouchableOpacity
-          style={styles.inputContainer}
-          onPress={() => setShowToDatePicker(true)}
-        >
-          <Image
-            source={Icon.yearIcon}
-            style={styles.icon}
-            contentFit="contain"
-          />
-          <Text style={styles.inputText}>To Date</Text>
-          <Image
-            source={Icon.dropDownIcon}
-            style={styles.icon}
-            contentFit="contain"
-          />
-        </TouchableOpacity>
-        {showToDatePicker && (
-          <DateTimePicker
-            value={toDate}
-            mode="date"
-            display="default"
-            onChange={onToDateChange}
-          />
-        )}
+        <View style={styles.datePickerConatiner}>
+          <TouchableOpacity onPress={() => setShowFromDatePicker(true)}>
+            <Text style={styles.dateText}>
+              From Date: {fromDate.toLocaleDateString()}
+            </Text>
+          </TouchableOpacity>
+          {showFromDatePicker && (
+            <DateTimePicker
+              value={fromDate}
+              mode="date"
+              display="default"
+              onChange={handleFromDateChange}
+            />
+          )}
+        </View>
+
+        {/* To Date Selector */}
+
+        <View style={styles.datePickerConatiner}>
+          <TouchableOpacity onPress={() => setShowToDatePicker(true)}>
+            <Text style={styles.dateText}>
+              To Date: {toDate.toLocaleDateString()}
+            </Text>
+          </TouchableOpacity>
+          {showToDatePicker && (
+            <DateTimePicker
+              value={toDate}
+              mode="date"
+              display="default"
+              onChange={handleToDateChange}
+            />
+          )}
+        </View>
+
         <View style={styles.buttonContainer}>
-          <CustomBtn title="Apply" Customstyle={{ height: hp(8) }} />
+          <CustomBtn
+            onPressHandler={() => handleFilter()}
+            title="Apply"
+            Customstyle={{ height: hp(8) }}
+          />
         </View>
       </View>
     </View>
@@ -128,13 +161,13 @@ const FilterModal = ({ toggle }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // padding: hp(4),
+    padding: hp(2),
     width: wp(100),
     height: hp(55),
 
     backgroundColor: "#FAFAFA",
-    borderTopLeftRadius: 45,
-    borderTopRightRadius: 45,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
   image: {},
   header: {
@@ -187,6 +220,30 @@ const styles = StyleSheet.create({
     padding: hp(2.5),
     // paddingHorizontal: hp(2),
     // borderWidth: 1,
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  dropdown: {
+    height: 50,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    marginBottom: 20,
+    borderRadius: 12,
+  },
+  dateText: {
+    fontSize: 16,
+    color: "#000",
+    marginVertical: 10,
+  },
+  datePickerConatiner: {
+    height: 50,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    marginBottom: 20,
+    paddingLeft: 12,
+    borderRadius: 12,
   },
 });
 

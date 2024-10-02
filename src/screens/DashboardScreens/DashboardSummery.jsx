@@ -30,20 +30,7 @@ import FilterModal from "./FilterModal";
 
 const renderClientSummery = ({ loading, item, type, navigation }) => {
   const accountId = item?.Account_Id;
-  // if (item.length === 0) {
-  //   return (
-  //     <View style={{ justifyContent: "center", alignItems: "center" }}>
-  //       <Text
-  //         style={{ fontSize: hp(2), marginVertical: hp(50), color: "blue" }}
-  //       >
-  //         No Data
-  //       </Text>
-  //     </View>
-  //   );
-  // } else {
-
   const maxLength = 40;
-
   const trimmedTitle =
     item?.Account_Name.length > maxLength
       ? `${item?.Account_Name.slice(0, maxLength)}...`
@@ -51,6 +38,7 @@ const renderClientSummery = ({ loading, item, type, navigation }) => {
 
   return (
     <TouchableOpacity
+      activeOpacity={0.5}
       onPress={() =>
         navigation.navigate(ScreenName.summeryDetails, { type, accountId })
       }
@@ -74,11 +62,11 @@ const renderClientSummery = ({ loading, item, type, navigation }) => {
         <View style={{ flexDirection: "row", marginLeft: wp(6), gap: wp(10) }}>
           <View style={styles.QuantityContainer}>
             <Text style={styles.Quantity}>Quantity</Text>
-            <Text style={styles.QuantityNumber}>{item.Pcs}</Text>
+            <Text style={styles.QuantityNumber}>{item?.Pcs}</Text>
           </View>
           <View style={styles.AmountContainer}>
             <Text style={styles.Amount}>Amount</Text>
-            <Text style={styles.AmountNumber}>₹ {item.TtlAmt}</Text>
+            <Text style={styles.AmountNumber}>₹ {item?.TtlAmt}</Text>
           </View>
           <View style={styles.arrowRightContainer}>
             <Image
@@ -95,11 +83,12 @@ const renderClientSummery = ({ loading, item, type, navigation }) => {
 
 const DashboardSummery = ({ navigation }) => {
   const [searchVisible, setSearchVisible] = useState(false);
-  const [searchText, setSearchText] = useState("");
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
-  const [filterType, setFilterType] = useState("");
   const [refreshing, setRefreshing] = useState(false);
+
+  // const [searchText, setSearchText] = useState("");
+  // const [fromDate, setFromDate] = useState("");
+  // const [toDate, setToDate] = useState("");
+  // const [filterType, setFilterType] = useState("");
 
   const dispatch = useDispatch();
   const route = useRoute();
@@ -138,6 +127,7 @@ const DashboardSummery = ({ navigation }) => {
   const toggleSearchBar = () => {
     setSearchVisible(!searchVisible);
   };
+
   return (
     <SafeAreaView style={[commonStyle.container]}>
       {loading && <Loader />}
@@ -197,7 +187,7 @@ const DashboardSummery = ({ navigation }) => {
                 color: themePrimaryColor,
               }}
             >
-              No Record Found for Today
+              No Record Found
             </Text>
             <Text
               style={{
@@ -209,16 +199,6 @@ const DashboardSummery = ({ navigation }) => {
             </Text>
           </View>
         )}
-
-        {/* <TouchableOpacity
-          onPress={() => navigation.navigate(ScreenName.summeryDetails)}
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingBottom: hp(2.5),
-            marginTop: hp(10),
-          }}
-        ></TouchableOpacity> */}
       </ScrollView>
       <View style={{ flex: 1 }}>
         <Modal isVisible={isModalVisible}>
@@ -230,7 +210,11 @@ const DashboardSummery = ({ navigation }) => {
               top: 40,
             }}
           >
-            <FilterModal toggle={toggleModal} />
+            <FilterModal
+              dropdownOptions={dashboardSummaryData?.Table1 || []}
+              toggle={toggleModal}
+              type={type}
+            />
           </View>
         </Modal>
       </View>

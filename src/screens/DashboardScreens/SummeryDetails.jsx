@@ -35,7 +35,8 @@ const renderClientSummery = ({ item, navigation }) => {
   return (
     <View>
       <TouchableOpacity
-        onPress={() => navigation.navigate(ScreenName.summeryDetails)}
+        activeOpacity={0.5}
+        // onPress={() => navigation.navigate(ScreenName.summeryDetails)}
         style={{
           flex: 1,
         }}
@@ -47,6 +48,7 @@ const renderClientSummery = ({ item, navigation }) => {
             </Text>
             <View style={styles.PrinterContainer}>
               <TouchableOpacity
+                activeOpacity={0.5}
                 onPress={() =>
                   navigation.navigate(ScreenName.pdfReader, { item })
                 }
@@ -104,8 +106,10 @@ const SummreyDetails = ({ navigation }) => {
 
   const loading = useSelector((state) => state.dashboard.loading);
   const pdflink = useSelector((state) => state.dashboard.dashboardReportPrint);
-  console.log("PDFLink : ", pdflink);
+  const stateFromDate = useSelector((state) => state.dashboard.stateFromDate);
+  const stateToDate = useSelector((state) => state.dashboard.stateToDate);
   const dispatch = useDispatch();
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -115,7 +119,9 @@ const SummreyDetails = ({ navigation }) => {
   };
 
   useEffect(() => {
-    dispatch(getDashboardSummaryDetail(type, accountId));
+    dispatch(
+      getDashboardSummaryDetail(type, accountId, stateFromDate, stateToDate)
+    );
   }, [accountId]);
 
   // const handlePrint = async () => {

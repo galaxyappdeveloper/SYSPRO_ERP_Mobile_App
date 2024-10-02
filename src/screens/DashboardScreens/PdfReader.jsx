@@ -23,13 +23,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Loader } from "../../componenets/Loading";
 
 const PdfReader = ({ navigation }) => {
-  const [pdfUri, setPdfUri] = useState(null);
-  // const [loading, setLoading] = useState(true);
-
   const loading = useSelector((state) => state.dashboard.loading);
-
   const dispatch = useDispatch();
-
   const route = useRoute();
   const item = route.params?.item || "";
 
@@ -91,20 +86,29 @@ const PdfReader = ({ navigation }) => {
           </View>
         </TouchableOpacity>
       </View>
+
       {loading && <Loader />}
       {pdflink && (
         <Text
           onPress={() => Linking.openURL(pdflink)}
           style={{
-            flex: 1,
+            // flex: 1,
             color: "black",
+            height: "100%",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          PDF Link <Text style={{ color: "blue" }}>Click Here </Text>
+          PDF Preview :
+          <Text style={{ color: "blue" }}> View Report PDF Here </Text>
         </Text>
       )}
+
+      {/* <WebView
+        source={{ uri: "file://" + pdflink }}
+        style={{ flex: 1 }}
+        originWhitelist={["*"]}
+      /> */}
     </SafeAreaView>
   );
 };

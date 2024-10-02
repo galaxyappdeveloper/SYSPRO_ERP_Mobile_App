@@ -121,6 +121,7 @@ const Dashboard = ({ navigation }) => {
             }}
           >
             <TouchableOpacity
+              activeOpacity={0.7}
               onPress={() =>
                 navigation.navigate(ScreenName.dashboardSummery, {
                   type,
@@ -148,6 +149,7 @@ const Dashboard = ({ navigation }) => {
     const totaldata = dashboardTotal.find((e, i) => e.Widget == item.Widget);
     return totaldata?.Total ?? 0;
   };
+
   return (
     <ScrollView
       style={[commonStyle.container, styles.DashboardContainer]}

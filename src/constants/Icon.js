@@ -48,5 +48,4 @@ export const Icon = {
   accountIcon: AccountIcon,
   sendIcon: SendIcon,
   clipboardIcon: ClipboardIcon,
-
 };
