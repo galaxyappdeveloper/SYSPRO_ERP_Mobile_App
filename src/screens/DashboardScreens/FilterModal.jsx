@@ -35,8 +35,12 @@ const FilterModal = ({
   toggle,
   type,
 }) => {
-  const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState(new Date());
+  const today = new Date();
+  const lastYear = new Date();
+  lastYear.setFullYear(today.getFullYear() - 1);
+
+  const [fromDate, setFromDate] = useState(lastYear);
+  const [toDate, setToDate] = useState(today);
   const [showFromDatePicker, setShowFromDatePicker] = useState(false);
   const [showToDatePicker, setShowToDatePicker] = useState(false);
   const [selectedType, setSelectedType] = useState(null);
@@ -48,6 +52,12 @@ const FilterModal = ({
 
   console.log("From Date : ", formatDate(fromDate));
   console.log("TO Date : ", formatDate(toDate));
+
+  useEffect(() => {
+    if (dropdownOptions && dropdownOptions.length > 0) {
+      setSelectedType(dropdownOptions[0].TranOrigin);
+    }
+  }, [dropdownOptions]);
 
   const handleFromDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || fromDate;
@@ -116,7 +126,7 @@ const FilterModal = ({
         <View style={styles.datePickerConatiner}>
           <TouchableOpacity onPress={() => setShowFromDatePicker(true)}>
             <Text style={styles.dateText}>
-              From Date: {fromDate.toLocaleDateString()}
+              From Date: {formatDate(fromDate)}
             </Text>
           </TouchableOpacity>
           {showFromDatePicker && (
@@ -133,9 +143,7 @@ const FilterModal = ({
 
         <View style={styles.datePickerConatiner}>
           <TouchableOpacity onPress={() => setShowToDatePicker(true)}>
-            <Text style={styles.dateText}>
-              To Date: {toDate.toLocaleDateString()}
-            </Text>
+            <Text style={styles.dateText}>To Date: {formatDate(toDate)}</Text>
           </TouchableOpacity>
           {showToDatePicker && (
             <DateTimePicker

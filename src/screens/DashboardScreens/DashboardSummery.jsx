@@ -21,16 +21,24 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import SearchComponent from "../../componenets/SearchComponent";
 import { ScreenName } from "../../constants/screenName";
 import { useDispatch, useSelector } from "react-redux";
-import { getDashboardSummary } from "../../Actions/Dashboard/dashboardAction";
+import {
+  getDashboardSummary,
+  getDashboardSummaryDetail,
+} from "../../Actions/Dashboard/dashboardAction";
 import { useRoute } from "@react-navigation/native";
 import { Loader } from "../../componenets/Loading";
 import { commonStyle } from "../../constants/commonStyle";
 import Modal from "react-native-modal";
 import FilterModal from "./FilterModal";
+import {
+  setDashboardSummary,
+  setDashboardSummaryDetail,
+} from "../../redux/dashboardSlices/DashboardSlice";
 
 const renderClientSummery = ({ loading, item, type, navigation }) => {
   const accountId = item?.Account_Id;
-  const maxLength = 40;
+
+  const maxLength = 30;
   const trimmedTitle =
     item?.Account_Name.length > maxLength
       ? `${item?.Account_Name.slice(0, maxLength)}...`
@@ -91,12 +99,6 @@ const renderClientSummery = ({ loading, item, type, navigation }) => {
 const DashboardSummery = ({ navigation }) => {
   const [searchVisible, setSearchVisible] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-
-  // const [searchText, setSearchText] = useState("");
-  // const [fromDate, setFromDate] = useState("");
-  // const [toDate, setToDate] = useState("");
-  // const [filterType, setFilterType] = useState("");
-
   const dispatch = useDispatch();
   const route = useRoute();
   const [type, setType] = useState(route.params?.type || "");
@@ -106,7 +108,68 @@ const DashboardSummery = ({ navigation }) => {
     (state) => state.dashboard.dashboardSummary
   );
 
+  const [searchData, setSearchData] = useState(
+    dashboardSummaryData?.Table || []
+  );
+  const [searchQuery, setSearchQuery] = useState("");
   const loading = useSelector((state) => state.dashboard.loading);
+
+  // const handleSearch = (query) => {
+  //   setSearchQuery(query);
+  //   if (query) {
+  //     const filtered = dashboardSummaryData?.Table.filter((item) =>
+  //       item.Account_Name.toLowerCase().includes(query.toLowerCase())
+  //     );
+  //     setSearchData(filtered);
+  //   } else {
+  //     setSearchData(dashboardSummaryData?.Table);
+  //   }
+  // };
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
+  // useEffect(() => {
+  //   if (dashboardSummaryData?.Table) {
+  //     setSearchData(dashboardSummaryData.Table);
+  //   }
+  // }, [dashboardSummaryData?.Table]);
+
+  // useEffect(() => {
+  //   if (dashboardSummaryData?.Table && searchQuery === "") {
+  //     setSearchData(dashboardSummaryData?.Table);
+  //   }
+  // }, [dashboardSummaryData, searchQuery]);
+
+  // useEffect(() => {
+  //   const delayDebounceFn = setTimeout(() => {
+  //     handleSearch(searchQuery);
+  //   }, 300);
+
+  //   return () => clearTimeout(delayDebounceFn);
+  // }, [searchQuery]);
+
+  useEffect(() => {
+    if (dashboardSummaryData?.Table && searchQuery === "") {
+      setSearchData(dashboardSummaryData.Table);
+    }
+  }, [dashboardSummaryData]);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchQuery) {
+        const filtered = dashboardSummaryData?.Table?.filter((item) =>
+          item.Account_Name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setSearchData(filtered);
+      } else {
+        setSearchData(dashboardSummaryData?.Table || []);
+      }
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -119,20 +182,35 @@ const DashboardSummery = ({ navigation }) => {
       setType(route.params.type);
       setContainer(route.params.container);
     }
-  }, [route.params?.type || route.params?.container]);
+  }, [route.params]);
 
   useEffect(() => {
     dispatch(getDashboardSummary(type));
   }, [dispatch, type]);
 
+  // useEffect(() => {
+  //   dispatch(setDashboardSummaryDetail());
+  // }, []);
+
   const [isModalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+    if (!isModalVisible) {
+      dispatch(getDashboardSummary(type));
+    }
   };
 
   const toggleSearchBar = () => {
     setSearchVisible(!searchVisible);
+    if (searchVisible) {
+      setSearchQuery("");
+    }
+  };
+
+  const handleBack = async () => {
+    await navigation.goBack();
+    dispatch(setDashboardSummary([]));
   };
 
   return (
@@ -141,12 +219,17 @@ const DashboardSummery = ({ navigation }) => {
 
       {searchVisible ? (
         <View style={styles.searchContainer}>
-          <SearchComponent toggleSearchBar={() => toggleSearchBar()} />
+          <SearchComponent
+            searchQuery={searchQuery}
+            // setSearchQuery={handleSearch}
+            setSearchQuery={setSearchQuery}
+            toggleSearchBar={toggleSearchBar}
+          />
         </View>
       ) : (
         <View style={styles.Header}>
           <View style={styles.backIconContainer}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={() => handleBack()}>
               <Image
                 source={Icon.arrowRound}
                 style={styles.backIcon}
@@ -181,38 +264,40 @@ const DashboardSummery = ({ navigation }) => {
                 </TouchableOpacity>
               </View>
             )}
-            {/* <View style={styles.filterIconContainer}>
-            <TouchableOpacity onPress={() => toggleModal()}>
-              <Image
-                source={Icon.filterIcon}
-                style={styles.filterIcon}
-                contentFit="contain"
-              />
-            </TouchableOpacity>
-          </View> */}
           </View>
         </View>
       )}
 
-      <View>{/* <SearchComponent placeholder="Search" rightIcon /> */}</View>
-      <ScrollView
-        style={{ marginBottom: hp(1), color: "transparent" }}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => onRefresh()}
-          />
-        }
-      >
-        {dashboardSummaryData?.Table &&
-        dashboardSummaryData?.Table?.length > 0 ? (
+      <ScrollView style={{ marginBottom: hp(1), color: "transparent" }}>
+        {searchData?.length > 0 ? (
           <FlatList
             scrollEnabled={false}
-            data={dashboardSummaryData?.Table}
+            data={searchData}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item, index }) =>
               renderClientSummery({ loading, item, type, navigation })
             }
+            ListEmptyComponent={() => (
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <Text
+                  style={{
+                    fontSize: hp(2),
+                    marginTop: hp(40),
+                    color: themePrimaryColor,
+                  }}
+                >
+                  No Record Found
+                </Text>
+                <Text
+                  style={{
+                    fontSize: hp(1.5),
+                    color: themePrimaryColor,
+                  }}
+                >
+                  Please Apply Filter
+                </Text>
+              </View>
+            )}
           />
         ) : (
           <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -225,14 +310,16 @@ const DashboardSummery = ({ navigation }) => {
             >
               No Record Found
             </Text>
-            <Text
-              style={{
-                fontSize: hp(1.5),
-                color: themePrimaryColor,
-              }}
-            >
-              Please Apply Filter
-            </Text>
+            <TouchableOpacity activeOpacity={0.6} onPress={() => toggleModal()}>
+              <Text
+                style={{
+                  fontSize: hp(1.5),
+                  color: themePrimaryColor,
+                }}
+              >
+                Please Apply Filter
+              </Text>
+            </TouchableOpacity>
           </View>
         )}
       </ScrollView>
@@ -285,8 +372,6 @@ const styles = StyleSheet.create({
   },
   HeaderTitleContainer: {
     left: wp(5),
-    // justifyContent: "center",
-    // alignItems: "center",
     alignSelf: "center",
   },
   HeaderTitle: {
@@ -309,8 +394,8 @@ const styles = StyleSheet.create({
   },
 
   searchIcon: {
-    width: wp(6),
-    height: wp(6),
+    width: wp(5.5),
+    height: wp(5.5),
     tintColor: themePrimaryColor,
   },
   filterIconContainer: {
@@ -318,8 +403,8 @@ const styles = StyleSheet.create({
     left: wp(3),
   },
   filterIcon: {
-    width: wp(6),
-    height: wp(6),
+    width: wp(5.5),
+    height: wp(5.5),
     tintColor: themePrimaryColor,
   },
   CountingContainer: {
@@ -339,8 +424,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontSize: hp(2),
   },
-  Tilte: {
-  },
+  Tilte: {},
   Container: {
     flex: 1,
     flexDirection: "row",

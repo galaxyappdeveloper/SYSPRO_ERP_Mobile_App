@@ -14,13 +14,13 @@ import { Icon } from "../../constants/Icon";
 import { themePrimaryColor } from "../../constants/constant";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScreenName } from "../../constants/screenName";
-// import PDFReader from "rn-pdf-reader-js";
-// import PDFReader from "react-native-pdf";
 import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { getDashReportPrint } from "../../Actions/Dashboard/dashboardAction";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader } from "../../componenets/Loading";
+import PDFViwer from "../../componenets/PDFViwer";
+import { setDashboardReportPrint } from "../../redux/dashboardSlices/DashboardSlice";
 
 const PdfReader = ({ navigation }) => {
   const loading = useSelector((state) => state.dashboard.loading);
@@ -36,80 +36,66 @@ const PdfReader = ({ navigation }) => {
 
   const pdflink = useSelector((state) => state.dashboard?.dashboardReportPrint);
 
+  const handleBack = () => {
+    dispatch(setDashboardReportPrint(""));
+    navigation.navigate(ScreenName.summaryDetails);
+  };
+
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        alignItems: "center",
-        marginHorizontal: wp(2),
-        marginVertical: hp(1),
-      }}
-    >
-      <View
+    <>
+      {loading && <Loader />}
+      <SafeAreaView
         style={{
+          flex: 1,
+          alignItems: "center",
           marginHorizontal: wp(2),
-          justifyContent: "space-evenly",
-          flexDirection: "row",
-          alignSelf: "center",
+          marginVertical: hp(1),
         }}
       >
-        <TouchableOpacity
-          style={styles.backIconContainer}
-          onPress={() => navigation.navigate(ScreenName.summeryDetails)}
-        >
-          <Image
-            source={Icon.arrowRound}
-            style={styles.backIcon}
-            contentFit="contain"
-          />
-        </TouchableOpacity>
-
-        <Text className="font-gsemibold text-lg " style={styles.ClientName}>
-          #{item?.OrderId}
-        </Text>
-        <TouchableOpacity>
-          <View>
-            <Image
-              source={Icon.downloadIcon}
-              style={styles.backIcon}
-              contentFit="contain"
-            />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View>
-            <Image
-              source={Icon.shareIcon}
-              style={styles.backIcon}
-              contentFit="contain"
-            />
-          </View>
-        </TouchableOpacity>
-      </View>
-
-      {loading && <Loader />}
-      {pdflink && (
-        <Text
-          onPress={() => Linking.openURL(pdflink)}
+        <View
           style={{
-            // flex: 1,
-            color: "black",
-            height: "100%",
-            alignItems: "center",
-            justifyContent: "center",
+            marginHorizontal: wp(2),
+            justifyContent: "space-evenly",
+            flexDirection: "row",
+            alignSelf: "center",
           }}
         >
-          PDF Preview :
-          <Text style={{ color: "blue" }}> View Report PDF Here </Text>
-        </Text>
-      )}
+          <TouchableOpacity
+            style={styles.backIconContainer}
+            onPress={() => handleBack()}
+          >
+            <Image
+              source={Icon.arrowRound}
+              style={styles.backIcon}
+              contentFit="contain"
+            />
+          </TouchableOpacity>
 
-      {/* <WebView
-        source={{ uri: "file://" + pdflink }}
-        style={{ flex: 1 }}
-        originWhitelist={["*"]}
-      /> */}
-    </SafeAreaView>
+          <Text className="font-gsemibold text-lg " style={styles.ClientName}>
+            #{item?.OrderId}
+          </Text>
+          <TouchableOpacity>
+            <View>
+              <Image
+                source={Icon.downloadIcon}
+                style={styles.backIcon}
+                contentFit="contain"
+              />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View>
+              <Image
+                source={Icon.shareIcon}
+                style={styles.backIcon}
+                contentFit="contain"
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
+        <PDFViwer link={pdflink} />
+      </SafeAreaView>
+    </>
   );
 };
 

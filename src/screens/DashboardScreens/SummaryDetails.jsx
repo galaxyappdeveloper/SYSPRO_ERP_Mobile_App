@@ -26,23 +26,18 @@ import { useRoute } from "@react-navigation/native";
 import { Loader } from "../../componenets/Loading";
 import { commonStyle } from "../../constants/commonStyle";
 import Modal from "react-native-modal";
-import FilterModal from "./FilterModal";
+import {
+  getDashboardSummaryDetail,
+  getDashReportPrint,
+} from "../../Actions/Dashboard/dashboardAction";
+import { formatDate } from "../../functions/formatDate";
+import { setDashboardSummaryDetail } from "../../redux/dashboardSlices/DashboardSlice";
 
-const renderClientSummery = ({ loading, item, type, navigation }) => {
-  const accountId = item?.Account_Id;
-
-  const maxLength = 40;
-
-  const trimmedTitle =
-    item?.Account_Name.length > maxLength
-      ? `${item?.Account_Name.slice(0, maxLength)}...`
-      : item?.Account_Name;
-
+const renderClientSummery = ({ item, navigation }) => {
   return (
     <TouchableOpacity
-      onPress={() =>
-        navigation.navigate(ScreenName.pdfReader, { type, accountId })
-      }
+      activeOpacity={0.5}
+      onPress={() => navigation.navigate(ScreenName.pdfReader, { item })}
       style={{
         flex: 1,
       }}
@@ -54,18 +49,16 @@ const renderClientSummery = ({ loading, item, type, navigation }) => {
             style={styles.Tilte}
             className="font-gsemibold"
           >
-            #1811
-            {/* {trimmedTitle} */}
-            {/* {item?.Account_Name} */}
+            #{item?.OrderId}
           </Text>
 
           <View style={styles.QuantityContainer}>
             <View>
               <Text style={styles.bill}>
-                Bill No. -<Text style={styles.billno}> {item.BillNo}</Text>
+                Bill No. -<Text style={styles.billno}> {item?.BillNo}</Text>
               </Text>
               <Text style={styles.Quantity}>
-                Qty -<Text style={styles.QuantityNumber}> {item.Pcs}</Text>
+                Qty -<Text style={styles.QuantityNumber}> {item?.Pcs}</Text>
               </Text>
             </View>
           </View>
@@ -75,9 +68,7 @@ const renderClientSummery = ({ loading, item, type, navigation }) => {
           <View style={styles.BillContainer}>
             <Text style={styles.Bill}>
               Bill date -
-              <Text style={styles.BillDate}>
-                {/* ₹{item.TtlAmt} */} 14 Aug, 2024
-              </Text>
+              <Text style={styles.BillDate}>{formatDate(item.BillDt)}</Text>
             </Text>
             <Text style={styles.Amount}>
               Amt -<Text style={styles.AmountNumber}> ₹ {item.TtlAmt}</Text>
@@ -98,49 +89,62 @@ const renderClientSummery = ({ loading, item, type, navigation }) => {
 
 const SummaryDetails = ({ navigation }) => {
   const [searchVisible, setSearchVisible] = useState(false);
-  const [searchText, setSearchText] = useState("");
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
-  const [filterType, setFilterType] = useState("");
   const [refreshing, setRefreshing] = useState(false);
 
   const dispatch = useDispatch();
   const route = useRoute();
   const [type, setType] = useState(route.params?.type || "");
-  const [container, setContainer] = useState(route.params?.container || "");
-
-  const dashboardSummaryData = useSelector(
-    (state) => state.dashboard.dashboardSummary
-  );
+  const [accountId, setAccountId] = useState(route.params?.accountId || "");
 
   const loading = useSelector((state) => state.dashboard.loading);
+  const pdflink = useSelector((state) => state.dashboard.dashboardReportPrint);
+  const stateFromDate = useSelector((state) => state.dashboard.stateFromDate);
+  const stateToDate = useSelector((state) => state.dashboard.stateToDate);
+  const dashboardSummaryDetailData = useSelector(
+    (state) => state.dashboard.dashboardSummaryDetail
+  );
+  const [filteredData, setFilteredData] = useState(dashboardSummaryDetailData);
+
+  console.log("Account id in summary detail screen : ", accountId);
 
   const onRefresh = () => {
     setRefreshing(true);
-    dispatch(getDashboardSummary(type));
+    // dispatch(getDashboardSummaryDetail());
     setRefreshing(false);
   };
 
-  useEffect(() => {
-    if (route.params?.type || route.params?.container) {
-      setType(route.params.type);
-      setContainer(route.params.container);
-    }
-  }, [route.params?.type || route.params?.container]);
+  // useEffect(() => {
+  //   setFilteredData(dashboardSummaryDetailData);
+  // }, [dashboardSummaryDetailData]);
 
   useEffect(() => {
-    dispatch(getDashboardSummary(type));
-  }, [dispatch, type]);
+    if (route.params?.type || route.params?.accountId) {
+      setType(route.params.type);
+      setAccountId(route.params.accountId);
+    }
+  }, [route.params?.type, route.params?.accountId]);
 
   const [isModalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    dispatch(
+      getDashboardSummaryDetail(type, accountId, stateFromDate, stateToDate)
+    );
+  }, [type, accountId, stateFromDate, stateToDate]);
+
+  const toggleSearchBar = () => {
+    setSearchVisible(!searchVisible);
+  };
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
-  const toggleSearchBar = () => {
-    setSearchVisible(!searchVisible);
+  const handleBack = async () => {
+    await navigation.navigate(ScreenName.dashboardSummery);
+    dispatch(setDashboardSummaryDetail([]));
   };
+
   return (
     <SafeAreaView style={[commonStyle.container]}>
       {loading && <Loader />}
@@ -151,7 +155,7 @@ const SummaryDetails = ({ navigation }) => {
       ) : (
         <View style={styles.Header}>
           <View style={styles.backIconContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate(ScreenName.dashboardSummery)}>
+            <TouchableOpacity onPress={() => handleBack()}>
               <Image
                 source={Icon.arrowRound}
                 style={styles.backIcon}
@@ -161,10 +165,9 @@ const SummaryDetails = ({ navigation }) => {
           </View>
           <View style={styles.HeaderTitleContainer}>
             <Text className="font-gsemibold  " style={styles.HeaderTitle}>
-              9XN DESIGNER
+              Summary Details
             </Text>
           </View>
-
           <View style={styles.search_filterIconContainer}>
             <View style={styles.searchIconContainer}>
               <TouchableOpacity onPress={() => toggleSearchBar()}>
@@ -178,46 +181,14 @@ const SummaryDetails = ({ navigation }) => {
           </View>
         </View>
       )}
-
-      <ScrollView
-        style={{ marginBottom: hp(1), color: "transparent" }}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => onRefresh()}
-          />
-        }
-      >
-        {dashboardSummaryData?.Table &&
-        dashboardSummaryData?.Table?.length > 0 ? (
+      <ScrollView style={{ marginBottom: hp(1), color: "transparent" }}>
+        {dashboardSummaryDetailData && (
           <FlatList
             scrollEnabled={false}
-            data={dashboardSummaryData?.Table}
+            data={dashboardSummaryDetailData}
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item, index }) =>
-              renderClientSummery({ loading, item, type, navigation })
-            }
+            renderItem={({ item }) => renderClientSummery({ item, navigation })}
           />
-        ) : (
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Text
-              style={{
-                fontSize: hp(2),
-                marginTop: hp(40),
-                color: themePrimaryColor,
-              }}
-            >
-              No Record Found for Today
-            </Text>
-            <Text
-              style={{
-                fontSize: hp(1.5),
-                color: themePrimaryColor,
-              }}
-            >
-              Please Apply Filter
-            </Text>
-          </View>
         )}
       </ScrollView>
       <View style={{ flex: 1 }}>
