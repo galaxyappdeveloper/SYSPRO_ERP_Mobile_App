@@ -80,11 +80,25 @@ const Dashboard = ({ navigation }) => {
   const renderCardContainer = (item, dashItem) => {
     const type = item?.SYSType;
     const container = item?.Container;
+
+
+const source = () => {
+  switch (container) {
+    case "Sales":
+      return images.salesBackground;
+    case "Purchase":
+      return images.purchaseBackground;
+    case "Job Work":
+      return images.jobworkBackground;
+    case "Account":
+      return images.accountsBackground;
+}
+}
     return (
       <View>
         <ImageBackground
           imageStyle={styles.image}
-          source={images.backgroundShiny}
+          source={source()}
           style={[
             styles.card,
             item.length === 1 ? styles.fullWidthCard : styles.halfWidthCard,
@@ -101,7 +115,6 @@ const Dashboard = ({ navigation }) => {
                   fontSize: hp(2),
                   width: hp(15),
                   lineHeight: hp(3.6),
-                  left: wp(1.8),
                 }}
               >
                 {/* {dashItem.Title} */}

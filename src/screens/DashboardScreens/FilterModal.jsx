@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ImageBackground,
+  Button,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import CustomBtn from "../../componenets/CustomBtn";
@@ -15,7 +16,6 @@ import {
 import { Image } from "expo-image";
 import { Icon } from "../../constants/Icon";
 import { images } from "../../constants/images";
-import { Picker } from "@react-native-picker/picker";
 import { useDispatch } from "react-redux";
 import {
   getDashboardSummary,
@@ -26,6 +26,7 @@ import {
   setStateFromDate,
   setStateToDate,
 } from "../../redux/dashboardSlices/DashboardSlice";
+import { Dropdown } from "react-native-element-dropdown";
 
 const FilterModal = ({
   dropdownOptions,
@@ -43,19 +44,21 @@ const FilterModal = ({
   const [toDate, setToDate] = useState(today);
   const [showFromDatePicker, setShowFromDatePicker] = useState(false);
   const [showToDatePicker, setShowToDatePicker] = useState(false);
-  const [selectedType, setSelectedType] = useState(null);
+  const [selectedType, setSelectedType] = useState("Select Type");
+  const [value, setValue] = useState(null);
+  const [isFocus, setIsFocus] = useState(false);
 
   const handleDropdownChange = (selectedOption) => {
     console.log("Selected Option:", selectedOption);
     setSelectedType(selectedOption);
   };
-
   console.log("From Date : ", formatDate(fromDate));
   console.log("TO Date : ", formatDate(toDate));
 
   useEffect(() => {
     if (dropdownOptions && dropdownOptions.length > 0) {
       setSelectedType(dropdownOptions[0].TranOrigin);
+      setValue(dropdownOptions[0].TranOrigin);
     }
   }, [dropdownOptions]);
 
@@ -87,72 +90,121 @@ const FilterModal = ({
     toggle();
   };
 
+  const renderLabel = () => {
+    return (
+      <Text style={[styles.label, isFocus && { color: "blue" }]}>Type *</Text>
+    );
+  };
   return (
-    <View style={styles.container}>
-      <View source={images.filterFrame} imageStyle={styles.image}>
-        <View style={styles.header}>
-          <Text className="font-gsemibold" style={styles.headerText}>
-            Filter
+    <View source={images.filterFrame} imageStyle={styles.image}>
+      <View style={styles.header}>
+        <Text className="font-gsemibold" style={styles.headerText}>
+          Filter
+        </Text>
+        <TouchableOpacity onPress={() => toggle()}>
+          <Text className="font-gsemibold" style={styles.resetText}>
+            Cancel
           </Text>
-          <TouchableOpacity onPress={() => toggle()}>
-            <Text className="font-gsemibold" style={styles.resetText}>
-              Cancel
-            </Text>
-          </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
+      </View>
 
-        {/* Dropdown */}
+      {/* Dropdown */}
 
-        <View style={styles.dropdown}>
-          <Picker
-            selectedValue={selectedType}
-            onValueChange={handleDropdownChange}
-            style={styles.dropdown}
-            placeholder="Select Type"
-            mode="dropdown"
-          >
-            {dropdownOptions?.map((option, index) => (
-              <Picker.Item
-                key={index}
-                label={option?.TranOrigin}
-                value={option?.TranOrigin}
+      <View style={styles.container}>
+        <View style={styles.inputContainers}>
+          {renderLabel()}
+          <Dropdown
+            style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            iconStyle={styles.iconStyle}
+            containerStyle={styles.containerStyle}
+            itemContainerStyle={styles.itemContainerStyle}
+            renderLeftIcon={() => (
+              <Image source={Icon.companyIcon} style={styles.companyIcon} />
+            )}
+            renderRightIcon={() => (
+              <Image
+                source={Icon.dropDownIcon}
+                style={[
+                  styles.dropDownIcon,
+                  { transform: [{ rotate: isFocus ? "180deg" : "0deg" }] },
+                ]}
               />
-            ))}
-          </Picker>
-        </View>
+            )}
+            data={dropdownOptions}
+            maxHeight={300}
+            labelField="TranOrigin"
+            valueField="TranOrigin"
+            placeholder={!isFocus ? "Select Type" : "..."}
+            value={value}
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
+            onChange={(item) => {
+              handleDropdownChange(item.TranOrigin);
+              setValue(item.TranOrigin);
+            }}
+          />
 
-        {/* From Date Selector */}
+          {/* From Date Selector */}
 
-        <View style={styles.datePickerConatiner}>
-          <TouchableOpacity onPress={() => setShowFromDatePicker(true)}>
-            <Text style={styles.dateText}>
-              From Date: {formatDate(fromDate)}
-            </Text>
-          </TouchableOpacity>
-          {showFromDatePicker && (
-            <DateTimePicker
-              value={fromDate}
-              mode="date"
-              display="default"
-              onChange={handleFromDateChange}
-            />
-          )}
-        </View>
+          <View style={styles.FromdatePickerConatiner}>
+            <Text style={styles.labelOne}>From Date *</Text>
 
-        {/* To Date Selector */}
+            <TouchableOpacity onPress={() => setShowFromDatePicker(true)}>
+              <View style={styles.Fromdate}>
+                <Text style={styles.dateText}>
+                  {"  "}
+                  {fromDate.toLocaleDateString()}
+                </Text>
+              </View>
+              <View style={styles.imageContainer}>
+                <Image
+                  source={Icon.yearIcon}
+                  style={styles.yearIcon}
+                  contentFit="contain"
+                />
+              </View>
+            </TouchableOpacity>
+            {showFromDatePicker && (
+              <DateTimePicker
+                value={fromDate}
+                mode="date"
+                display="default"
+                onChange={handleFromDateChange}
+              />
+            )}
+          </View>
 
-        <View style={styles.datePickerConatiner}>
-          <TouchableOpacity onPress={() => setShowToDatePicker(true)}>
-            <Text style={styles.dateText}>To Date: {formatDate(toDate)}</Text>
-          </TouchableOpacity>
-          {showToDatePicker && (
-            <DateTimePicker
-              value={toDate}
-              mode="date"
-              display="default"
-              onChange={handleToDateChange}
-            />
-          )}
+          {/* To Date Selector */}
+
+          <View style={styles.TodatePickerConatiner}>
+            <Text style={styles.labelOne}>To Date *</Text>
+
+            <TouchableOpacity onPress={() => setShowToDatePicker(true)}>
+              <View style={styles.Todate}>
+                <Text style={styles.dateText}>
+                  {"  "}
+                  {toDate.toLocaleDateString()}
+                </Text>
+              </View>
+              <View style={styles.imageContainer}>
+                <Image
+                  source={Icon.yearIcon}
+                  style={styles.yearIcon}
+                  contentFit="contain"
+                />
+              </View>
+            </TouchableOpacity>
+            {showToDatePicker && (
+              <DateTimePicker
+                value={toDate}
+                mode="date"
+                display="default"
+                onChange={handleToDateChange}
+              />
+            )}
+          </View>
         </View>
 
         <View style={styles.buttonContainer}>
@@ -168,90 +220,174 @@ const FilterModal = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: hp(2),
-    width: wp(100),
-    height: hp(55),
-
-    backgroundColor: "#FAFAFA",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-  },
-  image: {},
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: hp(8),
+    top: hp(5),
+    zIndex: 1,
   },
   headerText: {
     left: wp(4),
-    top: hp(3),
     fontSize: hp(2.5),
     color: "#021121",
   },
   resetText: {
     right: wp(4),
-    top: hp(3),
     fontSize: hp(2),
     color: "#FF4141",
   },
-  inputContainer: {
+  container: {
+    padding: hp(2),
+    width: wp(100),
+    height: hp(55),
+    backgroundColor: "#FAFAFA",
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  inputContainers: {
+    marginTop: hp(6),
+    gap: hp(3),
+  },
+  dropdown: {
+    width: wp(90),
+    height: hp(8.5),
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#E7EAF3",
+    alignSelf: "center",
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#fff",
-    borderRadius: 15,
-    padding: hp(2.5),
-    margin: hp(1.5),
-    top: hp(-3.5),
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 10,
-    elevation: 2,
+    paddingLeft: hp(2),
+    paddingRight: hp(2),
+    backgroundColor: "white",
+    elevation: 5,
   },
-  icon: {
-    marginRight: 10,
+  placeholderStyle: {
+    marginLeft: hp(1),
+    borderLeftWidth: 1,
+    borderLeftColor: "#E7EAF3",
+    paddingLeft: hp(1.5),
     height: hp(3),
-    width: hp(3),
   },
-  inputText: {
+  selectedTextStyle: {
+    marginLeft: hp(1),
+    borderLeftWidth: 1,
+    borderLeftColor: "#E7EAF3",
+    paddingLeft: hp(1.5),
+    height: hp(4),
+  },
+  iconStyle: {
+    width: hp(6),
+    height: hp(6),
+  },
+  containerStyle: {
+    zIndex: 1000,
+    maxHeight: hp(25),
+    width: wp(90),
+    borderRadius: 20,
+    borderColor: "#E7EAF3",
+    backgroundColor: "white",
+  },
+  itemContainerStyle: {
     flex: 1,
+    height: hp(8),
+    borderBottomWidth: 0.5,
+    borderBottomColor: "#78819D",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 20,
+    backgroundColor: "white",
+  },
+  companyIcon: {
+    width: hp(3),
+    height: hp(3),
+  },
+  dropDownIcon: {
+    width: hp(3),
+    height: hp(3),
+  },
+  FromdatePickerConatiner: {
+    borderWidth: 1,
+    width: wp(90),
+    height: hp(8.5),
+    borderColor: "#E7EAF3",
+    borderRadius: 16,
+    paddingHorizontal: hp(1),
+    padding: hp(1),
+    backgroundColor: "white",
+    alignSelf: "center",
+    elevation: 5,
+  },
+  labelOne: {
+    position: "absolute",
+    paddingHorizontal: wp(1.9),
+    bottom: hp(7.5),
+    zIndex: 999,
+    left: wp(6),
+    backgroundColor: "white",
+    color: "#5C658C",
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  Fromdate: {
+    flexDirection: "row",
+    marginLeft: hp(6),
+    marginTop: hp(2),
+  },
+  dateText: {
     fontSize: 16,
-    color: "#C0C0C0",
+    color: "#000",
+    alignSelf: "center",
+  },
+  imageContainer: {
+    height: hp(4),
+    width: hp(5),
+    alignItems: "center",
+    justifyContent: "center",
+    bottom: hp(3),
+    borderColor: "#E7EAF3",
+    borderRightWidth: 1,
+  },
+  yearIcon: {
+    width: hp(3),
+    height: hp(3),
+  },
+  TodatePickerConatiner: {
+    borderWidth: 1,
+    width: wp(90),
+    height: hp(8.5),
+    borderColor: "#E7EAF3",
+    borderRadius: 16,
+    padding: hp(1),
+    backgroundColor: "white",
+    alignSelf: "center",
+    elevation: 5,
+  },
+  Todate: {
+    flexDirection: "row",
+    marginLeft: hp(6),
+    marginTop: hp(2),
   },
   buttonContainer: {
     overflow: "hidden",
     borderRadius: 26,
     alignItems: "center",
-    marginTop: hp(-2),
+    top: hp(2),
     paddingVertical: hp(1.5),
     padding: hp(2.5),
-    // paddingHorizontal: hp(2),
-    // borderWidth: 1,
   },
   label: {
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  dropdown: {
-    height: 50,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    marginBottom: 20,
-    borderRadius: 12,
-  },
-  dateText: {
-    fontSize: 16,
-    color: "#000",
-    marginVertical: 10,
-  },
-  datePickerConatiner: {
-    height: 50,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingLeft: 12,
-    borderRadius: 12,
+    position: "absolute",
+    backgroundColor: "white",
+    left: hp(3.5),
+    top: hp(-1),
+    zIndex: 999,
+    backgroundColor: "white",
+    color: "#5C658C",
+    paddingHorizontal: wp(1.9),
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
 });
 
