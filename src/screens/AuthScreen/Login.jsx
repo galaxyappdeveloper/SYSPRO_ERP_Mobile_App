@@ -90,13 +90,6 @@ const Login = ({ navigation }) => {
       <ScrollView keyboardShouldPersistTaps="handled">
         {/* top container */}
         <View style={styles.topContainer}>
-          {/* <View style={styles.Imagecontainer}>
-            <Image
-              contentFit="contain"
-              source={images.sysproErpHorizantalLogo}
-              style={styles.Companylogo}
-            />
-          </View> */}
           <View>
             <Text
               className="text-black text-center font-gsemibold"
@@ -113,26 +106,11 @@ const Login = ({ navigation }) => {
             <Text
               style={{ fontSize: hp(2) }}
               className="text-[#9397A8] text-center font-glight mt-3"
-            >
-              {constant.loginScreenTitle3}
-            </Text>
+            ></Text>
           </View>
-        </View>
-        {/* bottom container */}
-        <View
-          style={[
-            commonStyle.innerContainer,
-            {
-              height: hp(40),
-              backgroundColor: "white",
-              justifyContent: "space-between",
-            },
-          ]}
-          // className="w-[100%] mt-14 bg-white rounded-t-[26px]"
-        >
-          <View className="flex-1">
+          <View>
             {/* <Text className="font-gsemibold text-2xl ml-[-10]">Login</Text> */}
-            <View>
+            <View className="mt-8">
               <TextInputwithLogo
                 placeholder="Enter your Username "
                 icon={Icon.userNameIcon}
@@ -146,7 +124,7 @@ const Login = ({ navigation }) => {
                 blurOnSubmit={false}
               />
             </View>
-            <View className="mt-5">
+            <View className="mt-8">
               <TextInputwithLogo
                 placeholder="Enter your Password"
                 icon={Icon.passwordIcon}
@@ -164,28 +142,38 @@ const Login = ({ navigation }) => {
                 onSubmitEditing={() => handleLogin()}
               />
             </View>
+            <CustomBtn
+              disabled={!username || !password}
+              isLoading={isLoading}
+              titleStyle={{ fontWeight: 600 }}
+              title="Log In"
+              onPressHandler={handleLogin}
+              Customstyle={{
+                position: "absolute",
+                alignSelf: "center",
+                top: hp(32),
+              }}
+            />
           </View>
-          <CustomBtn
-            disabled={!username || !password}
-            isLoading={isLoading}
-            titleStyle={{ fontWeight: 600 }}
-            title="Log In"
-            onPressHandler={handleLogin}
-            Customstyle={{
-              position: "absolute",
-              alignSelf: "center",
-              bottom: hp(3),
-            }}
-          />
+          {/* <View
+            style={[
+              commonStyle.innerContainer,
+              {
+                height: hp(40),
+                backgroundColor: "white",
+                justifyContent: "space-between",
+              },
+            ]}
+            // className="w-[100%] mt-14 bg-white rounded-t-[26px]"
+          ></View> */}
+          {/* bottom container */}
           <Image
             contentFit="contain"
             source={images.poweredBySysproErp}
             style={styles.poweredBySyspro}
           />
         </View>
-        {/* <View style={styles.bottomLine}>
-          <Image source={images.ellipse} style={styles.ellipse} />
-        </View> */}
+        <View style={styles.poweredBySysproContainer}></View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -248,7 +236,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   topContainer: {
-    marginTop: hp(20),
+    top: hp(20),
+    height: hp(90),
   },
   Imagecontainer: {
     flex: 1,
@@ -274,9 +263,13 @@ const styles = StyleSheet.create({
   //   zIndex: -1,
   // },
   poweredBySyspro: {
+    position: "absolute",
     alignSelf: "center",
-    bottom: hp(-20),
-    width: wp(35),
+    top: hp(71),
+    width: wp(45),
     height: hp(5),
+  },
+  poweredBySysproContainer: {
+    height: hp(10),
   },
 });
