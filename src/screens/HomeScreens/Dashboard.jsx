@@ -6,6 +6,7 @@ import {
   RefreshControl,
   TouchableOpacity,
   ImageBackground,
+  StatusBar,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
@@ -57,7 +58,7 @@ const Dashboard = ({ navigation }) => {
   const loading = useSelector((state) => state.dashboard.loading);
   const [refreshing, setRefreshing] = useState(false);
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
     dispatch(getDashboardPermission());
     setRefreshing(false);
@@ -65,7 +66,7 @@ const Dashboard = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(getDashboardPermission());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     if (DashboardPermissionData?.length > 0) {
@@ -81,19 +82,19 @@ const Dashboard = ({ navigation }) => {
     const type = item?.SYSType;
     const container = item?.Container;
 
+    const source = () => {
+      switch (container) {
+        case "Sales":
+          return images.salesBackground;
+        case "Purchase":
+          return images.purchaseBackground;
+        case "Job Work":
+          return images.jobworkBackground;
+        case "Account":
+          return images.accountsBackground;
+      }
+    };
 
-const source = () => {
-  switch (container) {
-    case "Sales":
-      return images.salesBackground;
-    case "Purchase":
-      return images.purchaseBackground;
-    case "Job Work":
-      return images.jobworkBackground;
-    case "Account":
-      return images.accountsBackground;
-}
-}
     return (
       <View>
         <ImageBackground
@@ -165,12 +166,13 @@ const source = () => {
 
   return (
     <ScrollView
-      style={[commonStyle.container, styles.DashboardContainer]}
+      style={commonStyle.container}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={() => onRefresh()} />
       }
     >
-      {loading && <Loader />}
+      <StatusBar barStyle={"dark-content"} />
+      {/* {loading && <Loader />} */}
       <SafeAreaView>
         <View>
           {DashboardPermissionData?.map((dashItem, index) => {
@@ -181,7 +183,6 @@ const source = () => {
                   data={dashItem.Data}
                   horizontal
                   showsHorizontalScrollIndicator={false}
-                  // numColumns={3}
                   keyExtractor={(item, index) => index.toString()}
                   renderItem={({ item, index }) =>
                     renderCardContainer(item, dashItem)
@@ -224,14 +225,12 @@ const styles = StyleSheet.create({
   card: {
     justifyContent: "space-between",
     backgroundColor: "#fff",
-    borderWidth: 1,
     borderColor: "#E6E6E6",
     padding: wp(2),
     margin: hp(1),
     borderRadius: 26,
     height: hp(22),
-    borderWidth:2,
-    
+    borderWidth: 2,
   },
   image: {
     borderRadius: 22,

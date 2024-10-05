@@ -10,6 +10,7 @@ const initialState = {
   stateFromDate: "",
   stateToDate: "",
   loading: false,
+  printLoading: false,
   error: null,
 };
 
@@ -19,6 +20,9 @@ export const dashboardSlice = createSlice({
   reducers: {
     setDashboardLoading: (state, { payload }) => {
       state.loading = payload;
+    },
+    setPrintLoading: (state, { payload }) => {
+      state.printLoading = payload;
     },
     setDashboardPermissionData: (state, { payload }) => {
       state.DashboardPermissionData = payload;
@@ -81,6 +85,7 @@ export const dashboardSlice = createSlice({
 export const {
   setDashboardPermissionData,
   setDashboardLoading,
+  setPrintLoading,
   setDashboardTotal,
   setDashboardSummary,
   setDashboardSummaryDetail,

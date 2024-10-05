@@ -47,6 +47,7 @@
     "react-native-elements": "^3.4.3",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
+    "react-native-loader-kit": "^2.0.8",
     "react-native-modal": "^13.0.1",
     "react-native-paper": "^5.12.5",
     "react-native-pdf": "^6.7.5",

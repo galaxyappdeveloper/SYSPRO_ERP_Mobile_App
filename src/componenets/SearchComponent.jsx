@@ -16,10 +16,8 @@ const SearchComponent = ({ searchQuery, setSearchQuery, toggleSearchBar }) => {
           style={styles.searchBar}
           placeholder="Search..."
           value={searchQuery}
-          // onChangeText={setSearchQuery}
           onChangeText={(text) => setSearchQuery(text)}
         />
-
         <TouchableOpacity onPress={toggleSearchBar}>
           <Image
             source={Icon.closeIcon}

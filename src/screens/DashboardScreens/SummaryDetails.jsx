@@ -32,12 +32,16 @@ import {
 } from "../../Actions/Dashboard/dashboardAction";
 import { formatDate } from "../../functions/formatDate";
 import { setDashboardSummaryDetail } from "../../redux/dashboardSlices/DashboardSlice";
+import DotLoader from "../../componenets/Loaders/DotLoader";
 
-const renderClientSummery = ({ item, navigation }) => {
+const renderClientSummery = ({ item, navigation, dispatch }) => {
+  const handlePDFNavigation = () => {
+    dispatch(getDashReportPrint(item));
+  };
   return (
     <TouchableOpacity
       activeOpacity={0.5}
-      onPress={() => navigation.navigate(ScreenName.pdfReader, { item })}
+      onPress={handlePDFNavigation}
       style={{
         flex: 1,
       }}
@@ -97,25 +101,15 @@ const SummaryDetails = ({ navigation }) => {
   const [accountId, setAccountId] = useState(route.params?.accountId || "");
 
   const loading = useSelector((state) => state.dashboard.loading);
+  const printLoading = useSelector((state) => state.dashboard.printLoading);
   const pdflink = useSelector((state) => state.dashboard.dashboardReportPrint);
   const stateFromDate = useSelector((state) => state.dashboard.stateFromDate);
   const stateToDate = useSelector((state) => state.dashboard.stateToDate);
   const dashboardSummaryDetailData = useSelector(
     (state) => state.dashboard.dashboardSummaryDetail
   );
-  const [filteredData, setFilteredData] = useState(dashboardSummaryDetailData);
 
   console.log("Account id in summary detail screen : ", accountId);
-
-  const onRefresh = () => {
-    setRefreshing(true);
-    // dispatch(getDashboardSummaryDetail());
-    setRefreshing(false);
-  };
-
-  // useEffect(() => {
-  //   setFilteredData(dashboardSummaryDetailData);
-  // }, [dashboardSummaryDetailData]);
 
   useEffect(() => {
     if (route.params?.type || route.params?.accountId) {
@@ -140,6 +134,12 @@ const SummaryDetails = ({ navigation }) => {
     setModalVisible(!isModalVisible);
   };
 
+  useEffect(() => {
+    if (pdflink) {
+      navigation.navigate(ScreenName.pdfReader, { pdflink });
+    }
+  }, [pdflink, navigation]);
+
   const handleBack = async () => {
     await navigation.navigate(ScreenName.dashboardSummery);
     dispatch(setDashboardSummaryDetail([]));
@@ -148,6 +148,7 @@ const SummaryDetails = ({ navigation }) => {
   return (
     <SafeAreaView style={[commonStyle.container]}>
       {loading && <Loader />}
+      {printLoading && <DotLoader />}
       {searchVisible ? (
         <View style={styles.searchContainer}>
           <SearchComponent toggleSearchBar={() => toggleSearchBar()} />
@@ -187,7 +188,9 @@ const SummaryDetails = ({ navigation }) => {
             scrollEnabled={false}
             data={dashboardSummaryDetailData}
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => renderClientSummery({ item, navigation })}
+            renderItem={({ item }) =>
+              renderClientSummery({ item, navigation, dispatch })
+            }
           />
         )}
       </ScrollView>

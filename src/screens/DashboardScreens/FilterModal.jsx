@@ -44,7 +44,7 @@ const FilterModal = ({
   const [toDate, setToDate] = useState(today);
   const [showFromDatePicker, setShowFromDatePicker] = useState(false);
   const [showToDatePicker, setShowToDatePicker] = useState(false);
-  const [selectedType, setSelectedType] = useState("Select Type");
+  const [selectedType, setSelectedType] = useState("");
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
@@ -52,15 +52,13 @@ const FilterModal = ({
     console.log("Selected Option:", selectedOption);
     setSelectedType(selectedOption);
   };
-  console.log("From Date : ", formatDate(fromDate));
-  console.log("TO Date : ", formatDate(toDate));
 
-  useEffect(() => {
-    if (dropdownOptions && dropdownOptions.length > 0) {
-      setSelectedType(dropdownOptions[0].TranOrigin);
-      setValue(dropdownOptions[0].TranOrigin);
-    }
-  }, [dropdownOptions]);
+  // useEffect(() => {
+  //   if (dropdownOptions && dropdownOptions.length > 0) {
+  //     setSelectedType(dropdownOptions[0].TranOrigin);
+  //     setValue(dropdownOptions[0].TranOrigin);
+  //   }
+  // }, [dropdownOptions]);
 
   const handleFromDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || fromDate;
@@ -95,6 +93,7 @@ const FilterModal = ({
       <Text style={[styles.label, isFocus && { color: "blue" }]}>Type *</Text>
     );
   };
+
   return (
     <View source={images.filterFrame} imageStyle={styles.image}>
       <View style={styles.header}>
@@ -153,10 +152,7 @@ const FilterModal = ({
 
             <TouchableOpacity onPress={() => setShowFromDatePicker(true)}>
               <View style={styles.Fromdate}>
-                <Text style={styles.dateText}>
-                  {"  "}
-                  {fromDate.toLocaleDateString()}
-                </Text>
+                <Text style={styles.dateText}>{formatDate(fromDate)}</Text>
               </View>
               <View style={styles.imageContainer}>
                 <Image
@@ -183,10 +179,7 @@ const FilterModal = ({
 
             <TouchableOpacity onPress={() => setShowToDatePicker(true)}>
               <View style={styles.Todate}>
-                <Text style={styles.dateText}>
-                  {"  "}
-                  {toDate.toLocaleDateString()}
-                </Text>
+                <Text style={styles.dateText}>{formatDate(toDate)}</Text>
               </View>
               <View style={styles.imageContainer}>
                 <Image
@@ -211,6 +204,7 @@ const FilterModal = ({
           <CustomBtn
             onPressHandler={() => handleFilter()}
             title="Apply"
+            disabled={!selectedType}
             Customstyle={{ height: hp(8) }}
           />
         </View>

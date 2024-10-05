@@ -12,6 +12,7 @@ const PDFViwer = ({ link }) => {
     <View style={styles.container}>
       <Pdf
         trustAllCerts={false}
+        enablePaging={true}
         source={source}
         onLoadComplete={(numberOfPages, filePath) => {
           console.log(`Number of pages: ${numberOfPages}`);

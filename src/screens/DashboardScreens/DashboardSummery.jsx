@@ -130,26 +130,6 @@ const DashboardSummery = ({ navigation }) => {
     setSearchQuery(query);
   };
 
-  // useEffect(() => {
-  //   if (dashboardSummaryData?.Table) {
-  //     setSearchData(dashboardSummaryData.Table);
-  //   }
-  // }, [dashboardSummaryData?.Table]);
-
-  // useEffect(() => {
-  //   if (dashboardSummaryData?.Table && searchQuery === "") {
-  //     setSearchData(dashboardSummaryData?.Table);
-  //   }
-  // }, [dashboardSummaryData, searchQuery]);
-
-  // useEffect(() => {
-  //   const delayDebounceFn = setTimeout(() => {
-  //     handleSearch(searchQuery);
-  //   }, 300);
-
-  //   return () => clearTimeout(delayDebounceFn);
-  // }, [searchQuery]);
-
   useEffect(() => {
     if (dashboardSummaryData?.Table && searchQuery === "") {
       setSearchData(dashboardSummaryData.Table);
@@ -166,16 +146,16 @@ const DashboardSummery = ({ navigation }) => {
       } else {
         setSearchData(dashboardSummaryData?.Table || []);
       }
-    }, 300);
+    }, 200);
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchQuery]);
 
-  const onRefresh = () => {
-    setRefreshing(true);
-    dispatch(getDashboardSummary(type));
-    setRefreshing(false);
-  };
+  // const onRefresh = () => {
+  //   setRefreshing(true);
+  //   dispatch(getDashboardSummary(type));
+  //   setRefreshing(false);
+  // };
 
   useEffect(() => {
     if (route.params?.type || route.params?.container) {
@@ -187,10 +167,6 @@ const DashboardSummery = ({ navigation }) => {
   useEffect(() => {
     dispatch(getDashboardSummary(type));
   }, [dispatch, type]);
-
-  // useEffect(() => {
-  //   dispatch(setDashboardSummaryDetail());
-  // }, []);
 
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -239,7 +215,7 @@ const DashboardSummery = ({ navigation }) => {
           </View>
           <View style={styles.HeaderTitleContainer}>
             <Text className="font-gsemibold  " style={styles.HeaderTitle}>
-              Sales
+              {container}
             </Text>
           </View>
 
@@ -269,59 +245,47 @@ const DashboardSummery = ({ navigation }) => {
       )}
 
       <ScrollView style={{ marginBottom: hp(1), color: "transparent" }}>
-        {searchData?.length > 0 ? (
-          <FlatList
-            scrollEnabled={false}
-            data={searchData}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item, index }) =>
-              renderClientSummery({ loading, item, type, navigation })
-            }
-            ListEmptyComponent={() => (
-              <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Text
-                  style={{
-                    fontSize: hp(2),
-                    marginTop: hp(40),
-                    color: themePrimaryColor,
-                  }}
+        {/* {searchData?.length > 0 && ( */}
+        <FlatList
+          scrollEnabled={false}
+          data={searchData}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item, index }) =>
+            renderClientSummery({ loading, item, type, navigation })
+          }
+          ListEmptyComponent={() => (
+            <>
+              {!loading && (
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
                 >
-                  No Record Found
-                </Text>
-                <Text
-                  style={{
-                    fontSize: hp(1.5),
-                    color: themePrimaryColor,
-                  }}
-                >
-                  Please Apply Filter
-                </Text>
-              </View>
-            )}
-          />
-        ) : (
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Text
-              style={{
-                fontSize: hp(2),
-                marginTop: hp(40),
-                color: themePrimaryColor,
-              }}
-            >
-              No Record Found
-            </Text>
-            <TouchableOpacity activeOpacity={0.6} onPress={() => toggleModal()}>
-              <Text
-                style={{
-                  fontSize: hp(1.5),
-                  color: themePrimaryColor,
-                }}
-              >
-                Please Apply Filter
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
+                  <Text
+                    style={{
+                      fontSize: hp(2),
+                      marginTop: hp(40),
+                      color: themePrimaryColor,
+                    }}
+                  >
+                    No Record Found
+                  </Text>
+                  <TouchableOpacity
+                    activeOpacity={0.6}
+                    onPress={() => toggleModal()}
+                  >
+                    <Text
+                      style={{
+                        fontSize: hp(1.5),
+                        color: themePrimaryColor,
+                      }}
+                    >
+                      Please Apply Filter
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </>
+          )}
+        />
       </ScrollView>
       <View style={{ flex: 1 }}>
         <Modal isVisible={isModalVisible}>
@@ -361,7 +325,6 @@ const styles = StyleSheet.create({
   },
   backIconContainer: {
     paddingLeft: wp(3),
-
     alignSelf: "center",
   },
   backIcon: {

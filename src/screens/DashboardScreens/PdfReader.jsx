@@ -23,18 +23,20 @@ import PDFViwer from "../../componenets/PDFViwer";
 import { setDashboardReportPrint } from "../../redux/dashboardSlices/DashboardSlice";
 
 const PdfReader = ({ navigation }) => {
-  const loading = useSelector((state) => state.dashboard.loading);
+  // const loading = useSelector((state) => state.dashboard.loading);
   const dispatch = useDispatch();
   const route = useRoute();
-  const item = route.params?.item || "";
+  // const item = route.params?.item || "";
 
-  useEffect(() => {
-    if (item) {
-      dispatch(getDashReportPrint(item));
-    }
-  }, [item]);
+  const { pdflink } = route.params;
 
-  const pdflink = useSelector((state) => state.dashboard?.dashboardReportPrint);
+  // useEffect(() => {
+  //   if (item) {
+  //     dispatch(getDashReportPrint(item));
+  //   }
+  // }, [item]);
+
+  // const pdflink = useSelector((state) => state.dashboard?.dashboardReportPrint);
 
   const handleBack = () => {
     dispatch(setDashboardReportPrint(""));
@@ -43,7 +45,7 @@ const PdfReader = ({ navigation }) => {
 
   return (
     <>
-      {loading && <Loader />}
+      {/* {loading && <Loader />} */}
       <SafeAreaView
         style={{
           flex: 1,
@@ -72,7 +74,8 @@ const PdfReader = ({ navigation }) => {
           </TouchableOpacity>
 
           <Text className="font-gsemibold text-lg " style={styles.ClientName}>
-            #{item?.OrderId}
+            {/* #{item?.OrderId} */}
+            Report Preview
           </Text>
           <TouchableOpacity>
             <View>

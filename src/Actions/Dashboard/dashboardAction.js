@@ -7,6 +7,7 @@ import {
   setDashboardSummary,
   setDashboardSummaryDetail,
   setDashboardTotal,
+  setPrintLoading,
 } from "../../redux/dashboardSlices/DashboardSlice";
 import dashboardService from "../../services/dashboardService";
 import * as Device from "expo-device";
@@ -77,7 +78,6 @@ export const getDashboardTotal = (syskey) => async (dispatch) => {
 };
 
 export const getDashboardSummary = (type) => async (dispatch) => {
-  // fromDate, toDate, type, filterString
   const date = new Date();
   const formatedDate = date
     .toLocaleDateString("en-GB", {
@@ -86,9 +86,6 @@ export const getDashboardSummary = (type) => async (dispatch) => {
       year: "numeric",
     })
     .replace(/\//g, "-");
-
-  // FromDate: fromDate ? fromDate : formatedDate,
-  // ToDate: toDate ? toDate : formatedDate,
 
   const body = {
     IntReportId: 0,
@@ -211,20 +208,20 @@ export const getDashReportPrint = (item) => async (dispatch) => {
   };
 
   try {
-    dispatch(setDashboardLoading(true));
-    dispatch(setDashboardReportPrint(""));
+    // dispatch(setDashboardLoading(true));
+    dispatch(setPrintLoading(true));
     const response = await dashboardService.getDashReportPrint(body);
     dispatch(setDashboardReportPrint(response?.data?.Data?.ReportPath));
     console.log("file path : ", response?.data?.Data?.ReportPath);
-    dispatch(setDashboardLoading(false));
+    dispatch(setPrintLoading(false));
   } catch (error) {
     if (error?.response?.data?.ErrorMessage) {
       notifyMessage(error.response.data.ErrorMessage);
     } else {
       // notifyMessage("Unexpected Error .");
     }
-    dispatch(setDashboardLoading(false));
+    dispatch(setPrintLoading(false));
   } finally {
-    dispatch(setDashboardLoading(false));
+    dispatch(setPrintLoading(false));
   }
 };
